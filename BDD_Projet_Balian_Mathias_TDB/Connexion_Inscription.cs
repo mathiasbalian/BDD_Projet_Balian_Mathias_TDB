@@ -16,10 +16,5 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             InitializeComponent();
         }
-
-        private void inscrireLinkText_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            this.Connexion_formulaire.Hide();
-        }
     }
 }
