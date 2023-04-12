@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             connectForm = new GroupBox();
-            registerButton = new Button();
+            registerLinkLabel = new LinkLabel();
+            noAccountLabel = new Label();
             label2 = new Label();
             label1 = new Label();
             connectButton = new Button();
@@ -43,7 +44,8 @@
             // 
             connectForm.Anchor = AnchorStyles.None;
             connectForm.BackColor = SystemColors.Window;
-            connectForm.Controls.Add(registerButton);
+            connectForm.Controls.Add(registerLinkLabel);
+            connectForm.Controls.Add(noAccountLabel);
             connectForm.Controls.Add(label2);
             connectForm.Controls.Add(label1);
             connectForm.Controls.Add(connectButton);
@@ -58,20 +60,25 @@
             connectForm.TabIndex = 0;
             connectForm.TabStop = false;
             // 
-            // registerButton
+            // registerLinkLabel
             // 
-            registerButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            registerButton.BackColor = Color.LightSlateGray;
-            registerButton.Cursor = Cursors.Hand;
-            registerButton.FlatStyle = FlatStyle.Flat;
-            registerButton.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            registerButton.ForeColor = SystemColors.Control;
-            registerButton.Location = new Point(26, 391);
-            registerButton.Name = "registerButton";
-            registerButton.Size = new Size(171, 48);
-            registerButton.TabIndex = 8;
-            registerButton.Text = "S'inscrire";
-            registerButton.UseVisualStyleBackColor = false;
+            registerLinkLabel.AutoSize = true;
+            registerLinkLabel.Location = new Point(234, 358);
+            registerLinkLabel.Name = "registerLinkLabel";
+            registerLinkLabel.Size = new Size(67, 20);
+            registerLinkLabel.TabIndex = 9;
+            registerLinkLabel.TabStop = true;
+            registerLinkLabel.Text = "S'inscrire";
+            registerLinkLabel.LinkClicked += registerLinkLabel_LinkClicked;
+            // 
+            // noAccountLabel
+            // 
+            noAccountLabel.AutoSize = true;
+            noAccountLabel.Location = new Point(38, 358);
+            noAccountLabel.Name = "noAccountLabel";
+            noAccountLabel.Size = new Size(199, 20);
+            noAccountLabel.TabIndex = 8;
+            noAccountLabel.Text = "Vous n'avez pas de compte ?";
             // 
             // label2
             // 
@@ -103,12 +110,13 @@
             connectButton.FlatStyle = FlatStyle.Flat;
             connectButton.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
             connectButton.ForeColor = SystemColors.Control;
-            connectButton.Location = new Point(217, 391);
+            connectButton.Location = new Point(214, 422);
             connectButton.Name = "connectButton";
             connectButton.Size = new Size(171, 48);
             connectButton.TabIndex = 3;
             connectButton.Text = "Se connecter";
             connectButton.UseVisualStyleBackColor = false;
+            connectButton.Click += connectButton_Click;
             // 
             // welcomeText
             // 
@@ -152,6 +160,7 @@
             Name = "Connexion_Inscription";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Application fleurs";
+            FormClosed += Connexion_Inscription_FormClosed;
             connectForm.ResumeLayout(false);
             connectForm.PerformLayout();
             ResumeLayout(false);
@@ -166,6 +175,7 @@
         private Button connectButton;
         private Label label2;
         private Label label1;
-        private Button registerButton;
+        private LinkLabel registerLinkLabel;
+        private Label noAccountLabel;
     }
 }
