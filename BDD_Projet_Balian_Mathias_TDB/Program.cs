@@ -13,7 +13,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new Connexion_Inscription());
+            Application.Run(new LoginForm());
         }
 
 
@@ -22,12 +22,27 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// </summary>
         /// <param name="command">La commande à laquelle on va ajouter les paramètres MySql</param>
         /// <param name="parameters">La liste des paramètres MySql à ajouter</param>
-        public static void addParameters(MySqlCommand command, params MySqlParameter[] parameters)
+        public static void addParametersToCommand(MySqlCommand command, params MySqlParameter[] parameters)
         {
             foreach(MySqlParameter parameter in parameters)
             {
                 command.Parameters.Add(parameter);
             }
+        }
+
+        /// <summary>
+        /// Permet de créer un MySqlParameter à partir d'un nom, d'une value et d'un dbType (il n'existe aucune surcharge du constructeur 
+        /// MySqlParameter dans le package MySql.Data.MySqlClient permettant de faire cela).
+        /// </summary>
+        /// <param name="parameterName">Le nom du paramètre dans la commande</param>
+        /// <param name="value">La valeur du paramètre</param>
+        /// <param name="dbType">Le type du paramètre</param>
+        /// <returns>Une instance de MySqlParameter</returns>
+        public static MySqlParameter createCustomParameter(string parameterName, object value, MySqlDbType dbType)
+        {
+            MySqlParameter param = new MySqlParameter(parameterName, dbType);
+            param.Value = value;
+            return param;
         }
     }
 }

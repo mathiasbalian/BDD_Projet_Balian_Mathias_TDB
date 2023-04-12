@@ -1,6 +1,6 @@
 ﻿namespace BDD_Projet_Balian_Mathias_TDB
 {
-    partial class Connexion_Inscription
+    partial class LoginForm
     {
         /// <summary>
         /// Required designer variable.
@@ -160,7 +160,7 @@
             Name = "Connexion_Inscription";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Application fleurs";
-            FormClosed += Connexion_Inscription_FormClosed;
+            FormClosed += LoginFormClosed;
             connectForm.ResumeLayout(false);
             connectForm.PerformLayout();
             ResumeLayout(false);
