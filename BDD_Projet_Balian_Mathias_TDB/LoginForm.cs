@@ -34,38 +34,52 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void connectButton_Click(object sender, EventArgs e)
         {
+            var existsUser = checkUserLoginExists();
             // On vérifie les informations de connection de l'utilisateur
-            if (!checkUserLoginExists())
+            if (!existsUser.exists)
             {
                 MessageBox.Show("Email ou mot de passe invalide");
                 return;
             }
-            
-            // On connecte l'utilisateur
 
+            // On connecte l'utilisateur
+            this.Hide();
+            DashboardForm df = new DashboardForm(existsUser.user);
+            df.ShowDialog();
         }
 
 
         /// <summary>
         /// Vérifie les informations de connexion de l'utilisateur
         /// </summary>
-        /// <returns>Renvoie false si les informations sont incorrectes, true sinon</returns>
-        private bool checkUserLoginExists()
+        /// <returns>Un tuple contenant en première position un bool indiquant si les informations de connexion de l'utilisateur 
+        /// n'existent pas déjà et en deuxième position un utilisateur contenant les données de l'utilisateur déjà enregistré
+        /// </returns>
+        private (bool exists, User user) checkUserLoginExists()
         {
-            string query = "SELECT * FROM client WHERE courriel = @courriel and motDePasse = @password;";
+            string query = "SELECT * FROM client WHERE email = @email and motDePasse = @password;";
             MySqlCommand command = new MySqlCommand(query, connection);
             addParametersToCommand(command,
-                createCustomParameter("@courriel", emailInput.Text, MySqlDbType.VarChar),
+                createCustomParameter("@email", emailInput.Text, MySqlDbType.VarChar),
                 createCustomParameter("@password", passwordInput.Text, MySqlDbType.VarChar));
 
             MySqlDataReader reader = command.ExecuteReader();
             if (!reader.Read())
             {
                 reader.Close();
-                return false;
+                return (false, new User());
             }
+            string email = reader.GetString("email");
+            string password = reader.GetString("motDePasse");
+            string lastName = reader.GetString("nom");
+            string firstName = reader.GetString("prenom");
+            string phone = reader.GetString("numTel");
+            string adress = reader.GetString("adresseFacturation");
+            string creditCard = reader.GetString("carteCredit");
+            string fidelite = reader.GetString("fidelite");
+            
             reader.Close();
-            return true;
+            return (true, new User(email, password, lastName, firstName, phone, adress, creditCard, fidelite));
         }
     }
 }

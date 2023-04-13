@@ -54,10 +54,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             // Ajout de l'utilisateur si toutes les vérifications ont été validées
             string queryRegisterUser = "INSERT INTO client VALUES " +
-                "(@courriel, @password, @lastName, @firstName, @phone, @adress, @creditCard, @fidelite)";
+                "(@email, @password, @lastName, @firstName, @phone, @adress, @creditCard, @fidelite)";
             MySqlCommand command = new MySqlCommand(queryRegisterUser, connection);
             addParametersToCommand(command,
-                createCustomParameter("@courriel", emailInput.Text, MySqlDbType.VarChar),
+                createCustomParameter("@email", emailInput.Text, MySqlDbType.VarChar),
                 createCustomParameter("@password", passwordInput.Text, MySqlDbType.VarChar),
                 createCustomParameter("@lastName", lastNameInput.Text, MySqlDbType.VarChar),
                 createCustomParameter("@firstName", firstNameInput.Text, MySqlDbType.VarChar),
@@ -90,9 +90,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// <returns>True si l'utilisateur existe déjà, false sinon</returns>
         private bool emailAlreadyExists()
         {
-            string queryCheckUser = "SELECT * FROM client WHERE courriel = @courriel;";
+            string queryCheckUser = "SELECT * FROM client WHERE email = @email;";
             MySqlCommand command = new MySqlCommand(queryCheckUser, connection);
-            addParametersToCommand(command, createCustomParameter("@courriel", emailInput.Text, MySqlDbType.VarChar));
+            addParametersToCommand(command, createCustomParameter("@email", emailInput.Text, MySqlDbType.VarChar));
 
             // Si l'utilisateur existe déjà 
             MySqlDataReader reader = command.ExecuteReader();
