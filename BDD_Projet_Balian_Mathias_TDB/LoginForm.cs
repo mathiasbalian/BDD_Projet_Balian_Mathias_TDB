@@ -23,8 +23,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void registerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.Hide();
-            RegisterForm rf = new RegisterForm();
-            rf.Show();
+            RegisterForm rf = new RegisterForm(this);
+            rf.ShowDialog();
         }
 
         private void LoginFormClosed(object sender, FormClosedEventArgs e)
@@ -33,6 +33,24 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
         private void connectButton_Click(object sender, EventArgs e)
+        {
+            // On vérifie les informations de connection de l'utilisateur
+            if (!checkUserLoginExists())
+            {
+                MessageBox.Show("Email ou mot de passe invalide");
+                return;
+            }
+            
+            // On connecte l'utilisateur
+
+        }
+
+
+        /// <summary>
+        /// Vérifie les informations de connexion de l'utilisateur
+        /// </summary>
+        /// <returns>Renvoie false si les informations sont incorrectes, true sinon</returns>
+        private bool checkUserLoginExists()
         {
             string query = "SELECT * FROM client WHERE courriel = @courriel and motDePasse = @password;";
             MySqlCommand command = new MySqlCommand(query, connection);
@@ -43,12 +61,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
             MySqlDataReader reader = command.ExecuteReader();
             if (!reader.Read())
             {
-                MessageBox.Show("Utilisateur introuvable, veuillez réessayer");
                 reader.Close();
-                return;
+                return false;
             }
-            MessageBox.Show("Salut bravo");
             reader.Close();
+            return true;
         }
     }
 }

@@ -44,5 +44,22 @@ namespace BDD_Projet_Balian_Mathias_TDB
             param.Value = value;
             return param;
         }
+
+        /// <summary>
+        /// Vérifie si les inputs passés en paramètre ne sont pas vides
+        /// </summary>
+        /// <param name="inputs">Liste des inputs à vérifier</param>
+        /// <returns>True si aucun des inputs sont vides, False si un seul input est vide</returns>
+        public static bool inputsNotEmpty(params TextBox[] inputs)
+        {
+            foreach(TextBox input in inputs)
+            {
+                if(input.Text.Contains("Input") && input.Text.Length == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

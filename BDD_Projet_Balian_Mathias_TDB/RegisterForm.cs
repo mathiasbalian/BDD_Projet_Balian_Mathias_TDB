@@ -8,15 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+// On importe la classe Program qui contient les méthodes et les attributs utiles
+// à l'entièreté de l'application
 using static BDD_Projet_Balian_Mathias_TDB.Program;
 
 namespace BDD_Projet_Balian_Mathias_TDB
 {
     public partial class RegisterForm : Form
     {
-        public RegisterForm()
+        // Référence au forms Login qui a été caché lors de l'ouverture de ce RegisterForm
+        private LoginForm lf;
+
+        public RegisterForm(LoginForm lf)
         {
             InitializeComponent();
+            this.lf = lf;
         }
 
         private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -30,42 +36,73 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void registerButton_Click(object sender, EventArgs e)
         {
-            // On vérifie si l'email n'est pas déjà présent dans la base de données
-            string queryCheckUser = "SELECT * FROM client WHERE courriel = @courriel;";
-            MySqlCommand command = new MySqlCommand(queryCheckUser, connection);
-            if (emailInput.Text.Length == 0)
+            // Insertion de l'utilisateur, on vérifie qu'aucun champ ne soit vide
+            if (!inputsNotEmpty(lastNameInput, firstNameInput, phoneInput,
+                emailInput, passwordInput, adressInput,
+                cardInput))
             {
-                MessageBox.Show("Merci de saisir un email");
+                MessageBox.Show("Merci de remplir tous les champs");
                 return;
             }
 
+            // On vérifie si un utilisateur avec le même email existe déjà
+            if (emailAlreadyExists())
+            {
+                MessageBox.Show("Email déjà existant. Merci d'en saisir un autre");
+                return;
+            }
+
+            // Ajout de l'utilisateur si toutes les vérifications ont été validées
+            string queryRegisterUser = "INSERT INTO client VALUES " +
+                "(@courriel, @password, @lastName, @firstName, @phone, @adress, @creditCard, @fidelite)";
+            MySqlCommand command = new MySqlCommand(queryRegisterUser, connection);
+            addParametersToCommand(command,
+                createCustomParameter("@courriel", emailInput.Text, MySqlDbType.VarChar),
+                createCustomParameter("@password", passwordInput.Text, MySqlDbType.VarChar),
+                createCustomParameter("@lastName", lastNameInput.Text, MySqlDbType.VarChar),
+                createCustomParameter("@firstName", firstNameInput.Text, MySqlDbType.VarChar),
+                createCustomParameter("@phone", phoneInput.Text, MySqlDbType.VarChar),
+                createCustomParameter("@adress", adressInput.Text, MySqlDbType.VarChar),
+                createCustomParameter("@creditCard", cardInput.Text, MySqlDbType.VarChar),
+                createCustomParameter("@fidelite", "", MySqlDbType.VarChar)
+                );
+            command.ExecuteNonQuery();
+            MessageBox.Show("Inscription validée !");
+            this.Hide();
+            this.lf.ShowDialog();
+            this.Close();
+        }
+
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            this.lf.ShowDialog();
+            this.Close();
+        }
+
+
+        /// <summary>
+        /// Vérifie si un utilisateur un utilisateur avec le même email n'existe pas déjà
+        /// dans la base de données
+        /// </summary>
+        /// <returns>True si l'utilisateur existe déjà, false sinon</returns>
+        private bool emailAlreadyExists()
+        {
+            string queryCheckUser = "SELECT * FROM client WHERE courriel = @courriel;";
+            MySqlCommand command = new MySqlCommand(queryCheckUser, connection);
             addParametersToCommand(command, createCustomParameter("@courriel", emailInput.Text, MySqlDbType.VarChar));
 
             // Si l'utilisateur existe déjà 
             MySqlDataReader reader = command.ExecuteReader();
             if (reader.Read())
             {
-                MessageBox.Show("Courriel déjà existant. Veuillez en saisir un autre.");
                 reader.Close();
-                return;
+                return true;
             }
             reader.Close();
-
-            // Insertion de l'utilisateur sinon
-            string queryRegisterUser = "INSERT INTO client VALUES " +
-                "(@courriel, @password, @lastName, @firstName, @phone, @adress, @creditCard, @fidelite)";
-            // On vérifie qu'aucun champ ne soit null
-            foreach (Control element in registerBox.Controls)
-            {
-                if (element.Name.Contains("Input") && element.Text.Length == 0)
-                {
-                    MessageBox.Show("Veuillez remplir tous les champs");
-                    return;
-                }
-            }
-
-
-
+            return false;
         }
     }
 }
