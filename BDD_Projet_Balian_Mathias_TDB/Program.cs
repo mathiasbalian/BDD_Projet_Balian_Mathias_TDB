@@ -1,11 +1,13 @@
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using System.Runtime.CompilerServices;
 
 namespace BDD_Projet_Balian_Mathias_TDB
 {
     internal static class Program
     {
         public static MySqlConnection connection = new MySqlConnection("SERVER=localhost;PORT=3306;DATABASE=fleurs;UID=root;PASSWORD=root;");
+        
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -13,9 +15,15 @@ namespace BDD_Projet_Balian_Mathias_TDB
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            Application.Run(new LoginForm());
+            Application.Run(new App());
         }
 
+
+        public static void closeApp()
+        {
+            connection.Close();
+            Application.Exit();
+        }
 
         /// <summary>
         /// Méthode permettant d'ajouter un ou plusieurs paramètres MySql à une commande
@@ -54,7 +62,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             foreach(TextBox input in inputs)
             {
-                if(input.Text.Contains("Input") && input.Text.Length == 0)
+                if(input.Name.Contains("Input") && String.IsNullOrEmpty(input.Text))
                 {
                     return false;
                 }

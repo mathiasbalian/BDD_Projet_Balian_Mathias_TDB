@@ -150,14 +150,14 @@
             emailInput.Size = new Size(229, 34);
             emailInput.TabIndex = 0;
             // 
-            // Connexion_Inscription
+            // LoginForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
             Controls.Add(connectForm);
-            Name = "Connexion_Inscription";
+            Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Application fleurs";
             FormClosed += LoginFormClosed;

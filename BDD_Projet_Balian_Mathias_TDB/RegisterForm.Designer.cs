@@ -45,7 +45,7 @@
             lastNameLabel = new Label();
             lastNameInput = new TextBox();
             welcomeText = new Label();
-            button1 = new Button();
+            returnButton = new Button();
             registerBox.SuspendLayout();
             SuspendLayout();
             // 
@@ -233,21 +233,21 @@
             welcomeText.Text = "Inscription";
             welcomeText.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // returnButton
             // 
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button1.BackColor = Color.Silver;
-            button1.Cursor = Cursors.Hand;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            button1.ForeColor = SystemColors.ActiveCaptionText;
-            button1.Location = new Point(12, 12);
-            button1.Name = "button1";
-            button1.Size = new Size(171, 48);
-            button1.TabIndex = 16;
-            button1.Text = "Retour";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            returnButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            returnButton.BackColor = Color.Silver;
+            returnButton.Cursor = Cursors.Hand;
+            returnButton.FlatStyle = FlatStyle.Flat;
+            returnButton.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            returnButton.ForeColor = SystemColors.ActiveCaptionText;
+            returnButton.Location = new Point(12, 12);
+            returnButton.Name = "returnButton";
+            returnButton.Size = new Size(171, 48);
+            returnButton.TabIndex = 16;
+            returnButton.Text = "Retour";
+            returnButton.UseVisualStyleBackColor = false;
+            returnButton.Click += returnButton_Click;
             // 
             // RegisterForm
             // 
@@ -255,7 +255,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
-            Controls.Add(button1);
+            Controls.Add(returnButton);
             Controls.Add(registerBox);
             Name = "RegisterForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -285,6 +285,6 @@
         private Label adressLabel;
         private TextBox adressInput;
         private Button registerButton;
-        private Button button1;
+        private Button returnButton;
     }
 }

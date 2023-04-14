@@ -14,22 +14,29 @@ namespace BDD_Projet_Balian_Mathias_TDB
 {
     public partial class LoginForm : Form
     {
+        private bool isButtonClick = false;
+        private bool isLinkClick = false;
         public LoginForm()
         {
             InitializeComponent();
-            connection.Open();
-        }
+         }
 
         private void registerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.Hide();
-            RegisterForm rf = new RegisterForm(this);
-            rf.ShowDialog();
+            RegisterForm rf = new RegisterForm();
+            this.isLinkClick = true;
+            rf.Show();
+            this.Close();
         }
 
         private void LoginFormClosed(object sender, FormClosedEventArgs e)
         {
-            connection.Close();
+            // Si l'utilisateur ferme le forms en utilisant le bouton "X"
+            if (e.CloseReason == CloseReason.UserClosing && !this.isLinkClick && !this.isButtonClick)
+            {
+                closeApp();
+            }
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -45,7 +52,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
             // On connecte l'utilisateur
             this.Hide();
             DashboardForm df = new DashboardForm(existsUser.user);
-            df.ShowDialog();
+            this.isButtonClick = true;
+            df.Show();
+            this.Close();
         }
 
 
@@ -77,7 +86,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             string adress = reader.GetString("adresseFacturation");
             string creditCard = reader.GetString("carteCredit");
             string fidelite = reader.GetString("fidelite");
-            
+
             reader.Close();
             return (true, new User(email, password, lastName, firstName, phone, adress, creditCard, fidelite));
         }

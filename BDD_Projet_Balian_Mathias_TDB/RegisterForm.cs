@@ -16,21 +16,20 @@ namespace BDD_Projet_Balian_Mathias_TDB
 {
     public partial class RegisterForm : Form
     {
-        // Référence au forms Login qui a été caché lors de l'ouverture de ce RegisterForm
-        private LoginForm lf;
+        private bool isButtonClick = false;
 
-        public RegisterForm(LoginForm lf)
+
+        public RegisterForm()
         {
             InitializeComponent();
-            this.lf = lf;
         }
 
         private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Si l'utilisateur ferme le forms en utilisant le bouton "X"
-            if (e.CloseReason == CloseReason.UserClosing)
+            if (e.CloseReason == CloseReason.UserClosing && !this.isButtonClick)
             {
-                Application.Exit();
+                closeApp();
             }
         }
 
@@ -69,16 +68,20 @@ namespace BDD_Projet_Balian_Mathias_TDB
             command.ExecuteNonQuery();
             MessageBox.Show("Inscription validée !");
             this.Hide();
-            this.lf.ShowDialog();
+            LoginForm lf = new LoginForm();
+            this.isButtonClick = true;
+            lf.Show();
             this.Close();
         }
 
 
 
-        private void button1_Click(object sender, EventArgs e)
+        private void returnButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            this.lf.ShowDialog();
+            LoginForm lf = new LoginForm();
+            this.isButtonClick = true;
+            lf.Show();
             this.Close();
         }
 
