@@ -89,6 +89,7 @@
             registerButton.Name = "registerButton";
             registerButton.Size = new Size(171, 48);
             registerButton.TabIndex = 4;
+            registerButton.TabStop = false;
             registerButton.Text = "S'inscrire";
             registerButton.UseVisualStyleBackColor = false;
             registerButton.Click += registerButton_Click;

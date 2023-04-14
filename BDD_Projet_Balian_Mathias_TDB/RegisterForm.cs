@@ -16,7 +16,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
 {
     public partial class RegisterForm : Form
     {
-        private bool isButtonClick = false;
+        private bool isUserActionClose = false;
 
 
         public RegisterForm()
@@ -27,7 +27,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Si l'utilisateur ferme le forms en utilisant le bouton "X"
-            if (e.CloseReason == CloseReason.UserClosing && !this.isButtonClick)
+            if (e.CloseReason == CloseReason.UserClosing && !this.isUserActionClose)
             {
                 closeApp();
             }
@@ -69,7 +69,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             MessageBox.Show("Inscription validée !");
             this.Hide();
             LoginForm lf = new LoginForm();
-            this.isButtonClick = true;
+            this.isUserActionClose = true;
             lf.Show();
             this.Close();
         }
@@ -80,7 +80,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.Hide();
             LoginForm lf = new LoginForm();
-            this.isButtonClick = true;
+            this.isUserActionClose = true;
             lf.Show();
             this.Close();
         }

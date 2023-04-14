@@ -19,6 +19,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Permet d'exécuter du code avant d'appeler la fonction Application.Exit() depuis les
+        /// autres forms
+        /// </summary>
         public static void closeApp()
         {
             connection.Close();

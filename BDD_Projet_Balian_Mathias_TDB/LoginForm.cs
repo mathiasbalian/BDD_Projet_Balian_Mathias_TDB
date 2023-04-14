@@ -14,8 +14,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
 {
     public partial class LoginForm : Form
     {
-        private bool isButtonClick = false;
-        private bool isLinkClick = false;
+        private bool isUserActionClose = false;
         public LoginForm()
         {
             InitializeComponent();
@@ -25,7 +24,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.Hide();
             RegisterForm rf = new RegisterForm();
-            this.isLinkClick = true;
+            this.isUserActionClose = true;
             rf.Show();
             this.Close();
         }
@@ -33,7 +32,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void LoginFormClosed(object sender, FormClosedEventArgs e)
         {
             // Si l'utilisateur ferme le forms en utilisant le bouton "X"
-            if (e.CloseReason == CloseReason.UserClosing && !this.isLinkClick && !this.isButtonClick)
+            if (e.CloseReason == CloseReason.UserClosing && !this.isUserActionClose)
             {
                 closeApp();
             }
@@ -52,7 +51,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             // On connecte l'utilisateur
             this.Hide();
             DashboardForm df = new DashboardForm(existsUser.user);
-            this.isButtonClick = true;
+            this.isUserActionClose = true;
             df.Show();
             this.Close();
         }

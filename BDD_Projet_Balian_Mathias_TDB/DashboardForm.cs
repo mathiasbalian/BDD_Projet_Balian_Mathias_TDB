@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static BDD_Projet_Balian_Mathias_TDB.Program;
 
 namespace BDD_Projet_Balian_Mathias_TDB
 {
     public partial class DashboardForm : Form
     {
         private User user;
+        private bool isButtonClick = false;
         public DashboardForm(User user)
         {
             InitializeComponent();
@@ -22,9 +24,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void DashboardForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Si l'utilisateur ferme le forms en utilisant le bouton "X"
-            if (e.CloseReason == CloseReason.UserClosing)
+            if (e.CloseReason == CloseReason.UserClosing && !this.isButtonClick)
             {
-                Application.Exit();
+                closeApp();
             }
         }
 
