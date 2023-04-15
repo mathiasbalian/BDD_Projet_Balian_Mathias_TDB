@@ -29,6 +29,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             Application.Exit();
         }
 
+
         /// <summary>
         /// Méthode permettant d'ajouter un ou plusieurs paramètres MySql à une commande
         /// </summary>
@@ -41,6 +42,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 command.Parameters.Add(parameter);
             }
         }
+
 
         /// <summary>
         /// Permet de créer un MySqlParameter à partir d'un nom, d'une value et d'un dbType (il n'existe aucune surcharge du constructeur 
@@ -57,14 +59,15 @@ namespace BDD_Projet_Balian_Mathias_TDB
             return param;
         }
 
+
         /// <summary>
         /// Vérifie si les inputs passés en paramètre ne sont pas vides
         /// </summary>
         /// <param name="inputs">Liste des inputs à vérifier</param>
         /// <returns>True si aucun des inputs sont vides, False si un seul input est vide</returns>
-        public static bool inputsNotEmpty(params TextBox[] inputs)
+        public static bool inputsNotEmpty(params Control[] inputs)
         {
-            foreach(TextBox input in inputs)
+            foreach(Control input in inputs)
             {
                 if(input.Name.Contains("Input") && String.IsNullOrEmpty(input.Text))
                 {

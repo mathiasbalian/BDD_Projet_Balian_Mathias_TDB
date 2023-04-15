@@ -18,7 +18,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         public LoginForm()
         {
             InitializeComponent();
-         }
+        }
 
         private void registerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -42,13 +42,13 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             var existsUser = checkUserLoginExists();
             // On vérifie les informations de connection de l'utilisateur
-            if (!existsUser.exists)
+            if (existsUser.exists)
             {
                 MessageBox.Show("Email ou mot de passe invalide");
                 return;
             }
 
-            // On connecte l'utilisateur
+            // On connecte l'utilisateur sur son dashboard
             this.Hide();
             DashboardForm df = new DashboardForm(existsUser.user);
             this.isUserActionClose = true;
@@ -61,7 +61,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// Vérifie les informations de connexion de l'utilisateur
         /// </summary>
         /// <returns>Un tuple contenant en première position un bool indiquant si les informations de connexion de l'utilisateur 
-        /// n'existent pas déjà et en deuxième position un utilisateur contenant les données de l'utilisateur déjà enregistré
+        /// n'existent pas déjà (true s'il existe déjà, false sinon) et en deuxième position un utilisateur 
+        /// contenant les données de l'utilisateur déjà enregistré
         /// </returns>
         private (bool exists, User user) checkUserLoginExists()
         {
@@ -72,10 +73,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 createCustomParameter("@password", passwordInput.Text, MySqlDbType.VarChar));
 
             MySqlDataReader reader = command.ExecuteReader();
+            // Si la requête a renvoyé un client
             if (!reader.Read())
             {
                 reader.Close();
-                return (false, new User());
+                return (true, new User());
             }
             string email = reader.GetString("email");
             string password = reader.GetString("motDePasse");
@@ -87,7 +89,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             string fidelite = reader.GetString("fidelite");
 
             reader.Close();
-            return (true, new User(email, password, lastName, firstName, phone, adress, creditCard, fidelite));
+            return (false, new User(email, password, lastName, firstName, phone, adress, creditCard, fidelite));
         }
     }
 }

@@ -97,8 +97,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
             MySqlCommand command = new MySqlCommand(queryCheckUser, connection);
             addParametersToCommand(command, createCustomParameter("@email", emailInput.Text, MySqlDbType.VarChar));
 
-            // Si l'utilisateur existe déjà 
             MySqlDataReader reader = command.ExecuteReader();
+            // Si la requête renvoie un client 
             if (reader.Read())
             {
                 reader.Close();

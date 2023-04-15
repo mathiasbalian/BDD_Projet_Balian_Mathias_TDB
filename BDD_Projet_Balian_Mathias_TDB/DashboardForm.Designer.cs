@@ -57,7 +57,7 @@
             // 
             // timer
             // 
-            timer.Interval = 2000;
+            timer.Interval = 10000;
             timer.Tick += timer_Tick;
             // 
             // pauseButton
