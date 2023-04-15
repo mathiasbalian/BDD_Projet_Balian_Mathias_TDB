@@ -37,11 +37,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void button1_Click(object sender, EventArgs e)
         {
             MessageBox.Show(this.user.toString());
-            this.Hide();
-            Test t = new Test();
-            t.Show();
-            this.isButtonClick = true;
-            this.Close();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -63,7 +58,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void forwardButton_Click(object sender, EventArgs e)
         {
-            if(this.timer.Interval >= 501)
+            if (this.timer.Interval >= 501)
             {
                 this.timer.Interval -= 500;
             }
