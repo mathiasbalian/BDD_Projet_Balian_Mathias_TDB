@@ -28,7 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             button1 = new Button();
+            datePicker = new DateTimePicker();
+            timer = new System.Windows.Forms.Timer(components);
+            pauseButton = new Button();
+            forwardButton = new Button();
+            backwardButton = new Button();
             SuspendLayout();
             // 
             // button1
@@ -41,12 +47,74 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // datePicker
+            // 
+            datePicker.Format = DateTimePickerFormat.Short;
+            datePicker.Location = new Point(12, 12);
+            datePicker.Name = "datePicker";
+            datePicker.Size = new Size(127, 27);
+            datePicker.TabIndex = 1;
+            // 
+            // timer
+            // 
+            timer.Interval = 2000;
+            timer.Tick += timer_Tick;
+            // 
+            // pauseButton
+            // 
+            pauseButton.BackgroundImage = Properties.Resources.pause_icon;
+            pauseButton.BackgroundImageLayout = ImageLayout.Stretch;
+            pauseButton.Cursor = Cursors.Hand;
+            pauseButton.FlatAppearance.BorderSize = 0;
+            pauseButton.FlatStyle = FlatStyle.Flat;
+            pauseButton.ForeColor = Color.Transparent;
+            pauseButton.Location = new Point(66, 45);
+            pauseButton.Name = "pauseButton";
+            pauseButton.Size = new Size(12, 12);
+            pauseButton.TabIndex = 2;
+            pauseButton.UseVisualStyleBackColor = true;
+            pauseButton.Click += pauseButton_Click;
+            // 
+            // forwardButton
+            // 
+            forwardButton.BackgroundImage = Properties.Resources.forward_icon_crop;
+            forwardButton.BackgroundImageLayout = ImageLayout.Stretch;
+            forwardButton.Cursor = Cursors.Hand;
+            forwardButton.FlatAppearance.BorderSize = 0;
+            forwardButton.FlatStyle = FlatStyle.Flat;
+            forwardButton.ForeColor = Color.Transparent;
+            forwardButton.Location = new Point(100, 45);
+            forwardButton.Name = "forwardButton";
+            forwardButton.Size = new Size(12, 12);
+            forwardButton.TabIndex = 3;
+            forwardButton.UseVisualStyleBackColor = true;
+            forwardButton.Click += forwardButton_Click;
+            // 
+            // backwardButton
+            // 
+            backwardButton.BackgroundImage = Properties.Resources.backward_icon_crop;
+            backwardButton.BackgroundImageLayout = ImageLayout.Stretch;
+            backwardButton.Cursor = Cursors.Hand;
+            backwardButton.FlatAppearance.BorderSize = 0;
+            backwardButton.FlatStyle = FlatStyle.Flat;
+            backwardButton.ForeColor = Color.Transparent;
+            backwardButton.Location = new Point(32, 45);
+            backwardButton.Name = "backwardButton";
+            backwardButton.Size = new Size(12, 12);
+            backwardButton.TabIndex = 4;
+            backwardButton.UseVisualStyleBackColor = true;
+            backwardButton.Click += backwardButton_Click;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
+            Controls.Add(backwardButton);
+            Controls.Add(forwardButton);
+            Controls.Add(pauseButton);
+            Controls.Add(datePicker);
             Controls.Add(button1);
             Name = "DashboardForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -58,5 +126,10 @@
         #endregion
 
         private Button button1;
+        private DateTimePicker datePicker;
+        private System.Windows.Forms.Timer timer;
+        private Button pauseButton;
+        private Button forwardButton;
+        private Button backwardButton;
     }
 }
