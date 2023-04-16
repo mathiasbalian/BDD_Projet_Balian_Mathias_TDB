@@ -89,7 +89,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             string fidelite = reader.GetString("fidelite");
 
             reader.Close();
-            return (false, new User(email, password, lastName, firstName, phone, adress, creditCard, fidelite));
+            return (false, new User(email, password, lastName, firstName, phone, adress, creditCard, fidelite, email == "admin"));
         }
     }
 }

@@ -17,6 +17,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private bool isUserActionClose = false; // Pour vérifier si le form est fermé à partir 
         // du bouton "X"
         private bool timerPaused = false;
+        private bool userDropdownVisible = false;
 
 
         public DashboardForm(User user)
@@ -30,10 +31,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void DashboardForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            this.timer.Stop();
             // Si l'utilisateur ferme le forms en utilisant le bouton "X"
             if (e.CloseReason == CloseReason.UserClosing && !this.isUserActionClose)
             {
-                this.timer.Stop();
                 closeApp();
             }
         }
@@ -68,9 +69,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void forwardButton_Click(object sender, EventArgs e)
         {
-            if (this.timer.Interval >= 501)
+            if (this.timer.Interval > 1000)
             {
-                this.timer.Interval -= 500; // On accélère la vitesse de défilement de la date
+                this.timer.Interval -= 1000; // On accélère la vitesse de défilement de la date
             }
         }
 
@@ -78,6 +79,32 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void backwardButton_Click(object sender, EventArgs e)
         {
             this.timer.Interval += 500; // On ralentit la vitesse de défilement de la date
+        }
+
+        private void userButton_Click(object sender, EventArgs e)
+        {
+            if (!this.userDropdownVisible)
+            {
+                this.userDropdown.Visible = true;
+                this.userDropdownVisible = true;
+                return;
+            }
+            this.userDropdownVisible = false;
+            this.userDropdown.Visible = false;
+        }
+
+        private void disconnectButton_Click(object sender, EventArgs e)
+        {
+            this.isUserActionClose = true;
+            this.Hide();
+            LoginForm lf = new LoginForm();
+            lf.Show();
+            this.Close();
+        }
+
+        private void myOrdersButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

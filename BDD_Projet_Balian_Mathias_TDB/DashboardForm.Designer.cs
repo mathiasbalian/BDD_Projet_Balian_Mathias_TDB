@@ -35,6 +35,12 @@
             pauseButton = new Button();
             forwardButton = new Button();
             backwardButton = new Button();
+            userButton = new Button();
+            userDropdown = new Panel();
+            myProfileButton = new Button();
+            disconnectButton = new Button();
+            myOrdersButton = new Button();
+            userDropdown.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -105,12 +111,84 @@
             backwardButton.UseVisualStyleBackColor = true;
             backwardButton.Click += backwardButton_Click;
             // 
+            // userButton
+            // 
+            userButton.BackgroundImage = Properties.Resources.user_icon;
+            userButton.BackgroundImageLayout = ImageLayout.Stretch;
+            userButton.Cursor = Cursors.Hand;
+            userButton.FlatAppearance.BorderSize = 0;
+            userButton.FlatStyle = FlatStyle.Flat;
+            userButton.Location = new Point(1727, 12);
+            userButton.Name = "userButton";
+            userButton.Size = new Size(30, 30);
+            userButton.TabIndex = 5;
+            userButton.UseVisualStyleBackColor = true;
+            userButton.Click += userButton_Click;
+            // 
+            // userDropdown
+            // 
+            userDropdown.BackColor = SystemColors.ButtonHighlight;
+            userDropdown.Controls.Add(myProfileButton);
+            userDropdown.Controls.Add(disconnectButton);
+            userDropdown.Controls.Add(myOrdersButton);
+            userDropdown.Location = new Point(1586, 48);
+            userDropdown.Name = "userDropdown";
+            userDropdown.Size = new Size(171, 120);
+            userDropdown.TabIndex = 6;
+            userDropdown.Visible = false;
+            // 
+            // myProfileButton
+            // 
+            myProfileButton.BackColor = SystemColors.ButtonFace;
+            myProfileButton.Cursor = Cursors.Hand;
+            myProfileButton.FlatAppearance.BorderSize = 0;
+            myProfileButton.FlatStyle = FlatStyle.Flat;
+            myProfileButton.Location = new Point(0, 0);
+            myProfileButton.Margin = new Padding(0);
+            myProfileButton.Name = "myProfileButton";
+            myProfileButton.Size = new Size(171, 40);
+            myProfileButton.TabIndex = 2;
+            myProfileButton.Text = "Mon profil";
+            myProfileButton.UseVisualStyleBackColor = false;
+            // 
+            // disconnectButton
+            // 
+            disconnectButton.BackColor = SystemColors.ButtonFace;
+            disconnectButton.Cursor = Cursors.Hand;
+            disconnectButton.FlatAppearance.BorderSize = 0;
+            disconnectButton.FlatStyle = FlatStyle.Flat;
+            disconnectButton.Location = new Point(0, 80);
+            disconnectButton.Margin = new Padding(0);
+            disconnectButton.Name = "disconnectButton";
+            disconnectButton.Size = new Size(171, 40);
+            disconnectButton.TabIndex = 1;
+            disconnectButton.Text = "Se déconnecter";
+            disconnectButton.UseVisualStyleBackColor = false;
+            disconnectButton.Click += disconnectButton_Click;
+            // 
+            // myOrdersButton
+            // 
+            myOrdersButton.BackColor = SystemColors.ButtonFace;
+            myOrdersButton.Cursor = Cursors.Hand;
+            myOrdersButton.FlatAppearance.BorderSize = 0;
+            myOrdersButton.FlatStyle = FlatStyle.Flat;
+            myOrdersButton.Location = new Point(0, 40);
+            myOrdersButton.Margin = new Padding(0);
+            myOrdersButton.Name = "myOrdersButton";
+            myOrdersButton.Size = new Size(171, 40);
+            myOrdersButton.TabIndex = 0;
+            myOrdersButton.Text = "Mes commandes";
+            myOrdersButton.UseVisualStyleBackColor = false;
+            myOrdersButton.Click += myOrdersButton_Click;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
+            Controls.Add(userDropdown);
+            Controls.Add(userButton);
             Controls.Add(backwardButton);
             Controls.Add(forwardButton);
             Controls.Add(pauseButton);
@@ -120,6 +198,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "DashboardForm";
             FormClosing += DashboardForm_FormClosing;
+            userDropdown.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -131,5 +210,10 @@
         private Button pauseButton;
         private Button forwardButton;
         private Button backwardButton;
+        private Button userButton;
+        private Panel userDropdown;
+        private Button disconnectButton;
+        private Button myOrdersButton;
+        private Button myProfileButton;
     }
 }
