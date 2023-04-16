@@ -42,7 +42,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             var existsUser = checkUserLoginExists();
             // On vérifie les informations de connection de l'utilisateur
-            if (existsUser.exists)
+            if (!existsUser.exists)
             {
                 MessageBox.Show("Email ou mot de passe invalide");
                 return;
@@ -73,11 +73,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 createCustomParameter("@password", passwordInput.Text, MySqlDbType.VarChar));
 
             MySqlDataReader reader = command.ExecuteReader();
-            // Si la requête a renvoyé un client
+            // Si la requête n'a pas renvoyé de client
             if (!reader.Read())
             {
                 reader.Close();
-                return (true, new User());
+                return (false, new User());
             }
             string email = reader.GetString("email");
             string password = reader.GetString("motDePasse");
@@ -89,7 +89,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             string fidelite = reader.GetString("fidelite");
 
             reader.Close();
-            return (false, new User(email, password, lastName, firstName, phone, adress, creditCard, fidelite, email == "admin"));
+            return (true, new User(email, password, lastName, firstName, phone, adress, creditCard, fidelite, email == "admin"));
         }
     }
 }
