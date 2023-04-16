@@ -106,5 +106,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
 
         }
+
+        private void myProfileButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

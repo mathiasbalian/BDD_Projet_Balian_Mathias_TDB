@@ -150,6 +150,7 @@
             myProfileButton.TabIndex = 2;
             myProfileButton.Text = "Mon profil";
             myProfileButton.UseVisualStyleBackColor = false;
+            myProfileButton.Click += myProfileButton_Click;
             // 
             // disconnectButton
             // 
