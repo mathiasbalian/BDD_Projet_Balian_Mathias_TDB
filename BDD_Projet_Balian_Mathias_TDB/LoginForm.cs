@@ -50,7 +50,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             // On connecte l'utilisateur sur son dashboard
             this.Hide();
-            DashboardForm df = new DashboardForm(existsUser.user);
+            DashboardForm df = new DashboardForm(existsUser.user, DateTime.Now);
             this.isUserActionClose = true;
             df.Show();
             this.Close();

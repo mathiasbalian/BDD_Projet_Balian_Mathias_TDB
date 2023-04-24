@@ -121,7 +121,7 @@
             // welcomeText
             // 
             welcomeText.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            welcomeText.BackColor = SystemColors.InactiveCaption;
+            welcomeText.BackColor = SystemColors.ActiveCaption;
             welcomeText.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
             welcomeText.Location = new Point(0, 0);
             welcomeText.Name = "welcomeText";

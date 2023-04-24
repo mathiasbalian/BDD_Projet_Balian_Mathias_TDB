@@ -16,22 +16,23 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private User user;
         private bool isUserActionClose = false; // Pour vérifier si le form est fermé à partir 
         // du bouton "X"
-        private bool timerPaused = false;
-        private bool userDropdownVisible = false;
+        private bool dateTimerPaused = false;
+        private bool productsSummaryVisible = false;
 
 
-        public DashboardForm(User user)
+        public DashboardForm(User user, DateTime date)
         {
             InitializeComponent();
+            this.productsPanel.Height = 70;
             this.user = user;
-            this.datePicker.Value = DateTime.Now;
-            this.timer.Start(); // Lancement du timer pour le défilement de la date
+            this.datePicker.Value = date;
+            this.dateTimer.Start(); // Lancement du timer pour le défilement de la date
         }
 
 
         private void DashboardForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.timer.Stop();
+            this.dateTimer.Stop();
             // Si l'utilisateur ferme le forms en utilisant le bouton "X"
             if (e.CloseReason == CloseReason.UserClosing && !this.isUserActionClose)
             {
@@ -54,42 +55,41 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void pauseButton_Click(object sender, EventArgs e)
         {
-            if (!this.timerPaused)
+            if (!this.dateTimerPaused)
             {
-                this.timer.Stop();
-                this.timerPaused = true;
+                this.dateTimer.Stop();
+                this.dateTimerPaused = true;
                 this.pauseButton.BackgroundImage = Properties.Resources.resume_icon;
                 return;
             }
-            this.timer.Start();
+            this.dateTimer.Start();
             this.pauseButton.BackgroundImage = Properties.Resources.pause_icon;
-            this.timerPaused = false;
+            this.dateTimerPaused = false;
         }
 
 
         private void forwardButton_Click(object sender, EventArgs e)
         {
-            if (this.timer.Interval > 1000)
+            if (this.dateTimer.Interval > 1000)
             {
-                this.timer.Interval -= 1000; // On accélère la vitesse de défilement de la date
+                this.dateTimer.Interval -= 1000; // On accélère la vitesse de défilement de la date
             }
         }
 
 
         private void backwardButton_Click(object sender, EventArgs e)
         {
-            this.timer.Interval += 500; // On ralentit la vitesse de défilement de la date
+            this.dateTimer.Interval += 500; // On ralentit la vitesse de défilement de la date
         }
 
         private void userButton_Click(object sender, EventArgs e)
         {
-            if (!this.userDropdownVisible)
+            if (!this.userDropdown.Visible)
             {
                 this.userDropdown.Visible = true;
-                this.userDropdownVisible = true;
+                this.userDropdown.BringToFront();
                 return;
             }
-            this.userDropdownVisible = false;
             this.userDropdown.Visible = false;
         }
 
@@ -110,6 +110,35 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void myProfileButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void productsButton_Click(object sender, EventArgs e)
+        {
+            this.dropdownTimer.Start();
+        }
+
+        private void dropdownTimer_Tick(object sender, EventArgs e)
+        {
+            if (!this.productsSummaryVisible)
+            {
+                this.productsPanel.Height += 35;
+                if (this.productsPanel.Height >= 690)
+                {
+                    this.dropdownTimer.Stop();
+                    this.productsSummaryVisible = true;
+                    this.productsPanel.AutoScroll = true;
+                }
+            }
+            else
+            {
+                this.productsPanel.Height -= 35;
+                if (this.productsPanel.Height <= 70)
+                {
+                    this.dropdownTimer.Stop();
+                    this.productsSummaryVisible = false;
+                    this.productsPanel.AutoScroll = false;
+                }
+            }
         }
     }
 }
