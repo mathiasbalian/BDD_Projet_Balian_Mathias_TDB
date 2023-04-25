@@ -664,6 +664,7 @@
             orderButton.TabStop = false;
             orderButton.Text = "Passer une commande";
             orderButton.UseVisualStyleBackColor = false;
+            orderButton.Click += orderButton_Click;
             // 
             // dropdownTimer
             // 
@@ -687,7 +688,7 @@
             Controls.Add(button1);
             Name = "DashboardForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "DashboardForm";
+            Text = "Application fleurs";
             FormClosing += DashboardForm_FormClosing;
             userDropdown.ResumeLayout(false);
             productsPanel.ResumeLayout(false);
