@@ -41,6 +41,25 @@
             myOrdersButton = new Button();
             userButton = new Button();
             orderDetailsPanel = new Panel();
+            addFlowerButton = new Button();
+            accessoryLabel = new Label();
+            flowerLabel = new Label();
+            inStockFlowerComboBox = new ComboBox();
+            addAccessoryButton = new Button();
+            inStockAccessoryComboBox = new ComboBox();
+            bouquetPersoFlowLayoutPanel = new FlowLayoutPanel();
+            orderButton = new Button();
+            label1 = new Label();
+            dateTimePicker1 = new DateTimePicker();
+            customMessageTextBox = new TextBox();
+            deliveryAdressTextBox = new TextBox();
+            totalPriceLabel = new Label();
+            bouquetPanel = new Panel();
+            inStockBouquetsStandardComboBox = new ComboBox();
+            bouquetPersoCheckBox = new CheckBox();
+            bouquetStandardCheckBox = new CheckBox();
+            shopLabel = new Label();
+            shopComboBox = new ComboBox();
             orderDetailsLabel = new Label();
             userDropdown.SuspendLayout();
             orderDetailsPanel.SuspendLayout();
@@ -196,11 +215,242 @@
             // orderDetailsPanel
             // 
             orderDetailsPanel.BackColor = SystemColors.Window;
+            orderDetailsPanel.Controls.Add(addFlowerButton);
+            orderDetailsPanel.Controls.Add(accessoryLabel);
+            orderDetailsPanel.Controls.Add(flowerLabel);
+            orderDetailsPanel.Controls.Add(inStockFlowerComboBox);
+            orderDetailsPanel.Controls.Add(addAccessoryButton);
+            orderDetailsPanel.Controls.Add(inStockAccessoryComboBox);
+            orderDetailsPanel.Controls.Add(bouquetPersoFlowLayoutPanel);
+            orderDetailsPanel.Controls.Add(orderButton);
+            orderDetailsPanel.Controls.Add(label1);
+            orderDetailsPanel.Controls.Add(dateTimePicker1);
+            orderDetailsPanel.Controls.Add(customMessageTextBox);
+            orderDetailsPanel.Controls.Add(deliveryAdressTextBox);
+            orderDetailsPanel.Controls.Add(totalPriceLabel);
+            orderDetailsPanel.Controls.Add(bouquetPanel);
+            orderDetailsPanel.Controls.Add(inStockBouquetsStandardComboBox);
+            orderDetailsPanel.Controls.Add(bouquetPersoCheckBox);
+            orderDetailsPanel.Controls.Add(bouquetStandardCheckBox);
+            orderDetailsPanel.Controls.Add(shopLabel);
+            orderDetailsPanel.Controls.Add(shopComboBox);
             orderDetailsPanel.Controls.Add(orderDetailsLabel);
-            orderDetailsPanel.Location = new Point(454, 40);
+            orderDetailsPanel.Location = new Point(326, 40);
             orderDetailsPanel.Name = "orderDetailsPanel";
-            orderDetailsPanel.Size = new Size(875, 773);
+            orderDetailsPanel.Padding = new Padding(30);
+            orderDetailsPanel.Size = new Size(1130, 773);
             orderDetailsPanel.TabIndex = 19;
+            // 
+            // addFlowerButton
+            // 
+            addFlowerButton.BackColor = Color.Linen;
+            addFlowerButton.Cursor = Cursors.Hand;
+            addFlowerButton.FlatStyle = FlatStyle.Flat;
+            addFlowerButton.Location = new Point(971, 332);
+            addFlowerButton.Name = "addFlowerButton";
+            addFlowerButton.Size = new Size(126, 31);
+            addFlowerButton.TabIndex = 40;
+            addFlowerButton.Text = "Ajouter";
+            addFlowerButton.UseVisualStyleBackColor = false;
+            addFlowerButton.Visible = false;
+            addFlowerButton.Click += addFlowerButton_Click;
+            // 
+            // accessoryLabel
+            // 
+            accessoryLabel.AutoSize = true;
+            accessoryLabel.Location = new Point(699, 243);
+            accessoryLabel.Name = "accessoryLabel";
+            accessoryLabel.Size = new Size(85, 20);
+            accessoryLabel.TabIndex = 39;
+            accessoryLabel.Text = "Accessoires";
+            accessoryLabel.Visible = false;
+            // 
+            // flowerLabel
+            // 
+            flowerLabel.AutoSize = true;
+            flowerLabel.Location = new Point(699, 309);
+            flowerLabel.Name = "flowerLabel";
+            flowerLabel.Size = new Size(47, 20);
+            flowerLabel.TabIndex = 38;
+            flowerLabel.Text = "Fleurs";
+            flowerLabel.Visible = false;
+            // 
+            // inStockFlowerComboBox
+            // 
+            inStockFlowerComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            inStockFlowerComboBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            inStockFlowerComboBox.FormattingEnabled = true;
+            inStockFlowerComboBox.Location = new Point(699, 332);
+            inStockFlowerComboBox.Name = "inStockFlowerComboBox";
+            inStockFlowerComboBox.Size = new Size(253, 31);
+            inStockFlowerComboBox.TabIndex = 37;
+            inStockFlowerComboBox.Visible = false;
+            // 
+            // addAccessoryButton
+            // 
+            addAccessoryButton.BackColor = Color.Linen;
+            addAccessoryButton.Cursor = Cursors.Hand;
+            addAccessoryButton.FlatStyle = FlatStyle.Flat;
+            addAccessoryButton.Location = new Point(971, 266);
+            addAccessoryButton.Name = "addAccessoryButton";
+            addAccessoryButton.Size = new Size(126, 31);
+            addAccessoryButton.TabIndex = 36;
+            addAccessoryButton.Text = "Ajouter";
+            addAccessoryButton.UseVisualStyleBackColor = false;
+            addAccessoryButton.Visible = false;
+            addAccessoryButton.Click += addAccessoryButton_Click;
+            // 
+            // inStockAccessoryComboBox
+            // 
+            inStockAccessoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            inStockAccessoryComboBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            inStockAccessoryComboBox.FormattingEnabled = true;
+            inStockAccessoryComboBox.Location = new Point(699, 266);
+            inStockAccessoryComboBox.Name = "inStockAccessoryComboBox";
+            inStockAccessoryComboBox.Size = new Size(253, 31);
+            inStockAccessoryComboBox.TabIndex = 35;
+            inStockAccessoryComboBox.Visible = false;
+            // 
+            // bouquetPersoFlowLayoutPanel
+            // 
+            bouquetPersoFlowLayoutPanel.AutoScroll = true;
+            bouquetPersoFlowLayoutPanel.BorderStyle = BorderStyle.FixedSingle;
+            bouquetPersoFlowLayoutPanel.Location = new Point(699, 378);
+            bouquetPersoFlowLayoutPanel.Name = "bouquetPersoFlowLayoutPanel";
+            bouquetPersoFlowLayoutPanel.Size = new Size(398, 222);
+            bouquetPersoFlowLayoutPanel.TabIndex = 34;
+            bouquetPersoFlowLayoutPanel.Visible = false;
+            // 
+            // orderButton
+            // 
+            orderButton.BackColor = Color.RoyalBlue;
+            orderButton.Cursor = Cursors.Hand;
+            orderButton.FlatStyle = FlatStyle.Flat;
+            orderButton.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            orderButton.ForeColor = SystemColors.Control;
+            orderButton.Location = new Point(883, 674);
+            orderButton.Name = "orderButton";
+            orderButton.Size = new Size(214, 66);
+            orderButton.TabIndex = 33;
+            orderButton.TabStop = false;
+            orderButton.Text = "Commander";
+            orderButton.UseVisualStyleBackColor = false;
+            orderButton.Click += orderButton_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(603, 674);
+            label1.Name = "label1";
+            label1.Size = new Size(216, 23);
+            label1.TabIndex = 32;
+            label1.Text = "Date de livraison souhaitée";
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Format = DateTimePickerFormat.Short;
+            dateTimePicker1.Location = new Point(607, 700);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(127, 27);
+            dateTimePicker1.TabIndex = 20;
+            dateTimePicker1.TabStop = false;
+            // 
+            // customMessageTextBox
+            // 
+            customMessageTextBox.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            customMessageTextBox.Location = new Point(33, 674);
+            customMessageTextBox.Multiline = true;
+            customMessageTextBox.Name = "customMessageTextBox";
+            customMessageTextBox.PlaceholderText = "Message accompagnant l'arrangement floral";
+            customMessageTextBox.RightToLeft = RightToLeft.No;
+            customMessageTextBox.Size = new Size(545, 66);
+            customMessageTextBox.TabIndex = 31;
+            // 
+            // deliveryAdressTextBox
+            // 
+            deliveryAdressTextBox.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            deliveryAdressTextBox.Location = new Point(33, 619);
+            deliveryAdressTextBox.Name = "deliveryAdressTextBox";
+            deliveryAdressTextBox.PlaceholderText = "Adresse de livraison";
+            deliveryAdressTextBox.Size = new Size(294, 31);
+            deliveryAdressTextBox.TabIndex = 30;
+            // 
+            // totalPriceLabel
+            // 
+            totalPriceLabel.AutoSize = true;
+            totalPriceLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            totalPriceLabel.Location = new Point(515, 497);
+            totalPriceLabel.Name = "totalPriceLabel";
+            totalPriceLabel.Size = new Size(100, 28);
+            totalPriceLabel.TabIndex = 28;
+            totalPriceLabel.Text = "Total : 0€";
+            // 
+            // bouquetPanel
+            // 
+            bouquetPanel.BackgroundImageLayout = ImageLayout.Stretch;
+            bouquetPanel.Location = new Point(33, 345);
+            bouquetPanel.Name = "bouquetPanel";
+            bouquetPanel.Size = new Size(226, 226);
+            bouquetPanel.TabIndex = 26;
+            bouquetPanel.Visible = false;
+            // 
+            // inStockBouquetsStandardComboBox
+            // 
+            inStockBouquetsStandardComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            inStockBouquetsStandardComboBox.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            inStockBouquetsStandardComboBox.FormattingEnabled = true;
+            inStockBouquetsStandardComboBox.Location = new Point(33, 281);
+            inStockBouquetsStandardComboBox.Name = "inStockBouquetsStandardComboBox";
+            inStockBouquetsStandardComboBox.Size = new Size(266, 33);
+            inStockBouquetsStandardComboBox.TabIndex = 25;
+            inStockBouquetsStandardComboBox.Visible = false;
+            inStockBouquetsStandardComboBox.SelectedValueChanged += inStockBouquetsStandardComboBox_SelectedValueChanged;
+            // 
+            // bouquetPersoCheckBox
+            // 
+            bouquetPersoCheckBox.AutoSize = true;
+            bouquetPersoCheckBox.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            bouquetPersoCheckBox.Location = new Point(788, 208);
+            bouquetPersoCheckBox.Name = "bouquetPersoCheckBox";
+            bouquetPersoCheckBox.Size = new Size(309, 27);
+            bouquetPersoCheckBox.TabIndex = 24;
+            bouquetPersoCheckBox.Text = "Créer son propre arrangement floral";
+            bouquetPersoCheckBox.UseVisualStyleBackColor = true;
+            bouquetPersoCheckBox.CheckedChanged += bouquetPersoCheckBox_CheckedChanged;
+            // 
+            // bouquetStandardCheckBox
+            // 
+            bouquetStandardCheckBox.AutoSize = true;
+            bouquetStandardCheckBox.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            bouquetStandardCheckBox.Location = new Point(33, 208);
+            bouquetStandardCheckBox.Name = "bouquetStandardCheckBox";
+            bouquetStandardCheckBox.Size = new Size(294, 27);
+            bouquetStandardCheckBox.TabIndex = 23;
+            bouquetStandardCheckBox.Text = "Commander un bouquet standard";
+            bouquetStandardCheckBox.UseVisualStyleBackColor = true;
+            bouquetStandardCheckBox.CheckedChanged += bouquetStandardCheckBox_CheckedChanged;
+            // 
+            // shopLabel
+            // 
+            shopLabel.AutoSize = true;
+            shopLabel.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            shopLabel.Location = new Point(528, 106);
+            shopLabel.Name = "shopLabel";
+            shopLabel.Size = new Size(75, 23);
+            shopLabel.TabIndex = 22;
+            shopLabel.Text = "Magasin";
+            // 
+            // shopComboBox
+            // 
+            shopComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            shopComboBox.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            shopComboBox.FormattingEnabled = true;
+            shopComboBox.Location = new Point(424, 132);
+            shopComboBox.Name = "shopComboBox";
+            shopComboBox.Size = new Size(282, 33);
+            shopComboBox.TabIndex = 21;
+            shopComboBox.SelectedValueChanged += shopComboBox_SelectedValueChanged;
             // 
             // orderDetailsLabel
             // 
@@ -210,7 +460,7 @@
             orderDetailsLabel.Location = new Point(0, 0);
             orderDetailsLabel.Name = "orderDetailsLabel";
             orderDetailsLabel.RightToLeft = RightToLeft.No;
-            orderDetailsLabel.Size = new Size(875, 89);
+            orderDetailsLabel.Size = new Size(1130, 89);
             orderDetailsLabel.TabIndex = 20;
             orderDetailsLabel.Text = "Détails de la commande";
             orderDetailsLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -235,6 +485,7 @@
             FormClosing += OrderForm_FormClosing;
             userDropdown.ResumeLayout(false);
             orderDetailsPanel.ResumeLayout(false);
+            orderDetailsPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -253,5 +504,24 @@
         private Button userButton;
         private Panel orderDetailsPanel;
         private Label orderDetailsLabel;
+        private Label shopLabel;
+        private ComboBox shopComboBox;
+        private CheckBox bouquetPersoCheckBox;
+        private CheckBox bouquetStandardCheckBox;
+        private ComboBox inStockBouquetsStandardComboBox;
+        private Panel bouquetPanel;
+        private Label totalPriceLabel;
+        private TextBox deliveryAdressTextBox;
+        private TextBox customMessageTextBox;
+        private Button orderButton;
+        private Label label1;
+        private DateTimePicker dateTimePicker1;
+        private FlowLayoutPanel bouquetPersoFlowLayoutPanel;
+        private ComboBox inStockAccessoryComboBox;
+        private Button addAccessoryButton;
+        private Button addFlowerButton;
+        private Label accessoryLabel;
+        private Label flowerLabel;
+        private ComboBox inStockFlowerComboBox;
     }
 }

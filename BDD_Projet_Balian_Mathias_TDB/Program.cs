@@ -41,6 +41,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             {
                 command.Parameters.Add(parameter);
             }
+            // Ne retourne rien car command est passée en paramètre par référence et non par valeur
         }
 
 

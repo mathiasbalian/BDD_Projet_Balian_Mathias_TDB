@@ -23,10 +23,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
         public DashboardForm(User user, DateTime date)
         {
             InitializeComponent();
-            this.productsPanel.Height = 70;
+            this.productsPanel.Height = 68;
             this.user = user;
             this.datePicker.Value = date;
             this.dateTimer.Start(); // Lancement du timer pour le défilement de la date
+            this.productsPanel.AutoScroll = false;
         }
 
 
@@ -154,6 +155,33 @@ namespace BDD_Projet_Balian_Mathias_TDB
             OrderForm of = new OrderForm(this.user, this.datePicker.Value);
             of.Show();
             this.Close();
+        }
+
+        private void grosMerciButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Un bouquet idéal pour toutes les occasions, pour faire plaisir à vos proches !" +
+                "\nArrangement de marguerites et autres verdures. \n45€ TTC");
+        }
+
+        private void lamoureuxButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Vous souhaitez offrir un magnifique bouquet à votre partenaire ? N'hésitez pas ! Ce magnifique" +
+                " bouquet composé de roses rouges et blanches est parfait pour la Saint-Valentin. \n65€ TTC");
+        }
+
+        private void exotiqueButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mamanButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void marieeButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

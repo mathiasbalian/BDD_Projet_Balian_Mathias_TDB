@@ -38,7 +38,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             // Insertion de l'utilisateur, on vérifie qu'aucun champ ne soit vide
             if (!inputsNotEmpty(lastNameInput, firstNameInput, phoneInput,
                 emailInput, passwordInput, adressInput,
-                cardInput))
+                cardInput)) // inputsNotEmpty est une méthode statique venant de la classe Program
             {
                 MessageBox.Show("Merci de remplir tous les champs");
                 return;
@@ -86,6 +86,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        #region Méthodes utiles
+
         /// <summary>
         /// Vérifie si un utilisateur un utilisateur avec le même email n'existe pas déjà
         /// dans la base de données
@@ -107,5 +109,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             reader.Close();
             return false;
         }
+
+        #endregion
     }
 }

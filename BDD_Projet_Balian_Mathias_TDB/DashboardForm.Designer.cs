@@ -223,6 +223,8 @@
             // 
             // productsPanel
             // 
+            productsPanel.AutoScroll = true;
+            productsPanel.AutoScrollMargin = new Size(5, 5);
             productsPanel.BorderStyle = BorderStyle.FixedSingle;
             productsPanel.Controls.Add(pommePinLabel);
             productsPanel.Controls.Add(pommePinButton);
@@ -531,6 +533,7 @@
             marieeButton.Size = new Size(270, 265);
             marieeButton.TabIndex = 10;
             marieeButton.UseVisualStyleBackColor = true;
+            marieeButton.Click += marieeButton_Click;
             // 
             // mamanLabel
             // 
@@ -553,6 +556,7 @@
             mamanButton.Size = new Size(270, 265);
             mamanButton.TabIndex = 8;
             mamanButton.UseVisualStyleBackColor = true;
+            mamanButton.Click += mamanButton_Click;
             // 
             // exotiqueLabel
             // 
@@ -575,6 +579,7 @@
             exotiqueButton.Size = new Size(270, 265);
             exotiqueButton.TabIndex = 6;
             exotiqueButton.UseVisualStyleBackColor = true;
+            exotiqueButton.Click += exotiqueButton_Click;
             // 
             // amoureuxLabel
             // 
@@ -597,6 +602,7 @@
             lamoureuxButton.Size = new Size(270, 265);
             lamoureuxButton.TabIndex = 4;
             lamoureuxButton.UseVisualStyleBackColor = true;
+            lamoureuxButton.Click += lamoureuxButton_Click;
             // 
             // grosMerciLabel
             // 
@@ -632,6 +638,7 @@
             grosMerciButton.Size = new Size(270, 265);
             grosMerciButton.TabIndex = 1;
             grosMerciButton.UseVisualStyleBackColor = true;
+            grosMerciButton.Click += grosMerciButton_Click;
             // 
             // productsButton
             // 
@@ -641,7 +648,7 @@
             productsButton.FlatAppearance.BorderSize = 0;
             productsButton.FlatStyle = FlatStyle.Flat;
             productsButton.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            productsButton.Location = new Point(-2, -1);
+            productsButton.Location = new Point(1, -3);
             productsButton.Name = "productsButton";
             productsButton.Size = new Size(1725, 70);
             productsButton.TabIndex = 0;
