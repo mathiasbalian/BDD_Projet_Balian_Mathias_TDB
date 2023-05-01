@@ -213,7 +213,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 return;
             }
 
-            // Si la date de livraison choisie par l'utilisateur est inférieure ou égale à la date du système
+            // Si la date de livraison choisie par l'utilisateur est inférieure ou égale à la date actuelle
             if (DateTime.Compare(this.deliveryDateTimePicker.Value, this.datePicker.Value) < 0 ||
                 (this.deliveryDateTimePicker.Value.Day == this.datePicker.Value.Day &&
                  this.deliveryDateTimePicker.Value.Month == this.datePicker.Value.Month &&
