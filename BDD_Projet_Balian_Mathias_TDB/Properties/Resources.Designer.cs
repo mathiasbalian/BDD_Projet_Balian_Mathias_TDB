@@ -243,6 +243,16 @@ namespace BDD_Projet_Balian_Mathias_TDB.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap required {
+            get {
+                object obj = ResourceManager.GetObject("required", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap resume_icon {
             get {
                 object obj = ResourceManager.GetObject("resume_icon", resourceCulture);

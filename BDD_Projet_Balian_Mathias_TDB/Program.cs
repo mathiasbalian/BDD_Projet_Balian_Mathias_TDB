@@ -70,7 +70,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             foreach(Control input in inputs)
             {
-                if(input.Name.Contains("Input") && String.IsNullOrEmpty(input.Text))
+                if(String.IsNullOrEmpty(input.Text))
                 {
                     return false;
                 }

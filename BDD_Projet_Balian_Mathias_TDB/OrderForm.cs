@@ -21,6 +21,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private float currentBouquetPrice;
 
 
+
         public OrderForm(User user, DateTime date)
         {
             InitializeComponent();
@@ -47,6 +48,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void dateTimer_Tick(object sender, EventArgs e)
         {
             this.datePicker.Value = datePicker.Value.AddDays(1); // On ajoute un jour à la date
+            fillInStockFlowerComboBox();
         }
 
 
@@ -133,12 +135,15 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.bouquetPersoCheckBox.Enabled = false;
                 this.inStockBouquetsStandardComboBox.Visible = true;
                 this.bouquetPanel.Visible = true;
+                this.requiredBouquetStandardPictureBox.Visible = true;
             }
             else
             {
                 this.bouquetPersoCheckBox.Enabled = true;
                 this.inStockBouquetsStandardComboBox.Visible = false;
                 this.bouquetPanel.Visible = false;
+                this.bouquetPanel.BackgroundImage = null;
+                this.requiredBouquetStandardPictureBox.Visible = false;
             }
         }
 
@@ -155,6 +160,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.addAccessoryButton.Visible = true;
                 this.inStockFlowerComboBox.Visible = true;
                 this.addFlowerButton.Visible = true;
+                this.requiredCustomItemPictureBox.Visible = true;
             }
             else
             {
@@ -165,6 +171,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.addAccessoryButton.Visible = false;
                 this.inStockFlowerComboBox.Visible = false;
                 this.addFlowerButton.Visible = false;
+                this.requiredCustomItemPictureBox.Visible = false;
             }
         }
 
@@ -181,7 +188,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void inStockBouquetsStandardComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            this.bouquetPanel.BackgroundImage = getImageFromName(this.inStockBouquetsStandardComboBox.Text);
+            string imageName = getImageNameFromItemName(this.inStockBouquetsStandardComboBox.Text.Split(" | ")[0]);
+            Image backgroundImage = (Image)Properties.Resources.ResourceManager.GetObject(imageName);
+            this.bouquetPanel.BackgroundImage = backgroundImage;
             this.currentBouquetPrice = getBouquetStandardPrice();
             this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
         }
@@ -189,13 +198,40 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void orderButton_Click(object sender, EventArgs e)
         {
+            // Si l'utilisateur n'a pas choisi de magasin ou n'a pas rentré son adresse
+            if (!inputsNotEmpty(this.shopComboBox, this.deliveryAdressTextBox))
+            {
+                MessageBox.Show("Merci de bien remplir tous les champs");
+                return;
+            }
+
+            // Si l'utisateur n'a pas composé son bouquet (standard ou personnalisé)
+            if ((this.bouquetStandardCheckBox.Checked && this.bouquetPanel.BackgroundImage == null) ||
+                (this.bouquetPersoCheckBox.Checked && this.bouquetPersoFlowLayoutPanel.Controls.Count == 0))
+            {
+                MessageBox.Show("Merci de choisir ou de composer votre bouquet");
+                return;
+            }
+
+            // Si la date de livraison choisie par l'utilisateur est inférieure ou égale à la date du système
+            if (DateTime.Compare(this.deliveryDateTimePicker.Value, this.datePicker.Value) < 0 ||
+                (this.deliveryDateTimePicker.Value.Day == this.datePicker.Value.Day &&
+                 this.deliveryDateTimePicker.Value.Month == this.datePicker.Value.Month &&
+                 this.deliveryDateTimePicker.Value.Year == this.datePicker.Value.Year))
+            {
+                MessageBox.Show("Merci de saisir une date de livraison supérieure à la date actuelle");
+                return;
+            }
+
+
 
         }
 
 
         private void addAccessoryButton_Click(object sender, EventArgs e)
         {
-            Bitmap backgroundImage = getImageFromName(this.inStockAccessoryComboBox.Text.Split(" | ")[0]);
+            string imageName = getImageNameFromItemName(this.inStockAccessoryComboBox.Text.Split(" | ")[0]);
+            Image backgroundImage = (Image)Properties.Resources.ResourceManager.GetObject(imageName);
             if (backgroundImage != null)
             {
                 Button itemButton = new Button();
@@ -205,8 +241,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 itemButton.Cursor = Cursors.Hand;
                 itemButton.FlatStyle = FlatStyle.Flat;
                 itemButton.Click += itemButton_Click;
+                itemButton.Name = imageName + " | accessoire";
                 this.bouquetPersoFlowLayoutPanel.Controls.Add(itemButton);
-                this.currentBouquetPrice += getAccessoryPrice();
+                this.currentBouquetPrice += getAccessoryPrice(this.inStockAccessoryComboBox.Text.Split(" | ")[0]);
                 this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
             }
         }
@@ -214,7 +251,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void addFlowerButton_Click(object sender, EventArgs e)
         {
-            Bitmap backgroundImage = getImageFromName(this.inStockFlowerComboBox.Text.Split(" | ")[0]);
+            string imageName = getImageNameFromItemName(this.inStockFlowerComboBox.Text.Split(" | ")[0]);
+            Image backgroundImage = (Image)Properties.Resources.ResourceManager.GetObject(imageName);
             if (backgroundImage != null)
             {
                 Button itemButton = new Button();
@@ -224,8 +262,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 itemButton.Cursor = Cursors.Hand;
                 itemButton.FlatStyle = FlatStyle.Flat;
                 itemButton.Click += itemButton_Click;
+                itemButton.Name = imageName + " | fleur";
                 this.bouquetPersoFlowLayoutPanel.Controls.Add(itemButton);
-                this.currentBouquetPrice += getFlowerPrice();
+                this.currentBouquetPrice += getFlowerPrice(this.inStockFlowerComboBox.Text.Split(" | ")[0]);
                 this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
             }
         }
@@ -235,6 +274,16 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             Button thisButton = (Button)sender;
             this.bouquetPersoFlowLayoutPanel.Controls.Remove(thisButton);
+            string[] buttonName = thisButton.Name.Split(" | ");
+            this.currentBouquetPrice -= (buttonName[1] == "fleur") ?
+                getFlowerPrice(getItemNameFromImageName(buttonName[0])) :
+                getAccessoryPrice(getItemNameFromImageName(buttonName[0]));
+            this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+        }
+
+        private void datePicker_ValueChanged(object sender, EventArgs e)
+        {
+            fillInStockFlowerComboBox();
         }
 
         #endregion
@@ -317,9 +366,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.bouquetPersoFlowLayoutPanel.Controls.Clear();
 
             string queryGetAllStockFlowers = "SELECT nomFleur, quantite FROM stockFleur NATURAL JOIN fleur" +
-                " WHERE nomMagasin = @shopName;";
+                " WHERE nomMagasin = @shopName AND date_format(@currentDate, '%m-%d') >= date_format(dateDebutDispo, '%m-%d')" +
+                " AND date_format(@currentDate, '%m-%d') <= date_format(dateFinDispo, '%m-%d');";
             MySqlCommand command = new MySqlCommand(queryGetAllStockFlowers, connection);
-            addParametersToCommand(command, createCustomParameter("@shopName", this.shopComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
+            addParametersToCommand(command, createCustomParameter("@shopName", this.shopComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar),
+                                            createCustomParameter("@currentDate", this.datePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Text));
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -330,62 +381,123 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
 
         /// <summary>
-        /// Méthode permettant d'obtenir l'image associée à un nom de bouquet ou item
+        /// Méthode permettant d'obtenir le nom de l'image associée à un nom de bouquet ou item
         /// </summary>
         /// <param name="name">Le nom du bouquet ou de l'item</param>
-        /// <returns>L'image correspondant au nom du bouquet ou de l'item</returns>
-        private Bitmap getImageFromName(string name)
+        /// <returns>Le nom de l'image correspondant au nom du bouquet ou de l'item</returns>
+        private string getImageNameFromItemName(string name)
         {
             name = name.Split(" | ")[0];
             switch (name)
             {
                 case "Gros Merci":
-                    return Properties.Resources.bouquet_gros_merci;
+                    return "bouquet_gros_merci";
 
                 case "L'Amoureux":
-                    return Properties.Resources.bouquet_l_amoureux;
+                    return "bouquet_l'amoureux1";
 
                 case "L'Exotique":
-                    return Properties.Resources.bouquet_exotique;
+                    return "bouquet_exotique";
 
                 case "Maman":
-                    return Properties.Resources.bouquet_maman;
+                    return "bouquet_maman";
 
                 case "Vive la mariée":
-                    return Properties.Resources.bouquet_mariage;
+                    return "bouquet_mariage";
 
                 case "Gerbera":
-                    return Properties.Resources.fleur_gerbera;
+                    return "fleur_gerbera";
 
                 case "Glaïeul":
-                    return Properties.Resources.fleur_glaieul;
+                    return "fleur_glaieul";
 
                 case "Ginger":
-                    return Properties.Resources.fleur_ginger;
+                    return "fleur_ginger";
 
                 case "Marguerite":
-                    return Properties.Resources.fleur_marguerite;
+                    return "fleur_marguerite";
 
                 case "Rose rouge":
-                    return Properties.Resources.fleur_rose_rouge;
+                    return "fleur_rose_rouge";
 
                 case "Boîte pour bouquet":
-                    return Properties.Resources.bouquet_boîte;
+                    return "bouquet_boîte";
 
                 case "Feuille dorée":
-                    return Properties.Resources.feuille_dorée;
+                    return "feuille_dorée";
 
                 case "Vase":
-                    return Properties.Resources.vase;
+                    return "vase";
 
                 case "Ruban":
-                    return Properties.Resources.ruban;
+                    return "ruban";
 
                 case "Pomme de pin":
-                    return Properties.Resources.pomme_de_pin;
+                    return "pomme_de_pin";
 
                 default:
-                    return null;
+                    return "";
+            }
+        }
+
+
+        /// <summary>
+        /// Méthode permettant d'obtenir le nom d'un item à partir du nom de l'image qui représente cet item
+        /// </summary>
+        /// <param name="name">Le nom de l'image</param>
+        /// <returns>Le nom de l'item</returns>
+        private string getItemNameFromImageName(string name)
+        {
+            name = name.Split(" | ")[0];
+            switch (name)
+            {
+                case "bouquet_gros_merci":
+                    return "Gros Merci";
+
+                case "bouquet_l'amoureux1":
+                    return "L'Amoureux";
+
+                case "bouquet_exotique":
+                    return "L'Exotique";
+
+                case "bouquet_maman":
+                    return "Maman";
+
+                case "bouquet_mariage":
+                    return "Vive la mariée";
+
+                case "fleur_gerbera":
+                    return "Gerbera";
+
+                case "fleur_glaieul":
+                    return "Glaïeul";
+
+                case "fleur_ginger":
+                    return "Ginger";
+
+                case "fleur_marguerite":
+                    return "Marguerite";
+
+                case "fleur_rose_rouge":
+                    return "Rose rouge";
+
+                case "bouquet_boîte":
+                    return "Boîte pour bouquet";
+
+                case "feuille_dorée":
+                    return "Feuille dorée";
+
+                case "vase":
+                    return "Vase";
+
+                case "ruban":
+                    return "Ruban";
+
+                case "pomme_de_pin":
+                    return "Pomme de pin";
+
+                default:
+                    return "";
             }
         }
 
@@ -407,6 +519,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 reader.Close();
                 return bouquetPrice;
             }
+            reader.Close();
             return 0f;
         }
 
@@ -415,12 +528,12 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// Méthode permettant d'obtenir le prix de la fleur sélectionnée par l'utilisateur
         /// </summary>
         /// <returns>Le prix de la fleur</returns>
-        private float getFlowerPrice()
+        private float getFlowerPrice(string flowerName)
         {
             string queryGetFlowerPrice = "SELECT prixFleur FROM fleur WHERE nomFleur = @flowerName;";
             MySqlCommand command = new MySqlCommand(queryGetFlowerPrice, connection);
             addParametersToCommand(command,
-                createCustomParameter("@flowerName", this.inStockFlowerComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
+                createCustomParameter("@flowerName", flowerName, MySqlDbType.VarChar));
             MySqlDataReader reader = command.ExecuteReader();
             if (reader.Read())
             {
@@ -428,6 +541,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 reader.Close();
                 return flowerPrice;
             }
+            reader.Close();
             return 0f;
         }
 
@@ -436,12 +550,12 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// Méthode permettant d'obtenir le prix de l'accessoire sélectionné par l'utilisateur
         /// </summary>
         /// <returns>Le prix de l'accessoire</returns>
-        private float getAccessoryPrice()
+        private float getAccessoryPrice(string accessoryName)
         {
             string queryGetAccessoryPrice = "SELECT prixAccessoire FROM accessoire WHERE nomAccessoire = @accessoryName;";
             MySqlCommand command = new MySqlCommand(queryGetAccessoryPrice, connection);
             addParametersToCommand(command,
-                createCustomParameter("@accessoryName", this.inStockAccessoryComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
+                createCustomParameter("@accessoryName", accessoryName, MySqlDbType.VarChar));
             MySqlDataReader reader = command.ExecuteReader();
             if (reader.Read())
             {
@@ -449,10 +563,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 reader.Close();
                 return accessoryPrice;
             }
+            reader.Close();
             return 0f;
         }
 
         #endregion
-
     }
 }

@@ -41,6 +41,10 @@
             myOrdersButton = new Button();
             userButton = new Button();
             orderDetailsPanel = new Panel();
+            requiredDeliveryAdressPictureBox = new PictureBox();
+            requiredCustomItemPictureBox = new PictureBox();
+            requiredBouquetStandardPictureBox = new PictureBox();
+            requiredShopPictureBox = new PictureBox();
             addFlowerButton = new Button();
             accessoryLabel = new Label();
             flowerLabel = new Label();
@@ -50,7 +54,7 @@
             bouquetPersoFlowLayoutPanel = new FlowLayoutPanel();
             orderButton = new Button();
             label1 = new Label();
-            dateTimePicker1 = new DateTimePicker();
+            deliveryDateTimePicker = new DateTimePicker();
             customMessageTextBox = new TextBox();
             deliveryAdressTextBox = new TextBox();
             totalPriceLabel = new Label();
@@ -63,6 +67,10 @@
             orderDetailsLabel = new Label();
             userDropdown.SuspendLayout();
             orderDetailsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)requiredDeliveryAdressPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)requiredCustomItemPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)requiredBouquetStandardPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)requiredShopPictureBox).BeginInit();
             SuspendLayout();
             // 
             // backwardButton
@@ -118,6 +126,7 @@
             datePicker.Size = new Size(127, 27);
             datePicker.TabIndex = 5;
             datePicker.TabStop = false;
+            datePicker.ValueChanged += datePicker_ValueChanged;
             // 
             // dateTimer
             // 
@@ -215,6 +224,10 @@
             // orderDetailsPanel
             // 
             orderDetailsPanel.BackColor = SystemColors.Window;
+            orderDetailsPanel.Controls.Add(requiredDeliveryAdressPictureBox);
+            orderDetailsPanel.Controls.Add(requiredCustomItemPictureBox);
+            orderDetailsPanel.Controls.Add(requiredBouquetStandardPictureBox);
+            orderDetailsPanel.Controls.Add(requiredShopPictureBox);
             orderDetailsPanel.Controls.Add(addFlowerButton);
             orderDetailsPanel.Controls.Add(accessoryLabel);
             orderDetailsPanel.Controls.Add(flowerLabel);
@@ -224,7 +237,7 @@
             orderDetailsPanel.Controls.Add(bouquetPersoFlowLayoutPanel);
             orderDetailsPanel.Controls.Add(orderButton);
             orderDetailsPanel.Controls.Add(label1);
-            orderDetailsPanel.Controls.Add(dateTimePicker1);
+            orderDetailsPanel.Controls.Add(deliveryDateTimePicker);
             orderDetailsPanel.Controls.Add(customMessageTextBox);
             orderDetailsPanel.Controls.Add(deliveryAdressTextBox);
             orderDetailsPanel.Controls.Add(totalPriceLabel);
@@ -241,6 +254,49 @@
             orderDetailsPanel.Size = new Size(1130, 773);
             orderDetailsPanel.TabIndex = 19;
             // 
+            // requiredDeliveryAdressPictureBox
+            // 
+            requiredDeliveryAdressPictureBox.BackgroundImage = Properties.Resources.required;
+            requiredDeliveryAdressPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            requiredDeliveryAdressPictureBox.Location = new Point(333, 619);
+            requiredDeliveryAdressPictureBox.Name = "requiredDeliveryAdressPictureBox";
+            requiredDeliveryAdressPictureBox.Size = new Size(9, 9);
+            requiredDeliveryAdressPictureBox.TabIndex = 44;
+            requiredDeliveryAdressPictureBox.TabStop = false;
+            requiredDeliveryAdressPictureBox.Visible = false;
+            // 
+            // requiredCustomItemPictureBox
+            // 
+            requiredCustomItemPictureBox.BackgroundImage = Properties.Resources.required;
+            requiredCustomItemPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            requiredCustomItemPictureBox.Location = new Point(1103, 378);
+            requiredCustomItemPictureBox.Name = "requiredCustomItemPictureBox";
+            requiredCustomItemPictureBox.Size = new Size(9, 9);
+            requiredCustomItemPictureBox.TabIndex = 43;
+            requiredCustomItemPictureBox.TabStop = false;
+            requiredCustomItemPictureBox.Visible = false;
+            // 
+            // requiredBouquetStandardPictureBox
+            // 
+            requiredBouquetStandardPictureBox.BackgroundImage = Properties.Resources.required;
+            requiredBouquetStandardPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            requiredBouquetStandardPictureBox.Location = new Point(305, 261);
+            requiredBouquetStandardPictureBox.Name = "requiredBouquetStandardPictureBox";
+            requiredBouquetStandardPictureBox.Size = new Size(9, 9);
+            requiredBouquetStandardPictureBox.TabIndex = 42;
+            requiredBouquetStandardPictureBox.TabStop = false;
+            requiredBouquetStandardPictureBox.Visible = false;
+            // 
+            // requiredShopPictureBox
+            // 
+            requiredShopPictureBox.BackgroundImage = Properties.Resources.required;
+            requiredShopPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            requiredShopPictureBox.Location = new Point(603, 106);
+            requiredShopPictureBox.Name = "requiredShopPictureBox";
+            requiredShopPictureBox.Size = new Size(9, 9);
+            requiredShopPictureBox.TabIndex = 41;
+            requiredShopPictureBox.TabStop = false;
+            // 
             // addFlowerButton
             // 
             addFlowerButton.BackColor = Color.Linen;
@@ -248,7 +304,7 @@
             addFlowerButton.FlatStyle = FlatStyle.Flat;
             addFlowerButton.Location = new Point(971, 332);
             addFlowerButton.Name = "addFlowerButton";
-            addFlowerButton.Size = new Size(126, 31);
+            addFlowerButton.Size = new Size(126, 28);
             addFlowerButton.TabIndex = 40;
             addFlowerButton.Text = "Ajouter";
             addFlowerButton.UseVisualStyleBackColor = false;
@@ -278,11 +334,11 @@
             // inStockFlowerComboBox
             // 
             inStockFlowerComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            inStockFlowerComboBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            inStockFlowerComboBox.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             inStockFlowerComboBox.FormattingEnabled = true;
             inStockFlowerComboBox.Location = new Point(699, 332);
             inStockFlowerComboBox.Name = "inStockFlowerComboBox";
-            inStockFlowerComboBox.Size = new Size(253, 31);
+            inStockFlowerComboBox.Size = new Size(266, 28);
             inStockFlowerComboBox.TabIndex = 37;
             inStockFlowerComboBox.Visible = false;
             // 
@@ -293,7 +349,7 @@
             addAccessoryButton.FlatStyle = FlatStyle.Flat;
             addAccessoryButton.Location = new Point(971, 266);
             addAccessoryButton.Name = "addAccessoryButton";
-            addAccessoryButton.Size = new Size(126, 31);
+            addAccessoryButton.Size = new Size(126, 28);
             addAccessoryButton.TabIndex = 36;
             addAccessoryButton.Text = "Ajouter";
             addAccessoryButton.UseVisualStyleBackColor = false;
@@ -303,11 +359,11 @@
             // inStockAccessoryComboBox
             // 
             inStockAccessoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            inStockAccessoryComboBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            inStockAccessoryComboBox.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             inStockAccessoryComboBox.FormattingEnabled = true;
             inStockAccessoryComboBox.Location = new Point(699, 266);
             inStockAccessoryComboBox.Name = "inStockAccessoryComboBox";
-            inStockAccessoryComboBox.Size = new Size(253, 31);
+            inStockAccessoryComboBox.Size = new Size(266, 28);
             inStockAccessoryComboBox.TabIndex = 35;
             inStockAccessoryComboBox.Visible = false;
             // 
@@ -347,14 +403,14 @@
             label1.TabIndex = 32;
             label1.Text = "Date de livraison souhaitée";
             // 
-            // dateTimePicker1
+            // deliveryDateTimePicker
             // 
-            dateTimePicker1.Format = DateTimePickerFormat.Short;
-            dateTimePicker1.Location = new Point(607, 700);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(127, 27);
-            dateTimePicker1.TabIndex = 20;
-            dateTimePicker1.TabStop = false;
+            deliveryDateTimePicker.Format = DateTimePickerFormat.Short;
+            deliveryDateTimePicker.Location = new Point(607, 700);
+            deliveryDateTimePicker.Name = "deliveryDateTimePicker";
+            deliveryDateTimePicker.Size = new Size(127, 27);
+            deliveryDateTimePicker.TabIndex = 20;
+            deliveryDateTimePicker.TabStop = false;
             // 
             // customMessageTextBox
             // 
@@ -389,9 +445,9 @@
             // bouquetPanel
             // 
             bouquetPanel.BackgroundImageLayout = ImageLayout.Stretch;
-            bouquetPanel.Location = new Point(33, 345);
+            bouquetPanel.Location = new Point(33, 309);
             bouquetPanel.Name = "bouquetPanel";
-            bouquetPanel.Size = new Size(226, 226);
+            bouquetPanel.Size = new Size(255, 255);
             bouquetPanel.TabIndex = 26;
             bouquetPanel.Visible = false;
             // 
@@ -400,7 +456,7 @@
             inStockBouquetsStandardComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             inStockBouquetsStandardComboBox.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
             inStockBouquetsStandardComboBox.FormattingEnabled = true;
-            inStockBouquetsStandardComboBox.Location = new Point(33, 281);
+            inStockBouquetsStandardComboBox.Location = new Point(33, 261);
             inStockBouquetsStandardComboBox.Name = "inStockBouquetsStandardComboBox";
             inStockBouquetsStandardComboBox.Size = new Size(266, 33);
             inStockBouquetsStandardComboBox.TabIndex = 25;
@@ -486,6 +542,10 @@
             userDropdown.ResumeLayout(false);
             orderDetailsPanel.ResumeLayout(false);
             orderDetailsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)requiredDeliveryAdressPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)requiredCustomItemPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)requiredBouquetStandardPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)requiredShopPictureBox).EndInit();
             ResumeLayout(false);
         }
 
@@ -515,7 +575,7 @@
         private TextBox customMessageTextBox;
         private Button orderButton;
         private Label label1;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker deliveryDateTimePicker;
         private FlowLayoutPanel bouquetPersoFlowLayoutPanel;
         private ComboBox inStockAccessoryComboBox;
         private Button addAccessoryButton;
@@ -523,5 +583,9 @@
         private Label accessoryLabel;
         private Label flowerLabel;
         private ComboBox inStockFlowerComboBox;
+        private PictureBox requiredShopPictureBox;
+        private PictureBox requiredBouquetStandardPictureBox;
+        private PictureBox requiredCustomItemPictureBox;
+        private PictureBox requiredDeliveryAdressPictureBox;
     }
 }
