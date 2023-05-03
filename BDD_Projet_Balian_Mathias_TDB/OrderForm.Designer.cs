@@ -263,7 +263,6 @@
             requiredDeliveryAdressPictureBox.Size = new Size(9, 9);
             requiredDeliveryAdressPictureBox.TabIndex = 44;
             requiredDeliveryAdressPictureBox.TabStop = false;
-            requiredDeliveryAdressPictureBox.Visible = false;
             // 
             // requiredCustomItemPictureBox
             // 
