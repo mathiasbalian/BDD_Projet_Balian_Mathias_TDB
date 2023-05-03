@@ -130,7 +130,7 @@
             // 
             // dateTimer
             // 
-            dateTimer.Interval = 10000;
+            dateTimer.Interval = 15000;
             dateTimer.Tick += dateTimer_Tick;
             // 
             // returnButton

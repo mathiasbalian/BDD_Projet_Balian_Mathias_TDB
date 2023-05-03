@@ -230,13 +230,42 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 return;
             }
 
+            // Si le client choisit une date de livraison à moins de 3 jours de la date actuelle
+            if ((this.deliveryDateTimePicker.Value - this.datePicker.Value).Days < 3)
+            {
+                if (MessageBox.Show("Choisir une date de livraison à moins de 3 jours de la date actuelle risque d'engendrer un retard de la livraison" +
+                    " dû au potentiel manque de stock de certains objets. Voulez-vous quand-même continuer ?", "Avertissement", MessageBoxButtons.YesNo)
+                    == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
+            // Vérification que le client ne commande pas trop d'items par rapport au stock
+            Dictionary<string, int> orderedItemsAndQuantities = getOrderedItemsAndQuantities();
+            foreach (var (item, quantity) in orderedItemsAndQuantities)
+            {
+                string[] itemNameAndTable = item.Split(" | ");
+                string itemName = getItemNameFromImageName(itemNameAndTable[0]);
+                string itemTable = itemNameAndTable[1];
+                int itemId = getItemIdFromName(itemName, itemTable);
+                int itemStock = getItemStock(itemName, itemTable, itemId);
+                if (quantity > itemStock)
+                {
+                    MessageBox.Show($"Il n'y a pas suffisamment de {itemName} dans le magasin {this.shopComboBox.Text}. Vous en avez commandé" +
+                        $" {quantity}, mais il n'y en a que {itemStock} en stock. Veuillez recommencer.");
+                    return;
+                }
+            }
+
             // Création entité arrangement_floral
             string queryCreateArrangementFloral;
             MySqlCommand command;
             int arrangementFloralNextId = getNextId("arrangementFloral");
+            bool bouquetStandard = this.bouquetStandardCheckBox.Checked;
 
             // Si bouquet standard, on ajoute le nom du bouquet à l'arrangement, sinon on met la valeur null
-            if (this.bouquetStandardCheckBox.Checked)
+            if (bouquetStandard)
             {
                 queryCreateArrangementFloral = "INSERT INTO arrangementFloral VALUES " +
                 $"({arrangementFloralNextId}, @bouquetStandardName);";
@@ -245,45 +274,75 @@ namespace BDD_Projet_Balian_Mathias_TDB
                                                                       this.inStockBouquetsStandardComboBox.Text.Split(" | ")[0],
                                                                       MySqlDbType.VarChar));
                 command.ExecuteNonQuery();
-
+                updateItemStock(this.shopComboBox.Text.Split(" | ")[0], itemName: this.inStockBouquetsStandardComboBox.Text.Split(" | ")[0], itemTable: "stockBouquet");
             }
             else // Si bouquet perso
             {
-                queryCreateArrangementFloral = "INSERT INTO arrangementFloral VALUES " +
-                $"({arrangementFloralNextId}, null);";
-                command = new MySqlCommand(queryCreateArrangementFloral, connection);
-                command.ExecuteNonQuery();
-                
-                // création de l'entité bouquet_perso avec items qui le composent puis ajout de cette entité à arrangement_floral
+                // Création de l'entité bouquet_perso 
                 int bouquetPersoNextId = getNextId("bouquetPerso");
                 string queryCreateBouquetPerso = $"INSERT INTO bouquetPerso VALUES ({bouquetPersoNextId});";
+                command = new MySqlCommand(queryCreateBouquetPerso, connection);
                 command.CommandText = queryCreateBouquetPerso;
                 command.ExecuteNonQuery();
+
+
+                // Association entre bouquet perso et accessoires / fleurs
+                foreach (var (item, quantity) in orderedItemsAndQuantities)
+                {
+                    string[] itemNameAndTable = item.Split(" | ");
+                    string itemName = getItemNameFromImageName(itemNameAndTable[0]);
+                    string itemTable = itemNameAndTable[1];
+                    int itemId = getItemIdFromName(itemName, itemTable);
+
+                    command.CommandText = $"INSERT INTO bouquetPersoContient{itemTable} VALUES ({bouquetPersoNextId}, " +
+                                                                                                $"{itemId}, " +
+                                                                                                $"{quantity});";
+                    command.ExecuteNonQuery();
+                    updateItemStock(this.shopComboBox.Text.Split(" | ")[0], itemTable: itemTable, itemId: itemId, quantity: quantity);
+                }
+
+
+                // Création de l'arangement floral
+                queryCreateArrangementFloral = "INSERT INTO arrangementFloral VALUES " +
+                $"({arrangementFloralNextId}, null);";
+                command.CommandText = queryCreateArrangementFloral;
+                command.ExecuteNonQuery();
+
 
                 // Association entre arrangement floral et bouquet perso
                 string queryLinkArrangementBouquetPerso = "INSERT INTO arrangementEstComposeBouquetPerso" +
                     $" VALUES ({arrangementFloralNextId}, {bouquetPersoNextId});";
                 command.CommandText = queryLinkArrangementBouquetPerso;
                 command.ExecuteNonQuery();
-
-                // Association entre bouquet perso et accessoires / fleurs
-                Dictionary<string, int> orderedItemsAndQuantities = getOrderedItemsAndQuantities();
-                foreach(var (item, quantity) in orderedItemsAndQuantities)
-                {
-                    string[] itemNameAndTable = item.Split(" | ");
-                    string itemName = itemNameAndTable[0];
-                    string itemTable = itemNameAndTable[1];
-                    command.CommandText = $"INSERT INTO bouquetPersoContient{itemTable}"
-                }
             }
 
 
-            // Ajout de l'arrangement floral à la commande
-            // Ajout du client à la commande
-            // Ajout du magasin à la commande
-
-
-
+            // Création de la commande
+            string queryCreateCommand = $"INSERT INTO commande VALUES ({getNextId("commande")}, " +
+                                                                      "@orderDate, " +
+                                                                      "@deliveryAdress, " +
+                                                                      "@deliveryDate, " +
+                                                                      "@orderState, " +
+                                                                      "@orderMessage, " +
+                                                                      "@clientEmail, " +
+                                                                      $"{arrangementFloralNextId}, " +
+                                                                      "@shopName);";
+            command.CommandText = queryCreateCommand;
+            command.Parameters.Clear();
+            addParametersToCommand(command, createCustomParameter("@orderDate", this.datePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Date),
+                                            createCustomParameter("@deliveryAdress", this.deliveryAdressTextBox.Text, MySqlDbType.VarChar),
+                                            createCustomParameter("@deliveryDate", this.deliveryDateTimePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Date),
+                                            createCustomParameter("@orderState", (bouquetStandard) ? "CC" : "CPAV", MySqlDbType.Enum),
+                                            createCustomParameter("@orderMessage", this.customMessageTextBox.Text, MySqlDbType.Text),
+                                            createCustomParameter("@clientEmail", this.user.email, MySqlDbType.VarChar),
+                                            createCustomParameter("@shopName", this.shopComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
+            command.ExecuteNonQuery();
+            MessageBox.Show("Commande passée ! Merci beaucoup :)");
+            this.isUserActionClose = true;
+            this.Hide();
+            DashboardForm df = new DashboardForm(this.user, this.datePicker.Value);
+            df.Show();
+            this.Close();
         }
 
 
@@ -433,7 +492,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 " AND date_format(@currentDate, '%m-%d') <= date_format(dateFinDispo, '%m-%d') AND quantite > 0;";
             MySqlCommand command = new MySqlCommand(queryGetAllStockFlowers, connection);
             addParametersToCommand(command, createCustomParameter("@shopName", this.shopComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar),
-                                            createCustomParameter("@currentDate", this.datePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Text));
+                                            createCustomParameter("@currentDate", this.datePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Date));
             MySqlDataReader reader = command.ExecuteReader();
             List<string> flowersReturned = new List<string>();
             while (reader.Read())
@@ -442,7 +501,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             }
             reader.Close();
 
-            foreach(string flower in flowersReturned)
+            foreach (string flower in flowersReturned)
             {
                 if (!this.inStockFlowerComboBox.Items.Contains(flower))
                 {
@@ -450,7 +509,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 }
             }
 
-            foreach(string flower in this.inStockFlowerComboBox.Items)
+            foreach (string flower in this.inStockFlowerComboBox.Items)
             {
                 if (!flowersReturned.Contains(flower))
                 {
@@ -649,6 +708,29 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
 
         /// <summary>
+        /// Méthode permettant d'obtenir le stock d'un item (accessoire ou fleur) dans un certain magasin
+        /// </summary>
+        /// <param name="itemName">Le nom de l'item dont on cherche le stock</param>
+        /// <param name="tableName">La table de l'item (fleur ou accessoire)</param>
+        /// <param name="itemId">L'id de l'item</param>
+        /// <returns>Le stock de l'item dans le magasin</returns>
+        private int getItemStock(string itemName, string tableName, int itemId)
+        {
+            string queryGetItemStock = $"SELECT quantite from stock{tableName} where nomMagasin = @shopName and id{tableName} = {itemId};";
+            MySqlCommand command = new MySqlCommand(queryGetItemStock, connection);
+            addParametersToCommand(command, createCustomParameter("@shopName", this.shopComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
+            MySqlDataReader reader = command.ExecuteReader();
+            int itemStock = 0;
+            if (reader.Read())
+            {
+                itemStock = reader.GetInt32(0);
+            }
+            reader.Close();
+            return itemStock;
+        }
+
+
+        /// <summary>
         /// Méthode permettant d'obtenir le nom de la clé primaire d'une table
         /// </summary>
         /// <param name="tableName">La table dont on cherche le nom de la clé primaire</param>
@@ -672,6 +754,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 case "bouquetPerso":
                     return "idBouquetPerso";
 
+                case "commande":
+                    return "idCommande";
                 default:
                     return "";
             }
@@ -694,15 +778,31 @@ namespace BDD_Projet_Balian_Mathias_TDB
             {
                 maxId = reader.GetInt32(0);
             }
-            catch (Exception ex){}
+            catch (Exception ex) { }
             reader.Close();
             return maxId;
         }
 
 
-        private int getItemIdFromName(string itemName)
+        /// <summary>
+        /// Méthode permettant d'obtenir l'id d'un accessoire ou d'une fleur à partir de son nom et de sa table
+        /// </summary>
+        /// <param name="itemName">Nom de l'item</param>
+        /// <param name="itemTable">Nom de la table</param>
+        /// <returns>L'id de l'item</returns>
+        private int getItemIdFromName(string itemName, string itemTable)
         {
-            string queryGetItemIdFromName = "SELECT ";
+            string queryGetItemIdFromName = $"SELECT id{itemTable} FROM {itemTable} WHERE nom{itemTable} = @itemName";
+            MySqlCommand command = new MySqlCommand(queryGetItemIdFromName, connection);
+            addParametersToCommand(command, createCustomParameter("@itemName", itemName, MySqlDbType.VarChar));
+            MySqlDataReader reader = command.ExecuteReader();
+            int itemId = 0;
+            if (reader.Read())
+            {
+                itemId = reader.GetInt32(0);
+            }
+            reader.Close();
+            return itemId;
         }
 
 
@@ -715,7 +815,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private Dictionary<string, int> getOrderedItemsAndQuantities()
         {
             Dictionary<string, int> orderedItemsAndQuantities = new Dictionary<string, int>();
-            foreach(Button button in this.bouquetPersoFlowLayoutPanel.Controls)
+            foreach (Button button in this.bouquetPersoFlowLayoutPanel.Controls)
             {
                 if (!orderedItemsAndQuantities.ContainsKey(button.Name))
                 {
@@ -727,6 +827,36 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 }
             }
             return orderedItemsAndQuantities;
+        }
+
+
+        /// <summary>
+        /// Méthode permettant d'actualiser le stock d'un bouquet, d'une fleur ou d'un accessoire en fonction de la quantité
+        /// commandée par le client
+        /// </summary>
+        /// <param name="shopName">Le nom du magasin dont on veut actualiser le stock</param>
+        /// <param name="itemName">Paramètre facultatif représentant le nom du bouquet s'il s'agit d'un bouquet standard</param>
+        /// <param name="itemTable">Paramètre facultatif représentant le nom de la table de l'item (fleur ou accessoire)</param>
+        /// <param name="itemId">Paramètre facultatif représentant l'id de l'item</param>
+        /// <param name="quantity">Paramètre facultatif représentant la quantité de l'item commandé</param>
+        private void updateItemStock(string shopName, string itemName = "", string itemTable = "", int itemId = 0, int quantity = 0)
+        {
+            MySqlParameter shop = createCustomParameter("@shopName", shopName, MySqlDbType.VarChar);
+            if(itemTable == "stockBouquet")
+            {
+                string queryUpdateBouquetStock = "UPDATE stockBouquet SET quantite = quantite - 1 WHERE " +
+                                                 $"nomBouquet = @itemName AND nomMagasin = @shopName;";
+                MySqlCommand command = new MySqlCommand(queryUpdateBouquetStock, connection);
+                addParametersToCommand(command, shop, createCustomParameter("@itemName", itemName, MySqlDbType.VarChar));
+                command.ExecuteNonQuery();
+                return;
+            }
+
+            string queryUpdateItemStock = $"UPDATE stock{itemTable} SET quantite = quantite - {quantity} WHERE " +
+                                          $"id{itemTable} = {itemId} AND nomMagasin = @shopName;";
+            MySqlCommand comand = new MySqlCommand(queryUpdateItemStock, connection);
+            comand.Parameters.Add(shop);
+            comand.ExecuteNonQuery();
         }
 
         #endregion

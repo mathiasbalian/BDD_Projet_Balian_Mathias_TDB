@@ -9,15 +9,15 @@ namespace BDD_Projet_Balian_Mathias_TDB
 {
     public class User
     {
-        private string email { get; set; }
+        public string email { get; set; }
         private string password;
-        private string lastName { get; set; }
-        private string firstName { get; set; }
-        private string phone { get; set; }
-        private string adress { get; set; }
-        private string creditCard { get; set; }
-        private string fidelite { get; set; }
-        private bool isAdmin { get; set; }
+        public string lastName { get; set; }
+        public string firstName { get; set; }
+        public string phone { get; set; }
+        public string adress { get; set; }
+        public string creditCard { get; set; }
+        public string fidelite { get; set; }
+        public bool isAdmin { get; set; }
 
         public User(string email, string password, string lastName,
                     string firstName, string phone, string adress,
