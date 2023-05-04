@@ -1,6 +1,7 @@
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BDD_Projet_Balian_Mathias_TDB
 {

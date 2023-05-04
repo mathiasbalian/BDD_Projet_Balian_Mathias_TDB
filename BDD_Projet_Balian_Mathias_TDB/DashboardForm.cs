@@ -108,7 +108,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void myOrdersButton_Click(object sender, EventArgs e)
         {
-
+            this.isUserActionClose = true;
+            this.Hide();
+            MyOrdersForm mof = new MyOrdersForm(this.user, this.datePicker.Value);
+            mof.Show();
+            this.Close();
         }
 
 
