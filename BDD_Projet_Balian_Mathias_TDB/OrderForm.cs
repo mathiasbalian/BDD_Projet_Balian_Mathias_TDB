@@ -115,7 +115,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void myOrdersButton_Click(object sender, EventArgs e)
         {
-
+            this.isUserActionClose = true;
+            this.Hide();
+            MyOrdersForm mof = new MyOrdersForm(this.user, this.datePicker.Value);
+            mof.Show();
+            this.Close();
         }
 
 
@@ -524,7 +528,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// </summary>
         /// <param name="name">Le nom du bouquet ou de l'item</param>
         /// <returns>Le nom de l'image correspondant au nom du bouquet ou de l'item</returns>
-        private string getImageNameFromItemName(string name)
+        public static string getImageNameFromItemName(string name)
         {
             name = name.Split(" | ")[0];
             switch (name)
@@ -585,7 +589,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// </summary>
         /// <param name="name">Le nom de l'image</param>
         /// <returns>Le nom de l'item</returns>
-        private string getItemNameFromImageName(string name)
+        public static string getItemNameFromImageName(string name)
         {
             name = name.Split(" | ")[0];
             switch (name)
@@ -645,7 +649,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// Méthode permettant d'obtenir le prix du bouquet sélectionné par l'utilisateur
         /// </summary>
         /// <returns>Le prix du bouquet</returns>
-        private float getBouquetStandardPrice()
+        public float getBouquetStandardPrice()
         {
             string queryGetBouquetPrice = "SELECT prixBouquet FROM bouquetStandard WHERE nomBouquet = @bouquetName;";
             MySqlCommand command = new MySqlCommand(queryGetBouquetPrice, connection);
