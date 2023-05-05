@@ -42,7 +42,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.bouquetTypeLabel.Visible = true;
             this.totalPriceLabel.Visible = true;
 
-            if (isBouquetAndName.isbouquetStandard)
+            if (isBouquetAndName.isbouquetStandard) // Si c'est un bouquet standard
             {
                 this.bouquetTypeLabel.Text = "Bouquet " + isBouquetAndName.bouquetStandardName;
                 this.bouquetTypeLabel.Left = (this.ClientSize.Width - this.bouquetTypeLabel.Width) / 2;
@@ -55,7 +55,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.totalPrice = getBouquetStandardPrice(isBouquetAndName.bouquetStandardName);
                 this.totalPriceLabel.Left = (this.ClientSize.Width - this.totalPriceLabel.Width) / 2;
             }
-            else
+            else // Si c'est un bouquet personnalisé
             {
                 this.bouquetTypeLabel.Text = "Bouquet personnalisé contenant :";
                 this.bouquetTypeLabel.Left = (this.ClientSize.Width - this.bouquetTypeLabel.Width) / 2;
@@ -63,6 +63,14 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.bouquetPersoLayoutPanel.Visible = true;
                 fillBouquetPersoLayoutPanel("accessoire");
                 fillBouquetPersoLayoutPanel("fleur");
+                // Pour toujours centrer le flowlayoutpanel par rapport au nombre d'ingrédients
+                Point originalBouquetPersoLayoutPanelCoords = this.bouquetPersoLayoutPanel.Location;
+                if (this.bouquetPersoLayoutPanel.Controls.Count == 1)
+                    this.bouquetPersoLayoutPanel.Location = new Point(originalBouquetPersoLayoutPanelCoords.X + 200, originalBouquetPersoLayoutPanelCoords.Y);
+                else if (this.bouquetPersoLayoutPanel.Controls.Count == 2)
+                    this.bouquetPersoLayoutPanel.Location = new Point(originalBouquetPersoLayoutPanelCoords.X + 100, originalBouquetPersoLayoutPanelCoords.Y);
+                else
+                    this.bouquetPersoLayoutPanel.Location = originalBouquetPersoLayoutPanelCoords;
             }
 
             this.totalPriceLabel.Text = $"Pour un total de {this.totalPrice}€";
@@ -181,7 +189,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
                     $"NATURAL JOIN {tableName} WHERE idCommande = {this.orderId};";
             MySqlCommand mySqlCommand = new MySqlCommand(queryGetItemsAndQuantities, connection);
             MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
-            Point originalBouquetPersoLayoutPanelCoords = this.bouquetPersoLayoutPanel.Location;
             while (mySqlDataReader.Read())
             {
                 string nomItem = mySqlDataReader.GetString(0);
@@ -199,14 +206,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
                         pb.BackgroundImageLayout = ImageLayout.Stretch;
                         pb.Size = new Size(200, 200);
                         this.bouquetPersoLayoutPanel.Controls.Add(pb);
-
-                        // Pour toujours centrer le flowlayoutpanel par rapport au nombre d'ingrédients
-                        if (this.bouquetPersoLayoutPanel.Controls.Count == 1)
-                            this.bouquetPersoLayoutPanel.Location = new Point(originalBouquetPersoLayoutPanelCoords.X + 200, originalBouquetPersoLayoutPanelCoords.Y);
-                        else if (this.bouquetPersoLayoutPanel.Controls.Count == 2)
-                            this.bouquetPersoLayoutPanel.Location = new Point(this.bouquetPersoLayoutPanel.Location.X - 100, originalBouquetPersoLayoutPanelCoords.Y);
-                        else
-                            this.bouquetPersoLayoutPanel.Location = originalBouquetPersoLayoutPanelCoords;
                     }
                 }
             }

@@ -78,5 +78,24 @@ namespace BDD_Projet_Balian_Mathias_TDB
             }
             return true;
         }
+
+        
+        /// <summary>
+        /// Méthode permettant d'actualiser l'état des commandes (CPAV, CC, CAL, CL) 
+        /// </summary>
+        public static void updateOrdersState(DateTime date)
+        {
+            string queryUpdateOrders = "UPDATE commande SET etatCommande = etatCommande + 1 WHERE etatCommande = 'CC' OR " +
+                "etatCommande = 'CPAV';";
+            MySqlCommand command = new MySqlCommand(queryUpdateOrders, connection);
+            command.ExecuteNonQuery();
+
+            string queryUpdateOrders2 = "UPDATE commande SET etatCommande = etatCommande + 1 WHERE " +
+                "date_format(@currentDate, '%Y-%m-%d') >= date_format(dateLivraison, '%Y-%m-%d') AND " +
+                "etatCommande < 4;";
+            command.CommandText = queryUpdateOrders2;
+            command.Parameters.Add(createCustomParameter("@currentDate", date.ToString("yyyy-MM-dd"), MySqlDbType.Date));
+            command.ExecuteNonQuery();
+        }
     }
 }

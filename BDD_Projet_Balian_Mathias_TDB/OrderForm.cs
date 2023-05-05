@@ -19,16 +19,18 @@ namespace BDD_Projet_Balian_Mathias_TDB
         // du bouton "X"
         private bool dateTimerPaused = false;
         private float currentBouquetPrice;
+        private bool fromAdmin;
 
 
 
-        public OrderForm(User user, DateTime date)
+        public OrderForm(User user, DateTime date, bool fromAdmin)
         {
             InitializeComponent();
             this.user = user;
             this.datePicker.Value = date;
             this.dateTimer.Start(); // Lancement du timer pour le défilement de la date
             fillShopComboBox();
+            this.fromAdmin = fromAdmin;
         }
 
 
@@ -48,6 +50,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void dateTimer_Tick(object sender, EventArgs e)
         {
             this.datePicker.Value = datePicker.Value.AddDays(1); // On ajoute un jour à la date
+            updateOrdersState(this.datePicker.Value);
         }
 
 
@@ -344,7 +347,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
             MessageBox.Show("Commande passée ! Merci beaucoup :)");
             this.isUserActionClose = true;
             this.Hide();
-            DashboardForm df = new DashboardForm(this.user, this.datePicker.Value);
+            DashboardForm df = new DashboardForm(this.fromAdmin ? new User("admin", "", "", "", "", "", "", "", true) :
+                                                                  this.user, this.datePicker.Value);
             df.Show();
             this.Close();
         }

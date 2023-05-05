@@ -84,6 +84,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void dateTimer_Tick(object sender, EventArgs e)
         {
             this.datePicker.Value = datePicker.Value.AddDays(1); // On ajoute un jour à la date
+            updateOrdersState(this.datePicker.Value);
+            getOrders();
         }
 
 
@@ -93,7 +95,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
-                OrderDetails od = new OrderDetails((int)this.ordersGridView.Rows[e.RowIndex].Cells[1].Value);
+                OrderDetails od = new OrderDetails((int)this.ordersGridView.Rows[e.RowIndex].Cells["idCommande"].Value);
                 od.Show();
             }
         }
@@ -116,19 +118,21 @@ namespace BDD_Projet_Balian_Mathias_TDB
             DataTable table = new DataTable();
             adapter.Fill(table);
             this.ordersGridView.DataSource = table;
-            
-            foreach (DataGridViewColumn column in this.ordersGridView.Columns)
+            if (this.ordersGridView.Columns.Count == 4)
             {
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                DataGridViewButtonColumn dataGridViewButtonColumn = new DataGridViewButtonColumn();
+                dataGridViewButtonColumn.Text = "Voir détails commande";
+                dataGridViewButtonColumn.Name = "Détails";
+                dataGridViewButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridViewButtonColumn.FlatStyle = FlatStyle.System;
+                dataGridViewButtonColumn.DefaultCellStyle.BackColor = Color.RoyalBlue;
+                dataGridViewButtonColumn.UseColumnTextForButtonValue = true;
+                this.ordersGridView.Columns.Add(dataGridViewButtonColumn);
+                foreach (DataGridViewColumn column in this.ordersGridView.Columns)
+                {
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
             }
-            DataGridViewButtonColumn dataGridViewButtonColumn = new DataGridViewButtonColumn();
-            dataGridViewButtonColumn.Text = "Voir détails commande";
-            dataGridViewButtonColumn.Name = "Détails";
-            dataGridViewButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewButtonColumn.FlatStyle = FlatStyle.System;
-            dataGridViewButtonColumn.DefaultCellStyle.BackColor = Color.RoyalBlue;
-            dataGridViewButtonColumn.UseColumnTextForButtonValue = true;
-            this.ordersGridView.Columns.Add(dataGridViewButtonColumn);
         }
 
         #endregion

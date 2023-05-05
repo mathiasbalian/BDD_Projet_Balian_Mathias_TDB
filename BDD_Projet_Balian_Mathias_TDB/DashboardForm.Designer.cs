@@ -38,8 +38,9 @@
             userButton = new Button();
             userDropdown = new Panel();
             myProfileButton = new Button();
-            disconnectButton = new Button();
             myOrdersButton = new Button();
+            disconnectButton = new Button();
+            administrationButton = new Button();
             productsPanel = new Panel();
             pommePinLabel = new Label();
             pommePinButton = new Button();
@@ -77,8 +78,13 @@
             productsButton = new Button();
             orderButton = new Button();
             dropdownTimer = new System.Windows.Forms.Timer(components);
+            administrationPanel = new Panel();
+            statisticsButton = new Button();
+            adminOrdersButton = new Button();
+            stocksAndShopsButton = new Button();
             userDropdown.SuspendLayout();
             productsPanel.SuspendLayout();
+            administrationPanel.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -168,8 +174,9 @@
             userDropdown.BackColor = SystemColors.ButtonHighlight;
             userDropdown.BorderStyle = BorderStyle.FixedSingle;
             userDropdown.Controls.Add(myProfileButton);
-            userDropdown.Controls.Add(disconnectButton);
             userDropdown.Controls.Add(myOrdersButton);
+            userDropdown.Controls.Add(disconnectButton);
+            userDropdown.Controls.Add(administrationButton);
             userDropdown.Location = new Point(1586, 48);
             userDropdown.Name = "userDropdown";
             userDropdown.Size = new Size(171, 120);
@@ -191,6 +198,21 @@
             myProfileButton.UseVisualStyleBackColor = false;
             myProfileButton.Click += myProfileButton_Click;
             // 
+            // myOrdersButton
+            // 
+            myOrdersButton.BackColor = SystemColors.ButtonFace;
+            myOrdersButton.Cursor = Cursors.Hand;
+            myOrdersButton.FlatAppearance.BorderSize = 0;
+            myOrdersButton.FlatStyle = FlatStyle.Flat;
+            myOrdersButton.Location = new Point(0, 40);
+            myOrdersButton.Margin = new Padding(0);
+            myOrdersButton.Name = "myOrdersButton";
+            myOrdersButton.Size = new Size(171, 40);
+            myOrdersButton.TabIndex = 0;
+            myOrdersButton.Text = "Mes commandes";
+            myOrdersButton.UseVisualStyleBackColor = false;
+            myOrdersButton.Click += myOrdersButton_Click;
+            // 
             // disconnectButton
             // 
             disconnectButton.BackColor = SystemColors.ButtonFace;
@@ -206,20 +228,21 @@
             disconnectButton.UseVisualStyleBackColor = false;
             disconnectButton.Click += disconnectButton_Click;
             // 
-            // myOrdersButton
+            // administrationButton
             // 
-            myOrdersButton.BackColor = SystemColors.ButtonFace;
-            myOrdersButton.Cursor = Cursors.Hand;
-            myOrdersButton.FlatAppearance.BorderSize = 0;
-            myOrdersButton.FlatStyle = FlatStyle.Flat;
-            myOrdersButton.Location = new Point(0, 40);
-            myOrdersButton.Margin = new Padding(0);
-            myOrdersButton.Name = "myOrdersButton";
-            myOrdersButton.Size = new Size(171, 40);
-            myOrdersButton.TabIndex = 0;
-            myOrdersButton.Text = "Mes commandes";
-            myOrdersButton.UseVisualStyleBackColor = false;
-            myOrdersButton.Click += myOrdersButton_Click;
+            administrationButton.BackColor = SystemColors.ButtonFace;
+            administrationButton.Cursor = Cursors.Hand;
+            administrationButton.FlatAppearance.BorderSize = 0;
+            administrationButton.FlatStyle = FlatStyle.Flat;
+            administrationButton.Location = new Point(0, 120);
+            administrationButton.Margin = new Padding(0);
+            administrationButton.Name = "administrationButton";
+            administrationButton.Size = new Size(171, 40);
+            administrationButton.TabIndex = 3;
+            administrationButton.Text = "Administration";
+            administrationButton.UseVisualStyleBackColor = false;
+            administrationButton.Visible = false;
+            administrationButton.Click += administrationButton_Click;
             // 
             // productsPanel
             // 
@@ -260,7 +283,7 @@
             productsPanel.Controls.Add(bouquetsButton);
             productsPanel.Controls.Add(grosMerciButton);
             productsPanel.Controls.Add(productsButton);
-            productsPanel.Location = new Point(29, 131);
+            productsPanel.Location = new Point(29, 166);
             productsPanel.Margin = new Padding(0);
             productsPanel.Name = "productsPanel";
             productsPanel.Size = new Size(1725, 690);
@@ -648,7 +671,7 @@
             productsButton.FlatAppearance.BorderSize = 0;
             productsButton.FlatStyle = FlatStyle.Flat;
             productsButton.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            productsButton.Location = new Point(-2, -3);
+            productsButton.Location = new Point(1, -2);
             productsButton.Name = "productsButton";
             productsButton.Size = new Size(1725, 70);
             productsButton.TabIndex = 0;
@@ -678,6 +701,63 @@
             dropdownTimer.Interval = 2;
             dropdownTimer.Tick += dropdownTimer_Tick;
             // 
+            // administrationPanel
+            // 
+            administrationPanel.BorderStyle = BorderStyle.FixedSingle;
+            administrationPanel.Controls.Add(statisticsButton);
+            administrationPanel.Controls.Add(adminOrdersButton);
+            administrationPanel.Controls.Add(stocksAndShopsButton);
+            administrationPanel.Location = new Point(1410, 165);
+            administrationPanel.Name = "administrationPanel";
+            administrationPanel.Size = new Size(171, 149);
+            administrationPanel.TabIndex = 8;
+            administrationPanel.Visible = false;
+            // 
+            // statisticsButton
+            // 
+            statisticsButton.BackColor = SystemColors.ButtonFace;
+            statisticsButton.Cursor = Cursors.Hand;
+            statisticsButton.FlatAppearance.BorderSize = 0;
+            statisticsButton.FlatStyle = FlatStyle.Flat;
+            statisticsButton.Location = new Point(-2, 104);
+            statisticsButton.Margin = new Padding(0);
+            statisticsButton.Name = "statisticsButton";
+            statisticsButton.Size = new Size(171, 44);
+            statisticsButton.TabIndex = 6;
+            statisticsButton.Text = "Statistiques";
+            statisticsButton.UseVisualStyleBackColor = false;
+            statisticsButton.Click += statisticsButton_Click;
+            // 
+            // adminOrdersButton
+            // 
+            adminOrdersButton.BackColor = SystemColors.ButtonFace;
+            adminOrdersButton.Cursor = Cursors.Hand;
+            adminOrdersButton.FlatAppearance.BorderSize = 0;
+            adminOrdersButton.FlatStyle = FlatStyle.Flat;
+            adminOrdersButton.Location = new Point(0, 60);
+            adminOrdersButton.Margin = new Padding(0);
+            adminOrdersButton.Name = "adminOrdersButton";
+            adminOrdersButton.Size = new Size(171, 44);
+            adminOrdersButton.TabIndex = 5;
+            adminOrdersButton.Text = "Commandes";
+            adminOrdersButton.UseVisualStyleBackColor = false;
+            adminOrdersButton.Click += adminOrdersButton_Click;
+            // 
+            // stocksAndShopsButton
+            // 
+            stocksAndShopsButton.BackColor = SystemColors.ButtonFace;
+            stocksAndShopsButton.Cursor = Cursors.Hand;
+            stocksAndShopsButton.FlatAppearance.BorderSize = 0;
+            stocksAndShopsButton.FlatStyle = FlatStyle.Flat;
+            stocksAndShopsButton.Location = new Point(0, 0);
+            stocksAndShopsButton.Margin = new Padding(0);
+            stocksAndShopsButton.Name = "stocksAndShopsButton";
+            stocksAndShopsButton.Size = new Size(171, 60);
+            stocksAndShopsButton.TabIndex = 4;
+            stocksAndShopsButton.Text = "Gestion stocks et magasins";
+            stocksAndShopsButton.UseVisualStyleBackColor = false;
+            stocksAndShopsButton.Click += stocksAndShopsButton_Click;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -693,6 +773,7 @@
             Controls.Add(pauseButton);
             Controls.Add(datePicker);
             Controls.Add(button1);
+            Controls.Add(administrationPanel);
             Name = "DashboardForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Application fleurs";
@@ -700,6 +781,7 @@
             userDropdown.ResumeLayout(false);
             productsPanel.ResumeLayout(false);
             productsPanel.PerformLayout();
+            administrationPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -753,5 +835,10 @@
         private Label boxLabel;
         private Button accessoireButton;
         private Button boxButton;
+        private Button administrationButton;
+        private Panel administrationPanel;
+        private Button statisticsButton;
+        private Button adminOrdersButton;
+        private Button stocksAndShopsButton;
     }
 }

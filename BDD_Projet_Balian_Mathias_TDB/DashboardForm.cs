@@ -28,6 +28,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.datePicker.Value = date;
             this.dateTimer.Start(); // Lancement du timer pour le défilement de la date
             this.productsPanel.AutoScroll = false;
+            if (this.user.isAdmin)
+            {
+                this.userDropdown.Height = 160;
+                this.administrationButton.Visible = true;
+            }
         }
 
 
@@ -51,6 +56,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void timer_Tick(object sender, EventArgs e)
         {
             this.datePicker.Value = datePicker.Value.AddDays(1); // On ajoute un jour à la date
+            updateOrdersState(this.datePicker.Value);
         }
 
 
@@ -93,6 +99,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 return;
             }
             this.userDropdown.Visible = false;
+            this.administrationPanel.Visible = false;
         }
 
 
@@ -156,7 +163,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.isUserActionClose = true;
             this.Hide();
-            OrderForm of = new OrderForm(this.user, this.datePicker.Value);
+            OrderForm of = new OrderForm(this.user, this.datePicker.Value, false);
             of.Show();
             this.Close();
         }
@@ -186,6 +193,47 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void marieeButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void administrationButton_Click(object sender, EventArgs e)
+        {
+            if (this.administrationPanel.Visible)
+            {
+                this.administrationPanel.Visible = false;
+                return;
+            }
+            this.administrationPanel.Visible = true;
+            this.administrationPanel.BringToFront();
+        }
+
+
+        private void statisticsButton_Click(object sender, EventArgs e)
+        {
+            this.isUserActionClose = true;
+            this.Hide();
+            StatisticsForms sf = new StatisticsForms();
+            sf.Show();
+            this.Close();
+        }
+
+
+        private void adminOrdersButton_Click(object sender, EventArgs e)
+        {
+            this.isUserActionClose = true;
+            this.Hide();
+            AllOrdersForm aof = new AllOrdersForm(this.user, this.datePicker.Value);
+            aof.Show();
+            this.Close();
+        }
+
+
+        private void stocksAndShopsButton_Click(object sender, EventArgs e)
+        {
+            this.isUserActionClose = true;
+            this.Hide();
+            StocksAndShopsForms sasf = new StocksAndShopsForms();
+            sasf.Show();
+            this.Close();
         }
     }
 }
