@@ -423,6 +423,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'obtenir le nom de la table associée à un produit
+        /// </summary>
+        /// <param name="itemName">Le nom du produit</param>
+        /// <returns>Le nom de la table</returns>
         private string getItemTableName(string itemName)
         {
             switch (itemName)
@@ -454,6 +459,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'afficher en rouge les stocks dont la quantité est inférieure ou égale à 3
+        /// </summary>
         private void checkStocks()
         {
             // Vérification des quantités pour déclencher des alertes 
@@ -470,6 +478,13 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'actualiser le stock d'un produit dans un magasin spécifié
+        /// </summary>
+        /// <param name="shopName">Le nom du magasin</param>
+        /// <param name="itemName">Le nom de l'item</param>
+        /// <param name="itemTable">La table de l'item</param>
+        /// <param name="quantity">La nouvelle quantité en stock</param>
         private void updateItemStock(string shopName, string itemName = "", string itemTable = "", int quantity = 1)
         {
             MySqlParameter shop = createCustomParameter("@shopName", shopName, MySqlDbType.VarChar);
