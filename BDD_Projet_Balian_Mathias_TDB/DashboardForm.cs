@@ -231,7 +231,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.isUserActionClose = true;
             this.Hide();
-            StocksAndShopsForms sasf = new StocksAndShopsForms();
+            StocksAndShopsForms sasf = new StocksAndShopsForms(this.user, this.datePicker.Value);
             sasf.Show();
             this.Close();
         }
