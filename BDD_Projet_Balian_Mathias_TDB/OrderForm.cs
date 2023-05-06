@@ -18,7 +18,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private bool isUserActionClose = false; // Pour vérifier si le form est fermé à partir 
         // du bouton "X"
         private bool dateTimerPaused = false;
-        private float currentBouquetPrice;
+        private double currentBouquetPrice;
         private bool fromAdmin;
 
 
@@ -136,6 +136,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.currentBouquetPrice = 0;
             this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
             if (this.bouquetStandardCheckBox.Checked)
             {
                 this.bouquetPersoCheckBox.Enabled = false;
@@ -158,6 +159,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.currentBouquetPrice = 0;
             this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
             if (this.bouquetPersoCheckBox.Checked)
             {
                 this.bouquetStandardCheckBox.Enabled = false;
@@ -189,6 +191,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             fillInStockFlowerComboBox();
             this.currentBouquetPrice = 0;
             this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
         }
 
 
@@ -199,6 +202,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.bouquetPanel.BackgroundImage = backgroundImage;
             this.currentBouquetPrice = getBouquetStandardPrice();
             this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
         }
 
 
@@ -264,6 +268,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
                     return;
                 }
             }
+
+            if (this.user.fidelite == "Or") MessageBox.Show($"Nouveau prix grâce à la fidélité Or : {this.currentBouquetPrice}€ -> {this.currentBouquetPrice * 0.85}€ !");
+            else if (this.user.fidelite == "Bronze") MessageBox.Show($"Nouveau prix grâce à la fidélité Or : {this.currentBouquetPrice}€ -> {this.currentBouquetPrice * 0.95}€ !");
 
             // Création entité arrangement_floral
             string queryCreateArrangementFloral;
@@ -345,6 +352,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                                             createCustomParameter("@shopName", this.shopComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
             command.ExecuteNonQuery();
             MessageBox.Show("Commande passée ! Merci beaucoup :)");
+            updateFidelity();
             this.isUserActionClose = true;
             this.Hide();
             DashboardForm df = new DashboardForm(this.fromAdmin ? new User("admin", "", "", "", "", "", "", "", true) :
@@ -371,6 +379,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.bouquetPersoFlowLayoutPanel.Controls.Add(itemButton);
                 this.currentBouquetPrice += getAccessoryPrice(this.inStockAccessoryComboBox.Text.Split(" | ")[0]);
                 this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+                this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
             }
         }
 
@@ -392,6 +401,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.bouquetPersoFlowLayoutPanel.Controls.Add(itemButton);
                 this.currentBouquetPrice += getFlowerPrice(this.inStockFlowerComboBox.Text.Split(" | ")[0]);
                 this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+                this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
             }
         }
 
@@ -405,6 +415,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 getFlowerPrice(getItemNameFromImageName(buttonName[0])) :
                 getAccessoryPrice(getItemNameFromImageName(buttonName[0]));
             this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
         }
 
         private void datePicker_ValueChanged(object sender, EventArgs e)
@@ -850,7 +861,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         public void updateItemStock(string shopName, string itemName = "", string itemTable = "", int itemId = 0, int quantity = 1)
         {
             MySqlParameter shop = createCustomParameter("@shopName", shopName, MySqlDbType.VarChar);
-            if(itemTable == "stockBouquet")
+            if (itemTable == "stockBouquet")
             {
                 string queryUpdateBouquetStock = $"UPDATE stockBouquet SET quantite = quantite - {quantity} WHERE " +
                                                  $"nomBouquet = @itemName AND nomMagasin = @shopName;";
@@ -865,6 +876,55 @@ namespace BDD_Projet_Balian_Mathias_TDB
             MySqlCommand comand = new MySqlCommand(queryUpdateItemStock, connection);
             comand.Parameters.Add(shop);
             comand.ExecuteNonQuery();
+        }
+
+
+        private string getFidelity()
+        {
+            string queryGetFidelity = "SELECT fidelite FROM client WHERE email = @userEmail;";
+            MySqlCommand command = new MySqlCommand(queryGetFidelity, connection);
+            addParametersToCommand(command, createCustomParameter("@userEmail", this.user.email, MySqlDbType.VarChar));
+            MySqlDataReader reader = command.ExecuteReader();
+            string fidelity = "";
+            if (reader.Read())
+            {
+                fidelity = reader.GetString(0);
+                reader.Close();
+                return fidelity;
+            }
+            reader.Close();
+            return fidelity;
+        }
+
+
+        private void updateFidelity()
+        {
+            string queryGetFidelity = "SELECT count(email) FROM commande WHERE email = @userEmail;";
+            MySqlCommand command = new MySqlCommand(queryGetFidelity, connection);
+            addParametersToCommand(command, createCustomParameter("@userEmail", this.user.email, MySqlDbType.VarChar));
+            MySqlDataReader reader = command.ExecuteReader();
+            int ordersAmount = 0;
+            if (reader.Read())
+            {
+                ordersAmount = reader.GetInt32(0);
+            }
+            reader.Close();
+
+            string queryUpdateFidelity = "";
+            if (ordersAmount >= 5)
+            {
+                queryUpdateFidelity = "UPDATE client SET fidelite = 'Or' WHERE email = @userEmail;";
+                this.user.fidelite = "Or";
+            }
+            else if (ordersAmount >= 2)
+            {
+                queryUpdateFidelity = "UPDATE client SET fidelite = 'Bronze' WHERE email = @userEmail;";
+                this.user.fidelite = "Bronze";
+            }
+            command.Parameters.Clear();
+            command.CommandText = queryUpdateFidelity;
+            addParametersToCommand(command, createCustomParameter("@userEmail", this.user.email, MySqlDbType.VarChar));
+            command.ExecuteNonQuery();
         }
 
         #endregion

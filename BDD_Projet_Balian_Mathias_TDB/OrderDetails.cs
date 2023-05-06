@@ -16,13 +16,22 @@ namespace BDD_Projet_Balian_Mathias_TDB
     public partial class OrderDetails : Form
     {
         private int orderId;
-        private float totalPrice;
+        private double totalPrice;
+        private string fidelity;
 
         public OrderDetails(int orderId)
         {
             InitializeComponent();
             this.orderId = orderId;
             this.totalPrice = 0;
+            string queryGetClientFidelity = $"SELECT fidelite FROM commande NATURAL JOIN client WHERE idCommande = {this.orderId};";
+            MySqlCommand command = new MySqlCommand(queryGetClientFidelity, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                this.fidelity = reader.GetString(0);
+            }
+            reader.Close();
             getOrderDetails();
         }
 
@@ -73,7 +82,22 @@ namespace BDD_Projet_Balian_Mathias_TDB
                     this.bouquetPersoLayoutPanel.Location = originalBouquetPersoLayoutPanelCoords;
             }
 
+            if(this.fidelity == "Or")
+            {
+                this.totalPrice *= 0.85;
+                this.fidelityLabel.Text = "15% de réduction grâce à la fidélité Or.";
+                this.fidelityLabel.Visible = true;
+            }
+            else if(this.fidelity == "Bronze")
+            {
+                this.totalPrice *= 0.95;
+                this.fidelityLabel.Text = "5% de réduction grâce à la fidélité Bronze.";
+                this.fidelityLabel.Visible = true;
+            }
             this.totalPriceLabel.Text = $"Pour un total de {this.totalPrice}€";
+            this.totalPriceLabel.Left = (this.ClientSize.Width - this.totalPriceLabel.Width) / 2;
+            this.fidelityLabel.Left = (this.ClientSize.Width - this.fidelityLabel.Width) / 2;
+
 
             // Adresse de livraison et message floral
             string queryGetAdressAndMessage = $"SELECT adresseLivraison, messageFloral FROM commande WHERE idCommande = {this.orderId};";

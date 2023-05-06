@@ -37,6 +37,7 @@
             deliveryAdressLabel = new Label();
             messageLabel = new Label();
             bouquetPersoLayoutPanel = new FlowLayoutPanel();
+            fidelityLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)bouquetStandardPictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -110,7 +111,7 @@
             // 
             deliveryAdressLabel.AutoSize = true;
             deliveryAdressLabel.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
-            deliveryAdressLabel.Location = new Point(617, 545);
+            deliveryAdressLabel.Location = new Point(617, 567);
             deliveryAdressLabel.Name = "deliveryAdressLabel";
             deliveryAdressLabel.Size = new Size(149, 25);
             deliveryAdressLabel.TabIndex = 27;
@@ -121,7 +122,7 @@
             // 
             messageLabel.AutoSize = true;
             messageLabel.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
-            messageLabel.Location = new Point(575, 591);
+            messageLabel.Location = new Point(575, 609);
             messageLabel.Name = "messageLabel";
             messageLabel.Size = new Size(232, 25);
             messageLabel.TabIndex = 28;
@@ -137,12 +138,23 @@
             bouquetPersoLayoutPanel.TabIndex = 29;
             bouquetPersoLayoutPanel.Visible = false;
             // 
+            // fidelityLabel
+            // 
+            fidelityLabel.AutoSize = true;
+            fidelityLabel.Location = new Point(543, 530);
+            fidelityLabel.Name = "fidelityLabel";
+            fidelityLabel.Size = new Size(297, 20);
+            fidelityLabel.TabIndex = 30;
+            fidelityLabel.Text = "XX% de réduction grâce à la fidélité Bronze";
+            fidelityLabel.Visible = false;
+            // 
             // OrderDetails
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1382, 653);
+            Controls.Add(fidelityLabel);
             Controls.Add(bouquetPersoLayoutPanel);
             Controls.Add(messageLabel);
             Controls.Add(deliveryAdressLabel);
@@ -170,5 +182,6 @@
         private Label deliveryAdressLabel;
         private Label messageLabel;
         private FlowLayoutPanel bouquetPersoLayoutPanel;
+        private Label fidelityLabel;
     }
 }
