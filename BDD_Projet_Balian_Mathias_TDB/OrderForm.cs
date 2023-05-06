@@ -798,7 +798,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// <param name="itemName">Nom de l'item</param>
         /// <param name="itemTable">Nom de la table</param>
         /// <returns>L'id de l'item</returns>
-        private int getItemIdFromName(string itemName, string itemTable)
+        public static int getItemIdFromName(string itemName, string itemTable)
         {
             string queryGetItemIdFromName = $"SELECT id{itemTable} FROM {itemTable} WHERE nom{itemTable} = @itemName";
             MySqlCommand command = new MySqlCommand(queryGetItemIdFromName, connection);
@@ -847,12 +847,12 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// <param name="itemTable">Paramètre facultatif représentant le nom de la table de l'item (fleur ou accessoire)</param>
         /// <param name="itemId">Paramètre facultatif représentant l'id de l'item</param>
         /// <param name="quantity">Paramètre facultatif représentant la quantité de l'item commandé</param>
-        private void updateItemStock(string shopName, string itemName = "", string itemTable = "", int itemId = 0, int quantity = 0)
+        public void updateItemStock(string shopName, string itemName = "", string itemTable = "", int itemId = 0, int quantity = 1)
         {
             MySqlParameter shop = createCustomParameter("@shopName", shopName, MySqlDbType.VarChar);
             if(itemTable == "stockBouquet")
             {
-                string queryUpdateBouquetStock = "UPDATE stockBouquet SET quantite = quantite - 1 WHERE " +
+                string queryUpdateBouquetStock = $"UPDATE stockBouquet SET quantite = quantite - {quantity} WHERE " +
                                                  $"nomBouquet = @itemName AND nomMagasin = @shopName;";
                 MySqlCommand command = new MySqlCommand(queryUpdateBouquetStock, connection);
                 addParametersToCommand(command, shop, createCustomParameter("@itemName", itemName, MySqlDbType.VarChar));

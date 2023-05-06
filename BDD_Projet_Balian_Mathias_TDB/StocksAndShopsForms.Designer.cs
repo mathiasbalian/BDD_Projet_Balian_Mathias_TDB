@@ -41,6 +41,10 @@
             selectProductLabel = new Label();
             allProductsComboBox = new ComboBox();
             stocksAndShopsGridView = new DataGridView();
+            addNewShopCheckBox = new CheckBox();
+            shopNameTextBox = new TextBox();
+            shopCityTextBox = new TextBox();
+            addShopButton = new Button();
             ((System.ComponentModel.ISupportInitialize)stocksAndShopsGridView).BeginInit();
             SuspendLayout();
             // 
@@ -179,16 +183,65 @@
             stocksAndShopsGridView.AllowUserToAddRows = false;
             stocksAndShopsGridView.AllowUserToDeleteRows = false;
             stocksAndShopsGridView.AllowUserToResizeColumns = false;
+            stocksAndShopsGridView.AllowUserToResizeRows = false;
             stocksAndShopsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             stocksAndShopsGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             stocksAndShopsGridView.BackgroundColor = SystemColors.ControlLight;
             stocksAndShopsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             stocksAndShopsGridView.Location = new Point(325, 268);
             stocksAndShopsGridView.Name = "stocksAndShopsGridView";
+            stocksAndShopsGridView.ReadOnly = true;
             stocksAndShopsGridView.RowHeadersWidth = 51;
             stocksAndShopsGridView.RowTemplate.Height = 29;
             stocksAndShopsGridView.Size = new Size(1132, 258);
             stocksAndShopsGridView.TabIndex = 46;
+            stocksAndShopsGridView.CellContentClick += stocksAndShopsGridView_CellContentClick;
+            // 
+            // addNewShopCheckBox
+            // 
+            addNewShopCheckBox.AutoSize = true;
+            addNewShopCheckBox.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            addNewShopCheckBox.Location = new Point(326, 559);
+            addNewShopCheckBox.Name = "addNewShopCheckBox";
+            addNewShopCheckBox.Size = new Size(254, 27);
+            addNewShopCheckBox.TabIndex = 47;
+            addNewShopCheckBox.Text = "Ajouter un nouveau magasin";
+            addNewShopCheckBox.UseVisualStyleBackColor = true;
+            addNewShopCheckBox.CheckedChanged += addNewShopCheckBox_CheckedChanged;
+            // 
+            // shopNameTextBox
+            // 
+            shopNameTextBox.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            shopNameTextBox.Location = new Point(325, 602);
+            shopNameTextBox.Name = "shopNameTextBox";
+            shopNameTextBox.PlaceholderText = "Nom du magasin";
+            shopNameTextBox.Size = new Size(255, 31);
+            shopNameTextBox.TabIndex = 48;
+            shopNameTextBox.Visible = false;
+            // 
+            // shopCityTextBox
+            // 
+            shopCityTextBox.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            shopCityTextBox.Location = new Point(326, 649);
+            shopCityTextBox.Name = "shopCityTextBox";
+            shopCityTextBox.PlaceholderText = "Ville du magasin";
+            shopCityTextBox.Size = new Size(255, 31);
+            shopCityTextBox.TabIndex = 49;
+            shopCityTextBox.Visible = false;
+            // 
+            // addShopButton
+            // 
+            addShopButton.BackColor = Color.Linen;
+            addShopButton.Cursor = Cursors.Hand;
+            addShopButton.FlatStyle = FlatStyle.Flat;
+            addShopButton.Location = new Point(325, 695);
+            addShopButton.Name = "addShopButton";
+            addShopButton.Size = new Size(126, 33);
+            addShopButton.TabIndex = 50;
+            addShopButton.Text = "Ajouter";
+            addShopButton.UseVisualStyleBackColor = false;
+            addShopButton.Visible = false;
+            addShopButton.Click += addShopButton_Click;
             // 
             // StocksAndShopsForms
             // 
@@ -196,6 +249,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
+            Controls.Add(addShopButton);
+            Controls.Add(shopCityTextBox);
+            Controls.Add(shopNameTextBox);
+            Controls.Add(addNewShopCheckBox);
             Controls.Add(stocksAndShopsGridView);
             Controls.Add(selectShopLabel);
             Controls.Add(allShopsComboBox);
@@ -211,6 +268,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Application fleurs";
             FormClosing += StocksAndShopsForms_FormClosing;
+            Load += StocksAndShopsForms_Load;
             ((System.ComponentModel.ISupportInitialize)stocksAndShopsGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -230,5 +288,9 @@
         private Label selectProductLabel;
         private ComboBox allProductsComboBox;
         private DataGridView stocksAndShopsGridView;
+        private CheckBox addNewShopCheckBox;
+        private TextBox shopNameTextBox;
+        private TextBox shopCityTextBox;
+        private Button addShopButton;
     }
 }
