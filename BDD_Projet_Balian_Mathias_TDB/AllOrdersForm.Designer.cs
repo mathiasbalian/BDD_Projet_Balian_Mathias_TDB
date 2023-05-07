@@ -133,7 +133,7 @@
             clientsOrdersLabel.RightToLeft = RightToLeft.No;
             clientsOrdersLabel.Size = new Size(1132, 89);
             clientsOrdersLabel.TabIndex = 22;
-            clientsOrdersLabel.Text = "Commandes clients";
+            clientsOrdersLabel.Text = "Commandes de tous les clients";
             clientsOrdersLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // allClientsComboBox

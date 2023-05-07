@@ -79,6 +79,7 @@
             orderButton = new Button();
             dropdownTimer = new System.Windows.Forms.Timer(components);
             administrationPanel = new Panel();
+            clientsButton = new Button();
             statisticsButton = new Button();
             adminOrdersButton = new Button();
             stocksAndShopsButton = new Button();
@@ -283,7 +284,7 @@
             productsPanel.Controls.Add(bouquetsButton);
             productsPanel.Controls.Add(grosMerciButton);
             productsPanel.Controls.Add(productsButton);
-            productsPanel.Location = new Point(29, 166);
+            productsPanel.Location = new Point(29, 171);
             productsPanel.Margin = new Padding(0);
             productsPanel.Name = "productsPanel";
             productsPanel.Size = new Size(1725, 690);
@@ -671,7 +672,7 @@
             productsButton.FlatAppearance.BorderSize = 0;
             productsButton.FlatStyle = FlatStyle.Flat;
             productsButton.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            productsButton.Location = new Point(1, -2);
+            productsButton.Location = new Point(-2, -3);
             productsButton.Name = "productsButton";
             productsButton.Size = new Size(1725, 70);
             productsButton.TabIndex = 0;
@@ -704,14 +705,30 @@
             // administrationPanel
             // 
             administrationPanel.BorderStyle = BorderStyle.FixedSingle;
+            administrationPanel.Controls.Add(clientsButton);
             administrationPanel.Controls.Add(statisticsButton);
             administrationPanel.Controls.Add(adminOrdersButton);
             administrationPanel.Controls.Add(stocksAndShopsButton);
             administrationPanel.Location = new Point(1410, 165);
             administrationPanel.Name = "administrationPanel";
-            administrationPanel.Size = new Size(171, 149);
+            administrationPanel.Size = new Size(171, 193);
             administrationPanel.TabIndex = 8;
             administrationPanel.Visible = false;
+            // 
+            // clientsButton
+            // 
+            clientsButton.BackColor = SystemColors.ButtonFace;
+            clientsButton.Cursor = Cursors.Hand;
+            clientsButton.FlatAppearance.BorderSize = 0;
+            clientsButton.FlatStyle = FlatStyle.Flat;
+            clientsButton.Location = new Point(-2, 148);
+            clientsButton.Margin = new Padding(0);
+            clientsButton.Name = "clientsButton";
+            clientsButton.Size = new Size(171, 44);
+            clientsButton.TabIndex = 7;
+            clientsButton.Text = "Clients";
+            clientsButton.UseVisualStyleBackColor = false;
+            clientsButton.Click += clientsButton_Click;
             // 
             // statisticsButton
             // 
@@ -840,5 +857,6 @@
         private Button statisticsButton;
         private Button adminOrdersButton;
         private Button stocksAndShopsButton;
+        private Button clientsButton;
     }
 }

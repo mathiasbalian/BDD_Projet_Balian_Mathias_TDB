@@ -116,6 +116,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             string queryDeleteOrder = $"DELETE FROM commande WHERE idCommande = {this.orderIdDeleteNumericBox.Value};";
             MySqlCommand command = new MySqlCommand(queryDeleteOrder, connection);
             command.ExecuteNonQuery();
+
             MessageBox.Show("Commande supprimée");
             getOrders(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text),
                             this.allShopsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allShopsComboBox.Text));

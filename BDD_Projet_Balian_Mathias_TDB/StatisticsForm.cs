@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace BDD_Projet_Balian_Mathias_TDB
 {
-    public partial class StatisticsForms : Form
+    public partial class StatisticsForm : Form
     {
-        public StatisticsForms()
+        public StatisticsForm()
         {
             InitializeComponent();
         }

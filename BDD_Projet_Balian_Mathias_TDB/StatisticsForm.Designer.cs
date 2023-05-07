@@ -1,6 +1,6 @@
 ﻿namespace BDD_Projet_Balian_Mathias_TDB
 {
-    partial class StatisticsForms
+    partial class StatisticsForm
     {
         /// <summary>
         /// Required designer variable.

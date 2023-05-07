@@ -1,6 +1,6 @@
 ﻿namespace BDD_Projet_Balian_Mathias_TDB
 {
-    partial class StocksAndShopsForms
+    partial class StocksAndShopsForm
     {
         /// <summary>
         /// Required designer variable.

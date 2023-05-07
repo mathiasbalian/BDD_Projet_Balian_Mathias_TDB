@@ -16,7 +16,7 @@ using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace BDD_Projet_Balian_Mathias_TDB
 {
-    public partial class StocksAndShopsForms : Form
+    public partial class StocksAndShopsForm : Form
     {
         private User user;
         private bool isUserActionClose = false; // Pour vérifier si le form est fermé à partir 
@@ -38,7 +38,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
-        public StocksAndShopsForms(User user, DateTime date)
+        public StocksAndShopsForm(User user, DateTime date)
         {
             InitializeComponent();
             this.user = user;
@@ -163,7 +163,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void addShopButton_Click(object sender, EventArgs e)
         {
-            string table;
             string queryAddProduct = $"INSERT INTO magasin VALUES (@shopName, @shopCity);";
             MySqlCommand command = new MySqlCommand(queryAddProduct, connection);
             addParametersToCommand(command, createCustomParameter("@shopName", this.shopNameTextBox.Text, MySqlDbType.VarChar),

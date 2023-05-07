@@ -211,7 +211,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.isUserActionClose = true;
             this.Hide();
-            StatisticsForms sf = new StatisticsForms();
+            StatisticsForm sf = new StatisticsForm();
             sf.Show();
             this.Close();
         }
@@ -231,8 +231,17 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.isUserActionClose = true;
             this.Hide();
-            StocksAndShopsForms sasf = new StocksAndShopsForms(this.user, this.datePicker.Value);
+            StocksAndShopsForm sasf = new StocksAndShopsForm(this.user, this.datePicker.Value);
             sasf.Show();
+            this.Close();
+        }
+
+        private void clientsButton_Click(object sender, EventArgs e)
+        {
+            this.isUserActionClose = true;
+            this.Hide();
+            AllClientsForm acf = new AllClientsForm(this.user, this.datePicker.Value);
+            acf.Show();
             this.Close();
         }
     }
