@@ -41,6 +41,7 @@
             myOrdersButton = new Button();
             userButton = new Button();
             orderDetailsPanel = new Panel();
+            fidelityLabel = new Label();
             requiredDeliveryAdressPictureBox = new PictureBox();
             requiredCustomItemPictureBox = new PictureBox();
             requiredBouquetStandardPictureBox = new PictureBox();
@@ -224,6 +225,7 @@
             // orderDetailsPanel
             // 
             orderDetailsPanel.BackColor = SystemColors.Window;
+            orderDetailsPanel.Controls.Add(fidelityLabel);
             orderDetailsPanel.Controls.Add(requiredDeliveryAdressPictureBox);
             orderDetailsPanel.Controls.Add(requiredCustomItemPictureBox);
             orderDetailsPanel.Controls.Add(requiredBouquetStandardPictureBox);
@@ -253,6 +255,15 @@
             orderDetailsPanel.Padding = new Padding(30);
             orderDetailsPanel.Size = new Size(1130, 773);
             orderDetailsPanel.TabIndex = 19;
+            // 
+            // fidelityLabel
+            // 
+            fidelityLabel.AutoSize = true;
+            fidelityLabel.Location = new Point(540, 535);
+            fidelityLabel.Name = "fidelityLabel";
+            fidelityLabel.Size = new Size(50, 20);
+            fidelityLabel.TabIndex = 45;
+            fidelityLabel.Text = "label2";
             // 
             // requiredDeliveryAdressPictureBox
             // 
@@ -586,5 +597,6 @@
         private PictureBox requiredBouquetStandardPictureBox;
         private PictureBox requiredCustomItemPictureBox;
         private PictureBox requiredDeliveryAdressPictureBox;
+        private Label fidelityLabel;
     }
 }

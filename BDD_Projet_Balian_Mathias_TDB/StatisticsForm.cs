@@ -28,6 +28,12 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.dateTimer.Start(); // Lancement du timer pour le défilement de la date
             getBestMonthClient();
             getBestYearClient();
+            getAverageOrderPrice();
+            getMostFamousBouquetStandard();
+            getMostCAShop();
+            getMostOrderedFlower();
+            this.checkedListBox1.Items.Add("salmt");
+            this.checkedListBox1.Items.Add("bonjour");
         }
 
 
@@ -91,6 +97,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         #region Méthodes utiles
 
+
         private void getBestMonthClient()
         {
             this.trueBestMonthClientLabel.Text = "";
@@ -107,7 +114,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
             reader.Close();
             this.trueBestMonthClientLabel.Text = this.trueBestMonthClientLabel.Text.Remove(this.trueBestMonthClientLabel.Text.Length - 3, 2);
         }
-        
+
+
 
         private void getBestYearClient()
         {
@@ -126,6 +134,91 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.trueBestYearClientLabel.Text = this.trueBestYearClientLabel.Text.Remove(this.trueBestYearClientLabel.Text.Length - 3, 2);
         }
 
+
+
+        private void getAverageOrderPrice()
+        {
+            string queryGetAverageOrderPrice = "SELECT avg(prixTotal) FROM commande;";
+            MySqlCommand command = new MySqlCommand(queryGetAverageOrderPrice, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            if (reader.Read() && !reader.IsDBNull(0))
+            {
+                this.trueAverageOrderPriceLabel.Text = $"{Decimal.Round(reader.GetDecimal(0), 2)}€";
+            }
+            reader.Close();
+        }
+
+
+
+        private void getMostCAShop()
+        {
+            string queryGetMostCAShop = "SELECT nomMagasin, ville FROM commande NATURAL JOIN magasin " +
+                "GROUP BY nomMagasin, ville HAVING sum(prixTotal) >= all(SELECT sum(prixTotal) " +
+                "FROM commande GROUP BY nomMagasin);";
+            MySqlCommand command = new MySqlCommand(queryGetMostCAShop, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if (!reader.IsDBNull(0))
+                {
+                    this.trueMostCAShopLabel.Text = $"{reader.GetString(0)} | {reader.GetString(1)}";
+                }
+            }
+            reader.Close();
+        }
+
+
+
+        private void getMostFamousBouquetStandard()
+        {
+            string queryGetMostFamousBouquetStandard = "SELECT nomBouquet FROM commande NATURAL JOIN arrangementFloral " +
+                "GROUP BY nomBouquet HAVING " +
+                "count(nomBouquet) >= all(SELECT count(nomBouquet) FROM commande NATURAL JOIN arrangementFloral GROUP BY nomBouquet); ";
+            MySqlCommand command = new MySqlCommand(queryGetMostFamousBouquetStandard, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if (!reader.IsDBNull(0))
+                {
+                    this.trueMostFamousBouquetStandardLabel.Text = reader.GetString(0);
+                    this.mostFamousBouquetStandardPictureBox.Visible = true;
+                    this.trueMostFamousBouquetStandardLabel.Visible = true;
+                }
+            }
+            reader.Close();
+            this.mostFamousBouquetStandardPictureBox.BackgroundImage =
+                Properties.Resources.ResourceManager.GetObject(OrderForm.getImageNameFromItemName(this.trueMostFamousBouquetStandardLabel.Text)) as Image;
+        }
+
+
+        private void getMostOrderedFlower()
+        {
+            string queryGetMostOrderedFlower = "SELECT nomFleur FROM bouquetpersocontientfleur NATURAL JOIN fleur " +
+                "GROUP BY nomFleur " +
+                "HAVING sum(quantiteFleur) >= all(SELECT sum(quantiteFleur) FROM bouquetpersocontientfleur NATURAL JOIN fleur GROUP BY nomFleur);";
+            MySqlCommand command = new MySqlCommand(queryGetMostOrderedFlower, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if (!reader.IsDBNull(0))
+                {
+                    this.trueMostOrderedFlowerLabel.Text = reader.GetString(0);
+                    this.trueMostOrderedFlowerLabel.Visible = true;
+                    this.mostOrderedFlowerPictureBox.Visible = true;
+                }
+            }
+            reader.Close();
+            this.mostOrderedFlowerPictureBox.BackgroundImage =
+                Properties.Resources.ResourceManager.GetObject(OrderForm.getImageNameFromItemName(this.trueMostOrderedFlowerLabel.Text)) as Image;
+        }
+
         #endregion
+
+        private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            CheckedListBox box = (CheckedListBox)sender;
+            this.checkedListBox1.Items.Remove("");
+            MessageBox.Show(box.Text);
+        }
     }
 }

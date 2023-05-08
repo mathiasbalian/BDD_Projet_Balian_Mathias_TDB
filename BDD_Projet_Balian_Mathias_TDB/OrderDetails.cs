@@ -16,7 +16,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
     public partial class OrderDetails : Form
     {
         private int orderId;
-        private double totalPrice;
+        private decimal totalPrice;
         private string fidelity;
 
         public OrderDetails(int orderId)
@@ -59,10 +59,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.bouquetStandardPictureBox.Visible = true;
                 this.bouquetStandardPictureBox.BackgroundImage = Properties.Resources.ResourceManager.
                                                                  GetObject(OrderForm.getImageNameFromItemName(isBouquetAndName.bouquetStandardName)) as Image;
-
-                // Prix du bouquet
-                this.totalPrice = getBouquetStandardPrice(isBouquetAndName.bouquetStandardName);
-                this.totalPriceLabel.Left = (this.ClientSize.Width - this.totalPriceLabel.Width) / 2;
             }
             else // Si c'est un bouquet personnalisé
             {
@@ -84,17 +80,26 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             if(this.fidelity == "Or")
             {
-                this.totalPrice *= 0.85;
                 this.fidelityLabel.Text = "15% de réduction grâce à la fidélité Or.";
                 this.fidelityLabel.Visible = true;
             }
             else if(this.fidelity == "Bronze")
             {
-                this.totalPrice *= 0.95;
                 this.fidelityLabel.Text = "5% de réduction grâce à la fidélité Bronze.";
                 this.fidelityLabel.Visible = true;
             }
-            this.totalPriceLabel.Text = $"Pour un total de {this.totalPrice}€";
+
+            // On obtient le prix de la commande
+            string queryGetOrderPrice = $"SELECT prixTotal FROM commande WHERE idCommande = {this.orderId};";
+            MySqlCommand commandGetOrderPrice = new MySqlCommand(queryGetOrderPrice, connection);
+            MySqlDataReader mySqlDataReader = commandGetOrderPrice.ExecuteReader();
+            if(mySqlDataReader.Read() && !mySqlDataReader.IsDBNull(0))
+            {
+                this.totalPrice = mySqlDataReader.GetDecimal(0);
+            }
+            mySqlDataReader.Close();
+
+            this.totalPriceLabel.Text = $"Pour un total de {Decimal.Round((decimal)this.totalPrice, 2)}€";
             this.totalPriceLabel.Left = (this.ClientSize.Width - this.totalPriceLabel.Width) / 2;
             this.fidelityLabel.Left = (this.ClientSize.Width - this.fidelityLabel.Width) / 2;
 
@@ -207,7 +212,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// <param name="tableName">Le nom de la table (accessoire ou fleur)</param>
         private void fillBouquetPersoLayoutPanel(string tableName)
         {
-            string queryGetItemsAndQuantities = $"SELECT nom{tableName}, quantite{tableName}, prix{tableName} from commande " +
+            string queryGetItemsAndQuantities = $"SELECT nom{tableName}, quantite{tableName} FROM commande " +
                     "NATURAL JOIN arrangementfloral NATURAL JOIN arrangementestcomposebouquetperso " +
                     $"NATURAL JOIN bouquetperso NATURAL JOIN bouquetpersocontient{tableName} " +
                     $"NATURAL JOIN {tableName} WHERE idCommande = {this.orderId};";
@@ -217,8 +222,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
             {
                 string nomItem = mySqlDataReader.GetString(0);
                 int quantiteItem = mySqlDataReader.GetInt32(1);
-                float prixItem = mySqlDataReader.GetFloat(2);
-                this.totalPrice += quantiteItem * prixItem;
                 for (int i = 0; i < quantiteItem; i++)
                 {
                     string imageName = OrderForm.getImageNameFromItemName(nomItem);

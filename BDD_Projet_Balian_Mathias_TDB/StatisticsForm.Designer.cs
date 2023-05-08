@@ -40,6 +40,22 @@
             trueBestMonthClientLabel = new Label();
             bestYearClientLabel = new Label();
             trueBestYearClientLabel = new Label();
+            averageOrderPriceLabel = new Label();
+            trueAverageOrderPriceLabel = new Label();
+            mostFamousBouquetStandardLabel = new Label();
+            trueMostFamousBouquetStandardLabel = new Label();
+            mostFamousBouquetStandardPictureBox = new PictureBox();
+            mostCAShopLabel = new Label();
+            trueMostCAShopLabel = new Label();
+            mostOrderedFlowerPictureBox = new PictureBox();
+            trueMostOrderedFlowerLabel = new Label();
+            mostOrderedFlowerLabel = new Label();
+            pictureBox1 = new PictureBox();
+            label1 = new Label();
+            label2 = new Label();
+            ((System.ComponentModel.ISupportInitialize)mostFamousBouquetStandardPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)mostOrderedFlowerPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // statisticsLabel
@@ -153,7 +169,7 @@
             // 
             bestYearClientLabel.AutoSize = true;
             bestYearClientLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
-            bestYearClientLabel.Location = new Point(32, 251);
+            bestYearClientLabel.Location = new Point(32, 248);
             bestYearClientLabel.Name = "bestYearClientLabel";
             bestYearClientLabel.Size = new Size(260, 23);
             bestYearClientLabel.TabIndex = 37;
@@ -163,11 +179,144 @@
             // 
             trueBestYearClientLabel.AutoSize = true;
             trueBestYearClientLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            trueBestYearClientLabel.Location = new Point(298, 251);
+            trueBestYearClientLabel.Location = new Point(298, 248);
             trueBestYearClientLabel.Name = "trueBestYearClientLabel";
             trueBestYearClientLabel.Size = new Size(54, 23);
             trueBestYearClientLabel.TabIndex = 38;
             trueBestYearClientLabel.Text = "Client";
+            // 
+            // averageOrderPriceLabel
+            // 
+            averageOrderPriceLabel.AutoSize = true;
+            averageOrderPriceLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
+            averageOrderPriceLabel.Location = new Point(32, 302);
+            averageOrderPriceLabel.Name = "averageOrderPriceLabel";
+            averageOrderPriceLabel.Size = new Size(243, 23);
+            averageOrderPriceLabel.TabIndex = 39;
+            averageOrderPriceLabel.Text = "Prix moyen des commandes :";
+            // 
+            // trueAverageOrderPriceLabel
+            // 
+            trueAverageOrderPriceLabel.AutoSize = true;
+            trueAverageOrderPriceLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            trueAverageOrderPriceLabel.Location = new Point(280, 302);
+            trueAverageOrderPriceLabel.Name = "trueAverageOrderPriceLabel";
+            trueAverageOrderPriceLabel.Size = new Size(38, 23);
+            trueAverageOrderPriceLabel.TabIndex = 40;
+            trueAverageOrderPriceLabel.Text = "Prix";
+            // 
+            // mostFamousBouquetStandardLabel
+            // 
+            mostFamousBouquetStandardLabel.AutoSize = true;
+            mostFamousBouquetStandardLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
+            mostFamousBouquetStandardLabel.Location = new Point(638, 194);
+            mostFamousBouquetStandardLabel.Name = "mostFamousBouquetStandardLabel";
+            mostFamousBouquetStandardLabel.Size = new Size(315, 23);
+            mostFamousBouquetStandardLabel.TabIndex = 41;
+            mostFamousBouquetStandardLabel.Text = "Bouquet standard le plus commandé :";
+            // 
+            // trueMostFamousBouquetStandardLabel
+            // 
+            trueMostFamousBouquetStandardLabel.AutoSize = true;
+            trueMostFamousBouquetStandardLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            trueMostFamousBouquetStandardLabel.Location = new Point(853, 409);
+            trueMostFamousBouquetStandardLabel.Name = "trueMostFamousBouquetStandardLabel";
+            trueMostFamousBouquetStandardLabel.Size = new Size(118, 23);
+            trueMostFamousBouquetStandardLabel.TabIndex = 42;
+            trueMostFamousBouquetStandardLabel.Text = "Nom bouquet";
+            trueMostFamousBouquetStandardLabel.Visible = false;
+            // 
+            // mostFamousBouquetStandardPictureBox
+            // 
+            mostFamousBouquetStandardPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            mostFamousBouquetStandardPictureBox.Location = new Point(638, 232);
+            mostFamousBouquetStandardPictureBox.Name = "mostFamousBouquetStandardPictureBox";
+            mostFamousBouquetStandardPictureBox.Size = new Size(200, 200);
+            mostFamousBouquetStandardPictureBox.TabIndex = 43;
+            mostFamousBouquetStandardPictureBox.TabStop = false;
+            mostFamousBouquetStandardPictureBox.Visible = false;
+            // 
+            // mostCAShopLabel
+            // 
+            mostCAShopLabel.AutoSize = true;
+            mostCAShopLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
+            mostCAShopLabel.Location = new Point(31, 356);
+            mostCAShopLabel.Name = "mostCAShopLabel";
+            mostCAShopLabel.Size = new Size(302, 23);
+            mostCAShopLabel.TabIndex = 44;
+            mostCAShopLabel.Text = "Magasin ayant réalisé le plus de CA :";
+            // 
+            // trueMostCAShopLabel
+            // 
+            trueMostCAShopLabel.AutoSize = true;
+            trueMostCAShopLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            trueMostCAShopLabel.Location = new Point(339, 356);
+            trueMostCAShopLabel.Name = "trueMostCAShopLabel";
+            trueMostCAShopLabel.Size = new Size(74, 23);
+            trueMostCAShopLabel.TabIndex = 45;
+            trueMostCAShopLabel.Text = "Magasin";
+            // 
+            // mostOrderedFlowerPictureBox
+            // 
+            mostOrderedFlowerPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            mostOrderedFlowerPictureBox.Location = new Point(1047, 232);
+            mostOrderedFlowerPictureBox.Name = "mostOrderedFlowerPictureBox";
+            mostOrderedFlowerPictureBox.Size = new Size(200, 200);
+            mostOrderedFlowerPictureBox.TabIndex = 48;
+            mostOrderedFlowerPictureBox.TabStop = false;
+            mostOrderedFlowerPictureBox.Visible = false;
+            // 
+            // trueMostOrderedFlowerLabel
+            // 
+            trueMostOrderedFlowerLabel.AutoSize = true;
+            trueMostOrderedFlowerLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            trueMostOrderedFlowerLabel.Location = new Point(1262, 409);
+            trueMostOrderedFlowerLabel.Name = "trueMostOrderedFlowerLabel";
+            trueMostOrderedFlowerLabel.Size = new Size(87, 23);
+            trueMostOrderedFlowerLabel.TabIndex = 47;
+            trueMostOrderedFlowerLabel.Text = "Nom fleur";
+            trueMostOrderedFlowerLabel.Visible = false;
+            // 
+            // mostOrderedFlowerLabel
+            // 
+            mostOrderedFlowerLabel.AutoSize = true;
+            mostOrderedFlowerLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
+            mostOrderedFlowerLabel.Location = new Point(1047, 194);
+            mostOrderedFlowerLabel.Name = "mostOrderedFlowerLabel";
+            mostOrderedFlowerLabel.Size = new Size(210, 23);
+            mostOrderedFlowerLabel.TabIndex = 46;
+            mostOrderedFlowerLabel.Text = "Fleur la plus commandée";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Location = new Point(1411, 232);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(200, 200);
+            pictureBox1.TabIndex = 51;
+            pictureBox1.TabStop = false;
+            pictureBox1.Visible = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(1626, 409);
+            label1.Name = "label1";
+            label1.Size = new Size(87, 23);
+            label1.TabIndex = 50;
+            label1.Text = "Nom fleur";
+            label1.Visible = false;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
+            label2.Location = new Point(1411, 194);
+            label2.Name = "label2";
+            label2.Size = new Size(210, 23);
+            label2.TabIndex = 49;
+            label2.Text = "Fleur la plus commandée";
             // 
             // StatisticsForm
             // 
@@ -175,6 +324,19 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
+            Controls.Add(pictureBox1);
+            Controls.Add(label1);
+            Controls.Add(label2);
+            Controls.Add(mostOrderedFlowerPictureBox);
+            Controls.Add(trueMostOrderedFlowerLabel);
+            Controls.Add(mostOrderedFlowerLabel);
+            Controls.Add(trueMostCAShopLabel);
+            Controls.Add(mostCAShopLabel);
+            Controls.Add(mostFamousBouquetStandardPictureBox);
+            Controls.Add(trueMostFamousBouquetStandardLabel);
+            Controls.Add(mostFamousBouquetStandardLabel);
+            Controls.Add(trueAverageOrderPriceLabel);
+            Controls.Add(averageOrderPriceLabel);
             Controls.Add(trueBestYearClientLabel);
             Controls.Add(bestYearClientLabel);
             Controls.Add(trueBestMonthClientLabel);
@@ -189,6 +351,9 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Application fleurs";
             FormClosing += StatisticsForm_FormClosing;
+            ((System.ComponentModel.ISupportInitialize)mostFamousBouquetStandardPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)mostOrderedFlowerPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -206,5 +371,18 @@
         private Label trueBestMonthClientLabel;
         private Label bestYearClientLabel;
         private Label trueBestYearClientLabel;
+        private Label averageOrderPriceLabel;
+        private Label trueAverageOrderPriceLabel;
+        private Label mostFamousBouquetStandardLabel;
+        private Label trueMostFamousBouquetStandardLabel;
+        private PictureBox mostFamousBouquetStandardPictureBox;
+        private Label mostCAShopLabel;
+        private Label trueMostCAShopLabel;
+        private PictureBox mostOrderedFlowerPictureBox;
+        private Label trueMostOrderedFlowerLabel;
+        private Label mostOrderedFlowerLabel;
+        private PictureBox pictureBox1;
+        private Label label1;
+        private Label label2;
     }
 }
