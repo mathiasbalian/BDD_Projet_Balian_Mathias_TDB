@@ -213,12 +213,5 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
         #endregion
-
-        private void checkedListBox1_SelectedValueChanged(object sender, EventArgs e)
-        {
-            CheckedListBox box = (CheckedListBox)sender;
-            this.checkedListBox1.Items.Remove("");
-            MessageBox.Show(box.Text);
-        }
     }
 }
