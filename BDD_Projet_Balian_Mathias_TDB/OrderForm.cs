@@ -88,7 +88,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.isUserActionClose = true;
             this.Hide();
-            DashboardForm df = new DashboardForm(this.user, this.datePicker.Value);
+            DashboardForm df = new DashboardForm(this.fromAdmin ? new User("admin", "admin", "admin", "admin", "9999", "admin", "9999", "", true) :
+                                                                  this.user, this.datePicker.Value);
             df.Show();
             this.Close();
         }
@@ -355,7 +356,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             updateFidelity();
             this.isUserActionClose = true;
             this.Hide();
-            DashboardForm df = new DashboardForm(this.fromAdmin ? new User("admin", "", "", "", "", "", "", "", true) :
+            DashboardForm df = new DashboardForm(this.fromAdmin ? new User("admin", "admin", "admin", "admin", "9999", "admin", "9999", "", true) :
                                                                   this.user, this.datePicker.Value);
             df.Show();
             this.Close();
@@ -915,16 +916,21 @@ namespace BDD_Projet_Balian_Mathias_TDB
             {
                 queryUpdateFidelity = "UPDATE client SET fidelite = 'Or' WHERE email = @userEmail;";
                 this.user.fidelite = "Or";
+                command.Parameters.Clear();
+                command.CommandText = queryUpdateFidelity;
+                addParametersToCommand(command, createCustomParameter("@userEmail", this.user.email, MySqlDbType.VarChar));
+                command.ExecuteNonQuery();
             }
             else if (ordersAmount >= 2)
             {
                 queryUpdateFidelity = "UPDATE client SET fidelite = 'Bronze' WHERE email = @userEmail;";
                 this.user.fidelite = "Bronze";
+                command.Parameters.Clear();
+                command.CommandText = queryUpdateFidelity;
+                addParametersToCommand(command, createCustomParameter("@userEmail", this.user.email, MySqlDbType.VarChar));
+                command.ExecuteNonQuery();
             }
-            command.Parameters.Clear();
-            command.CommandText = queryUpdateFidelity;
-            addParametersToCommand(command, createCustomParameter("@userEmail", this.user.email, MySqlDbType.VarChar));
-            command.ExecuteNonQuery();
+            
         }
 
         #endregion

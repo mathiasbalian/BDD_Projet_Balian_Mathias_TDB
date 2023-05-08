@@ -211,7 +211,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             this.isUserActionClose = true;
             this.Hide();
-            StatisticsForm sf = new StatisticsForm();
+            StatisticsForm sf = new StatisticsForm(this.user, this.datePicker.Value);
             sf.Show();
             this.Close();
         }

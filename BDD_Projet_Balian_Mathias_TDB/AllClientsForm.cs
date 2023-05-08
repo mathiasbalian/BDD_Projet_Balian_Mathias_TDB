@@ -19,6 +19,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         // du bouton "X"
         private bool dateTimerPaused = false;
 
+
         public AllClientsForm(User user, DateTime date)
         {
             InitializeComponent();
