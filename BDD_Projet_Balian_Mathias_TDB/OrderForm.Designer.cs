@@ -70,10 +70,10 @@
             shopComboBox = new ComboBox();
             orderDetailsLabel = new Label();
             compositionUnknownPanel = new Panel();
+            quickDescriptionLabel = new Label();
+            descriptionTextBox = new TextBox();
             budgetLabel = new Label();
             budgetUpDown = new NumericUpDown();
-            descriptionTextBox = new TextBox();
-            quickDescriptionLabel = new Label();
             userDropdown.SuspendLayout();
             orderDetailsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)requiredDeliveryAdressPictureBox).BeginInit();
@@ -299,7 +299,7 @@
             // 
             totalPriceBeforeDiscountLabel.AutoSize = true;
             totalPriceBeforeDiscountLabel.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
-            totalPriceBeforeDiscountLabel.Location = new Point(540, 465);
+            totalPriceBeforeDiscountLabel.Location = new Point(540, 437);
             totalPriceBeforeDiscountLabel.Name = "totalPriceBeforeDiscountLabel";
             totalPriceBeforeDiscountLabel.Size = new Size(0, 25);
             totalPriceBeforeDiscountLabel.TabIndex = 46;
@@ -595,6 +595,23 @@
             compositionUnknownPanel.TabIndex = 49;
             compositionUnknownPanel.Visible = false;
             // 
+            // quickDescriptionLabel
+            // 
+            quickDescriptionLabel.AutoSize = true;
+            quickDescriptionLabel.Location = new Point(20, 114);
+            quickDescriptionLabel.Name = "quickDescriptionLabel";
+            quickDescriptionLabel.Size = new Size(250, 40);
+            quickDescriptionLabel.TabIndex = 3;
+            quickDescriptionLabel.Text = "Donnez-nous une description rapide\r\nde ce que vous souhaitez !";
+            // 
+            // descriptionTextBox
+            // 
+            descriptionTextBox.Location = new Point(20, 159);
+            descriptionTextBox.Multiline = true;
+            descriptionTextBox.Name = "descriptionTextBox";
+            descriptionTextBox.Size = new Size(350, 135);
+            descriptionTextBox.TabIndex = 2;
+            // 
             // budgetLabel
             // 
             budgetLabel.AutoSize = true;
@@ -610,23 +627,6 @@
             budgetUpDown.Name = "budgetUpDown";
             budgetUpDown.Size = new Size(150, 27);
             budgetUpDown.TabIndex = 0;
-            // 
-            // descriptionTextBox
-            // 
-            descriptionTextBox.Location = new Point(20, 159);
-            descriptionTextBox.Multiline = true;
-            descriptionTextBox.Name = "descriptionTextBox";
-            descriptionTextBox.Size = new Size(350, 135);
-            descriptionTextBox.TabIndex = 2;
-            // 
-            // quickDescriptionLabel
-            // 
-            quickDescriptionLabel.AutoSize = true;
-            quickDescriptionLabel.Location = new Point(20, 114);
-            quickDescriptionLabel.Name = "quickDescriptionLabel";
-            quickDescriptionLabel.Size = new Size(250, 40);
-            quickDescriptionLabel.TabIndex = 3;
-            quickDescriptionLabel.Text = "Donnez-nous une description rapide\r\nde ce que vous souhaitez !";
             // 
             // OrderForm
             // 

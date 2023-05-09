@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using static BDD_Projet_Balian_Mathias_TDB.Program;
 
 namespace BDD_Projet_Balian_Mathias_TDB
@@ -32,6 +34,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             {
                 this.userDropdown.Height = 160;
                 this.administrationButton.Visible = true;
+                this.exportXmlButton.Visible = true;
             }
         }
 
@@ -243,6 +246,44 @@ namespace BDD_Projet_Balian_Mathias_TDB
             AllClientsForm acf = new AllClientsForm(this.user, this.datePicker.Value);
             acf.Show();
             this.Close();
+        }
+
+
+        private void exportXmlButton_Click(object sender, EventArgs e)
+        {
+            DateTime firstMonthDay = new DateTime(this.datePicker.Value.Year, this.datePicker.Value.Month, 1);
+            DateTime lastMonthDay = new DateTime(this.datePicker.Value.Year, this.datePicker.Value.Month, DateTime.DaysInMonth(this.datePicker.Value.Year, this.datePicker.Value.Month));
+
+            string queryGetAllClientsOrderedManyTimesInMonth = "SELECT email, nom, prenom, numTel, adresseFacturation, carteCredit, fidelite " +
+                "FROM commande NATURAL JOIN client WHERE DATEDIFF(dateCommande, @startMonthDate) >=0 " +
+                "AND DATEDIFF(dateCommande, @endMonthDate) <= 0 GROUP BY email HAVING count(email) >= 2;";
+            MySqlCommand command = new MySqlCommand(queryGetAllClientsOrderedManyTimesInMonth, connection);
+            addParametersToCommand(command, createCustomParameter("@startMonthDate", firstMonthDay.ToString("yyyy-MM-dd"), MySqlDbType.Date),
+                                            createCustomParameter("@endMonthDate", lastMonthDay.ToString("yyyy-MM-dd"), MySqlDbType.Date));
+            MySqlDataReader reader = command.ExecuteReader();
+
+            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+            xmlWriterSettings.NewLineOnAttributes = true;
+            xmlWriterSettings.Indent = true;
+            XmlWriter xmlDoc = XmlWriter.Create("clients_plus_de_deux_commandes_dans_mois.xml", xmlWriterSettings);
+            xmlDoc.WriteStartElement("clients");
+
+            while (reader.Read())
+            {
+                xmlDoc.WriteStartElement("client");
+                xmlDoc.WriteElementString("email", reader.GetString(0));
+                xmlDoc.WriteElementString("nom", reader.GetString(1));
+                xmlDoc.WriteElementString("prenom", reader.GetString(2));
+                xmlDoc.WriteElementString("numTel", reader.GetString(3));
+                xmlDoc.WriteElementString("adresseFacturation", reader.GetString(4));
+                xmlDoc.WriteElementString("carteCredit", reader.GetString(5));
+                xmlDoc.WriteElementString("fidelite", reader.GetString(6));
+                xmlDoc.WriteEndElement();
+            }
+            reader.Close();
+            xmlDoc.WriteEndElement();
+            xmlDoc.Close();
+            MessageBox.Show("Document XML exporté !");
         }
     }
 }

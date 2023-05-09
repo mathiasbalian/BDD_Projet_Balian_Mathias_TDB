@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            button1 = new Button();
             datePicker = new DateTimePicker();
             dateTimer = new System.Windows.Forms.Timer(components);
             pauseButton = new Button();
@@ -83,20 +82,11 @@
             statisticsButton = new Button();
             adminOrdersButton = new Button();
             stocksAndShopsButton = new Button();
+            exportXmlButton = new Button();
             userDropdown.SuspendLayout();
             productsPanel.SuspendLayout();
             administrationPanel.SuspendLayout();
             SuspendLayout();
-            // 
-            // button1
-            // 
-            button1.Location = new Point(1329, 13);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // datePicker
             // 
@@ -775,12 +765,28 @@
             stocksAndShopsButton.UseVisualStyleBackColor = false;
             stocksAndShopsButton.Click += stocksAndShopsButton_Click;
             // 
+            // exportXmlButton
+            // 
+            exportXmlButton.BackColor = Color.Linen;
+            exportXmlButton.Cursor = Cursors.Hand;
+            exportXmlButton.FlatStyle = FlatStyle.Flat;
+            exportXmlButton.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
+            exportXmlButton.Location = new Point(206, 15);
+            exportXmlButton.Name = "exportXmlButton";
+            exportXmlButton.Size = new Size(129, 27);
+            exportXmlButton.TabIndex = 38;
+            exportXmlButton.Text = "Exporter en XML";
+            exportXmlButton.UseVisualStyleBackColor = false;
+            exportXmlButton.Visible = false;
+            exportXmlButton.Click += exportXmlButton_Click;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
+            Controls.Add(exportXmlButton);
             Controls.Add(orderButton);
             Controls.Add(productsPanel);
             Controls.Add(userDropdown);
@@ -789,7 +795,6 @@
             Controls.Add(forwardButton);
             Controls.Add(pauseButton);
             Controls.Add(datePicker);
-            Controls.Add(button1);
             Controls.Add(administrationPanel);
             Name = "DashboardForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -803,8 +808,6 @@
         }
 
         #endregion
-
-        private Button button1;
         private DateTimePicker datePicker;
         private System.Windows.Forms.Timer dateTimer;
         private Button pauseButton;
@@ -858,5 +861,6 @@
         private Button adminOrdersButton;
         private Button stocksAndShopsButton;
         private Button clientsButton;
+        private Button exportXmlButton;
     }
 }

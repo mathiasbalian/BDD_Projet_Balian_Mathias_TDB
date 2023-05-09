@@ -270,6 +270,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.totalPriceBeforeDiscountLabel.Text = $"{this.bouquetPriceBeforeDiscount}€";
                 this.bouquetPriceAfterDiscount = Decimal.Round((decimal)bouquetStandardPrice * 0.95m, 2);
             }
+            else
+            {
+                this.bouquetPriceAfterDiscount = (decimal)bouquetStandardPrice;
+            }
 
             this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
             this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
@@ -295,7 +299,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             // Si l'utisateur n'a pas composé son bouquet (standard ou personnalisé)
             if ((this.bouquetStandardCheckBox.Checked && this.bouquetPanel.BackgroundImage == null) ||
-                (this.bouquetPersoCheckBox.Checked && (this.compositionKnownCheckBox.Checked && this.bouquetPersoFlowLayoutPanel.Controls.Count == 0)) || 
+                (this.bouquetPersoCheckBox.Checked && (this.compositionKnownCheckBox.Checked && this.bouquetPersoFlowLayoutPanel.Controls.Count == 0)) ||
                 (this.bouquetPersoCheckBox.Checked && (!this.compositionUnknownCheckBox.Checked && !this.compositionKnownCheckBox.Checked)))
             {
                 MessageBox.Show("Merci de choisir ou de composer votre bouquet");
@@ -303,9 +307,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
             }
 
             // Si l'utilisateur n'a pas donné de description pour son bouquet personnalisé
-            if(!this.compositionUnknownCheckBox.Checked && (this.descriptionTextBox.Text.Length == 0 || this.budgetUpDown.Value <= 0))
+            if (this.compositionUnknownCheckBox.Checked && (this.descriptionTextBox.Text.Length == 0 || this.budgetUpDown.Value <= 0))
             {
                 MessageBox.Show("Merci de bien vouloir donner une description de votre bouquet ainsi qu'un budget supérieur à 0€");
+                return;
             }
 
             // Si la date de livraison choisie par l'utilisateur est inférieure ou égale à la date actuelle
@@ -384,7 +389,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 command.CommandText = queryCreateBouquetPerso;
                 command.ExecuteNonQuery();
 
-                if(this.compositionKnownCheckBox.Checked)
+                if (this.compositionKnownCheckBox.Checked)
                 {
                     // Association entre bouquet perso et accessoires / fleurs
                     foreach (var (item, quantity) in orderedItemsAndQuantities)
@@ -431,7 +436,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                                                                       "@shopName);";
             command.CommandText = queryCreateCommand;
             command.Parameters.Clear();
-            
+
             addParametersToCommand(command, createCustomParameter("@orderDate", this.datePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Date),
                                             createCustomParameter("@deliveryAdress", this.deliveryAdressTextBox.Text, MySqlDbType.VarChar),
                                             createCustomParameter("@deliveryDate", this.deliveryDateTimePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Date),
@@ -478,6 +483,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
                     this.bouquetPriceBeforeDiscount += accessoryPrice;
                     this.bouquetPriceAfterDiscount += Decimal.Round((decimal)accessoryPrice * 0.95m, 2);
                 }
+                else
+                {
+                    this.bouquetPriceAfterDiscount += (decimal)accessoryPrice;
+                }
                 this.totalPriceBeforeDiscountLabel.Text = $"{this.bouquetPriceBeforeDiscount}€";
                 this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
                 this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
@@ -511,6 +520,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 {
                     this.bouquetPriceBeforeDiscount += flowerPrice;
                     this.bouquetPriceAfterDiscount += Decimal.Round((decimal)flowerPrice * 0.95m, 2);
+                }
+                else
+                {
+                    this.bouquetPriceAfterDiscount += (decimal)flowerPrice;
                 }
                 this.totalPriceBeforeDiscountLabel.Text = $"{this.bouquetPriceBeforeDiscount}€";
                 this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
@@ -556,11 +569,25 @@ namespace BDD_Projet_Balian_Mathias_TDB
                     this.bouquetPriceAfterDiscount -= Decimal.Round((decimal)accessoryPrice * 0.95m, 2);
                 }
             }
+            else
+            {
+                if (buttonName[1] == "fleur")
+                {
+                    float flowerPrice = getFlowerPrice(getItemNameFromImageName(buttonName[0]));
+                    this.bouquetPriceAfterDiscount -= (decimal)flowerPrice;
+                }
+                else
+                {
+                    float accessoryPrice = getAccessoryPrice(getItemNameFromImageName(buttonName[0]));
+                    this.bouquetPriceAfterDiscount -= (decimal)accessoryPrice;
+                }
+            }
             this.totalPriceBeforeDiscountLabel.Text = $"{this.bouquetPriceBeforeDiscount}€";
             this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
             this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
             this.totalPriceBeforeDiscountLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceBeforeDiscountLabel.Width) / 2;
         }
+
 
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
@@ -830,7 +857,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// Méthode permettant d'obtenir le prix de la fleur sélectionnée par l'utilisateur
         /// </summary>
         /// <returns>Le prix de la fleur</returns>
-        private float getFlowerPrice(string flowerName)
+        public static float getFlowerPrice(string flowerName)
         {
             string queryGetFlowerPrice = "SELECT prixFleur FROM fleur WHERE nomFleur = @flowerName;";
             MySqlCommand command = new MySqlCommand(queryGetFlowerPrice, connection);
@@ -852,7 +879,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// Méthode permettant d'obtenir le prix de l'accessoire sélectionné par l'utilisateur
         /// </summary>
         /// <returns>Le prix de l'accessoire</returns>
-        private float getAccessoryPrice(string accessoryName)
+        public static float getAccessoryPrice(string accessoryName)
         {
             string queryGetAccessoryPrice = "SELECT prixAccessoire FROM accessoire WHERE nomAccessoire = @accessoryName;";
             MySqlCommand command = new MySqlCommand(queryGetAccessoryPrice, connection);
@@ -1002,7 +1029,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// <param name="itemTable">Paramètre facultatif représentant le nom de la table de l'item (fleur ou accessoire)</param>
         /// <param name="itemId">Paramètre facultatif représentant l'id de l'item</param>
         /// <param name="quantity">Paramètre facultatif représentant la quantité de l'item commandé</param>
-        public void updateItemStock(string shopName, string itemName = "", string itemTable = "", int itemId = 0, int quantity = 1)
+        public static void updateItemStock(string shopName, string itemName = "", string itemTable = "", int itemId = 0, int quantity = 1)
         {
             MySqlParameter shop = createCustomParameter("@shopName", shopName, MySqlDbType.VarChar);
             if (itemTable == "stockBouquet")

@@ -91,9 +91,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             string queryUpdateOrders2 = "UPDATE commande SET etatCommande = etatCommande + 1 WHERE " +
                 "date_format(@currentDate, '%Y-%m-%d') >= date_format(dateLivraison, '%Y-%m-%d') AND " +
-                "etatCommande < 4;";
+                "etatCommande = @calOrderState;";
             command.CommandText = queryUpdateOrders2;
-            command.Parameters.Add(createCustomParameter("@currentDate", date.ToString("yyyy-MM-dd"), MySqlDbType.Date));
+            addParametersToCommand(command, createCustomParameter("@currentDate", date.ToString("yyyy-MM-dd"), MySqlDbType.Date),
+                                            createCustomParameter("@calOrderState", "CAL", MySqlDbType.VarChar));
             command.ExecuteNonQuery();
         }
     }

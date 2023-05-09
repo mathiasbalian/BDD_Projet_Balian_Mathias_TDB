@@ -45,6 +45,7 @@
             createCommandFromClientButton = new Button();
             selectShopLabel = new Label();
             allShopsComboBox = new ComboBox();
+            orderToCompleteCheckBox = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)clientOrdersGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)orderIdDeleteNumericBox).BeginInit();
             SuspendLayout();
@@ -240,12 +241,25 @@
             allShopsComboBox.TabIndex = 40;
             allShopsComboBox.SelectedValueChanged += allShopsComboBox_SelectedValueChanged;
             // 
+            // orderToCompleteCheckBox
+            // 
+            orderToCompleteCheckBox.AutoSize = true;
+            orderToCompleteCheckBox.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
+            orderToCompleteCheckBox.Location = new Point(325, 466);
+            orderToCompleteCheckBox.Name = "orderToCompleteCheckBox";
+            orderToCompleteCheckBox.Size = new Size(206, 27);
+            orderToCompleteCheckBox.TabIndex = 42;
+            orderToCompleteCheckBox.Text = "Commandes à finaliser";
+            orderToCompleteCheckBox.UseVisualStyleBackColor = true;
+            orderToCompleteCheckBox.CheckedChanged += orderToCompleteCheckBox_CheckedChanged;
+            // 
             // AllOrdersForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
+            Controls.Add(orderToCompleteCheckBox);
             Controls.Add(selectShopLabel);
             Controls.Add(allShopsComboBox);
             Controls.Add(createCommandFromClientButton);
@@ -265,6 +279,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Applications fleurs";
             FormClosing += AllOrdersForm_FormClosing;
+            Load += AllOrdersForm_Load;
             ((System.ComponentModel.ISupportInitialize)clientOrdersGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)orderIdDeleteNumericBox).EndInit();
             ResumeLayout(false);
@@ -280,7 +295,7 @@
         private System.Windows.Forms.Timer dateTimer;
         private Button returnButton;
         private Label clientsOrdersLabel;
-        private ComboBox allClientsComboBox;
+        public ComboBox allClientsComboBox;
         private Label selectClientLabel;
         private DataGridView clientOrdersGridView;
         private Label deleteOrderLabel;
@@ -288,6 +303,7 @@
         private Button deleteOrderButton;
         private Button createCommandFromClientButton;
         private Label selectShopLabel;
-        private ComboBox allShopsComboBox;
+        public ComboBox allShopsComboBox;
+        public CheckBox orderToCompleteCheckBox;
     }
 }

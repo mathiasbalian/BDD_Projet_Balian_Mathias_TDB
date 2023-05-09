@@ -28,9 +28,13 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.dateTimer.Start(); // Lancement du timer pour le défilement de la date
             getAllClients();
             getAllShops();
-            getOrders(true, true);
         }
 
+
+        private void AllOrdersForm_Load(object sender, EventArgs e)
+        {
+            getOrders(true, true);
+        }
 
         private void AllOrdersForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -92,22 +96,53 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        private void orderToCompleteCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.orderToCompleteCheckBox.Checked)
+            {
+                getOrdersToComplete(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text),
+                            this.allShopsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allShopsComboBox.Text));
+            }
+            else
+            {
+                getOrders(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text),
+                            this.allShopsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allShopsComboBox.Text));
+            }
+        }
+
+
         private void clientOrdersGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
 
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
-                OrderDetails od = new OrderDetails((int)this.clientOrdersGridView.Rows[e.RowIndex].Cells["idCommande"].Value);
-                od.Show();
+                if ((string)this.clientOrdersGridView.Rows[e.RowIndex].Cells["etatCommande"].Value == "CPAV")
+                {
+                    CompleteOrderForm cof = new CompleteOrderForm(this, (int)this.clientOrdersGridView.Rows[e.RowIndex].Cells["idCommande"].Value);
+                    cof.Show();
+                }
+                else
+                {
+                    OrderDetails od = new OrderDetails((int)this.clientOrdersGridView.Rows[e.RowIndex].Cells["idCommande"].Value);
+                    od.Show();
+                }
             }
         }
 
 
         private void allClientsComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            getOrders(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text),
+            if(this.orderToCompleteCheckBox.Checked)
+            {
+                getOrdersToComplete(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text),
                             this.allShopsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allShopsComboBox.Text));
+            }
+            else
+            {
+                getOrders(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text),
+                                this.allShopsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allShopsComboBox.Text));
+            }
         }
 
 
@@ -140,8 +175,16 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void allShopsComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            getOrders(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text),
+            if (this.orderToCompleteCheckBox.Checked)
+            {
+                getOrdersToComplete(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text),
                             this.allShopsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allShopsComboBox.Text));
+            }
+            else
+            {
+                getOrders(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text),
+                                this.allShopsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allShopsComboBox.Text));
+            }
         }
 
         #region Méthodes utiles
@@ -170,7 +213,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// les commandes d'un seul client</param>
         /// <param name="allShops">true Si on cherche les commandes passées dans tous les magasins, false si on cherche
         /// les commandes d'un seul magasin</param>
-        private void getOrders(bool allClients, bool allShops)
+        public void getOrders(bool allClients, bool allShops)
         {
             MySqlCommand command = new MySqlCommand("", connection);
             string queryGetOrders;
@@ -212,17 +255,30 @@ namespace BDD_Projet_Balian_Mathias_TDB
             if (this.clientOrdersGridView.Columns.Count == 6)
             {
                 DataGridViewButtonColumn dataGridViewButtonColumn = new DataGridViewButtonColumn();
-                dataGridViewButtonColumn.Text = "Détails commande";
-                dataGridViewButtonColumn.Name = "Détails";
+                dataGridViewButtonColumn.Name = "Actions";
                 dataGridViewButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dataGridViewButtonColumn.FlatStyle = FlatStyle.System;
                 dataGridViewButtonColumn.DefaultCellStyle.BackColor = Color.RoyalBlue;
-                dataGridViewButtonColumn.UseColumnTextForButtonValue = true;
 
                 this.clientOrdersGridView.Columns.Add(dataGridViewButtonColumn);
                 foreach (DataGridViewColumn column in this.clientOrdersGridView.Columns)
                 {
                     column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+            }
+
+            foreach (DataGridViewRow row in this.clientOrdersGridView.Rows)
+            {
+                if ((string)row.Cells["etatCommande"].Value == "CPAV")
+                {
+
+                    row.Cells["Actions"].Style.BackColor = Color.Red;
+                    row.Cells["Actions"].Value = (string)"FINALISER";
+                }
+                else
+                {
+                    row.Cells["Actions"].Value = (string)"Détails commande";
                 }
             }
         }
@@ -277,7 +333,81 @@ namespace BDD_Projet_Balian_Mathias_TDB
             return new User(email, password, lastName, firstName, phone, adress, creditCard, fidelite, email == "admin");
         }
 
+
+
+        public void getOrdersToComplete(bool allClients, bool allShops)
+        {
+            MySqlCommand command = new MySqlCommand("", connection);
+            string queryGetOrders;
+            if (allClients && allShops)
+            {
+                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande, nomMagasin " +
+                "FROM commande NATURAL JOIN client WHERE etatCommande = @orderState ORDER BY email;";
+                command.CommandText = queryGetOrders;
+            }
+            else if (allClients && !allShops)
+            {
+                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande, nomMagasin " +
+                    "FROM commande NATURAL JOIN client NATURAL JOIN magasin WHERE nomMagasin = @shopName AND etatCommande = @orderState" +
+                    " ORDER BY email;";
+                command.Parameters.Add(createCustomParameter("@shopName", this.allShopsComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
+                command.CommandText = queryGetOrders;
+            }
+            else if (!allClients && allShops)
+            {
+                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande, nomMagasin " +
+                    "FROM commande NATURAL JOIN client WHERE email = @email AND etatCommande = @orderState;";
+                command.Parameters.Add(createCustomParameter("@email", this.allClientsComboBox.Text.Split(" | ")[1], MySqlDbType.VarChar));
+                command.CommandText = queryGetOrders;
+            }
+            else if (!allClients && !allShops)
+            {
+                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande, nomMagasin " +
+                    "FROM commande NATURAL JOIN client NATURAL JOIN magasin WHERE email = @email and nomMagasin = @shopName AND etatCommande = @orderState;";
+                command.Parameters.Add(createCustomParameter("@shopName", this.allShopsComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
+                command.Parameters.Add(createCustomParameter("@email", this.allClientsComboBox.Text.Split(" | ")[1], MySqlDbType.VarChar));
+                command.CommandText = queryGetOrders;
+            }
+            command.Parameters.Add(createCustomParameter("@orderState", "CPAV", MySqlDbType.VarChar));
+
+            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+
+            this.clientOrdersGridView.DataSource = table;
+            if (this.clientOrdersGridView.Columns.Count == 6)
+            {
+                DataGridViewButtonColumn dataGridViewButtonColumn = new DataGridViewButtonColumn();
+                dataGridViewButtonColumn.Name = "Actions";
+                dataGridViewButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridViewButtonColumn.FlatStyle = FlatStyle.System;
+                dataGridViewButtonColumn.DefaultCellStyle.BackColor = Color.RoyalBlue;
+
+                this.clientOrdersGridView.Columns.Add(dataGridViewButtonColumn);
+                foreach (DataGridViewColumn column in this.clientOrdersGridView.Columns)
+                {
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+            }
+
+            foreach (DataGridViewRow row in this.clientOrdersGridView.Rows)
+            {
+                if ((string)row.Cells["etatCommande"].Value == "CPAV")
+                {
+
+                    row.Cells["Actions"].Style.BackColor = Color.Red;
+                    row.Cells["Actions"].Value = (string)"FINALISER";
+                }
+                else
+                {
+                    row.Cells["Actions"].Value = (string)"Détails commande";
+                }
+            }
+        }
+
         #endregion
+
     }
 
 }

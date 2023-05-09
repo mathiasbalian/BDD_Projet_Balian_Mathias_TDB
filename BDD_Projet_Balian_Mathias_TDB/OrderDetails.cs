@@ -175,26 +175,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
 
         /// <summary>
-        /// Méthode permettant d'obtenir l'adresse de livraison de la commande
-        /// </summary>
-        /// <returns>L'adresse de livraison de la commande</returns>
-        private string getDeliveryAdress()
-        {
-            string queryGetDeliveryAdress = $"SELECT adresseLivraison FROM commande WHERE idCommande = {this.orderId};";
-            MySqlCommand command = new MySqlCommand(queryGetDeliveryAdress, connection);
-            MySqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                string deliveryAdress = reader.GetString(0);
-                reader.Close();
-                return deliveryAdress;
-            }
-            reader.Close();
-            return "";
-        }
-
-
-        /// <summary>
         /// Méthode permettant d'afficher les images des items (accessoires et/ou fleurs) de la commande et calculer leur prix
         /// </summary>
         /// <param name="tableName">Le nom de la table (accessoire ou fleur)</param>
