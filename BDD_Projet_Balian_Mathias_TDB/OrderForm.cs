@@ -770,6 +770,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+
         /// <summary>
         /// Méthode permettant d'obtenir le nom d'un item à partir du nom de l'image qui représente cet item
         /// </summary>
