@@ -180,25 +180,14 @@ namespace BDD_Projet_Balian_Mathias_TDB
             if (this.bouquetPersoCheckBox.Checked)
             {
                 this.bouquetStandardCheckBox.Enabled = false;
-                if (MessageBox.Show("Connaissez-vous exactement la composition de votre bouquet ?" +
-                    " Si non, vous pouvez nous donner une brève description de ce que vous souhaitez ainsi " +
-                    "que votre budget, et nous le designerons nous-même ! Faites-nous confiance :)", "Avertissement",
-                    MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    this.bouquetPersoFlowLayoutPanel.Visible = true;
-                    this.inStockAccessoryComboBox.Visible = true;
-                    this.addAccessoryButton.Visible = true;
-                    this.inStockFlowerComboBox.Visible = true;
-                    this.addFlowerButton.Visible = true;
-                    this.requiredCustomItemPictureBox.Visible = true;
-                }
-                else
-                {
-
-                }
+                this.compositionKnownCheckBox.Visible = true;
+                this.compositionUnknownCheckBox.Visible = true;
             }
             else
             {
+                this.compositionUnknownPanel.Visible = false;
+                this.compositionKnownCheckBox.Checked = false;
+                this.compositionUnknownCheckBox.Checked = false;
                 this.bouquetPersoFlowLayoutPanel.Visible = false;
                 this.bouquetPersoFlowLayoutPanel.Controls.Clear();
                 this.bouquetStandardCheckBox.Enabled = true;
@@ -207,6 +196,47 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 this.inStockFlowerComboBox.Visible = false;
                 this.addFlowerButton.Visible = false;
                 this.requiredCustomItemPictureBox.Visible = false;
+                this.compositionKnownCheckBox.Visible = false;
+                this.compositionUnknownCheckBox.Visible = false;
+            }
+        }
+
+
+        private void compositionKnownCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.compositionKnownCheckBox.Checked)
+            {
+                this.compositionUnknownCheckBox.Enabled = false;
+                this.bouquetPersoFlowLayoutPanel.Visible = true;
+                this.inStockAccessoryComboBox.Visible = true;
+                this.addAccessoryButton.Visible = true;
+                this.inStockFlowerComboBox.Visible = true;
+                this.addFlowerButton.Visible = true;
+                this.requiredCustomItemPictureBox.Visible = true;
+            }
+            else
+            {
+                this.compositionUnknownCheckBox.Enabled = true;
+                this.bouquetPersoFlowLayoutPanel.Visible = false;
+                this.inStockAccessoryComboBox.Visible = false;
+                this.addAccessoryButton.Visible = false;
+                this.inStockFlowerComboBox.Visible = false;
+                this.addFlowerButton.Visible = false;
+                this.requiredCustomItemPictureBox.Visible = false;
+            }
+        }
+
+        private void compositionUnknownCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.compositionUnknownCheckBox.Checked)
+            {
+                this.compositionUnknownPanel.Visible = true;
+                this.compositionKnownCheckBox.Enabled = false;
+            }
+            else
+            {
+                this.compositionKnownCheckBox.Enabled = true;
+                this.compositionUnknownPanel.Visible = false;
             }
         }
 
@@ -265,12 +295,18 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             // Si l'utisateur n'a pas composé son bouquet (standard ou personnalisé)
             if ((this.bouquetStandardCheckBox.Checked && this.bouquetPanel.BackgroundImage == null) ||
-                (this.bouquetPersoCheckBox.Checked && this.bouquetPersoFlowLayoutPanel.Controls.Count == 0))
+                (this.bouquetPersoCheckBox.Checked && (this.compositionKnownCheckBox.Checked && this.bouquetPersoFlowLayoutPanel.Controls.Count == 0)) || 
+                (this.bouquetPersoCheckBox.Checked && (!this.compositionUnknownCheckBox.Checked && !this.compositionKnownCheckBox.Checked)))
             {
                 MessageBox.Show("Merci de choisir ou de composer votre bouquet");
                 return;
             }
 
+            // Si l'utilisateur n'a pas donné de description pour son bouquet personnalisé
+            if(!this.compositionUnknownCheckBox.Checked && (this.descriptionTextBox.Text.Length == 0 || this.budgetUpDown.Value <= 0))
+            {
+                MessageBox.Show("Merci de bien vouloir donner une description de votre bouquet ainsi qu'un budget supérieur à 0€");
+            }
 
             // Si la date de livraison choisie par l'utilisateur est inférieure ou égale à la date actuelle
             if (DateTime.Compare(this.deliveryDateTimePicker.Value, this.datePicker.Value) < 0 ||
@@ -333,25 +369,37 @@ namespace BDD_Projet_Balian_Mathias_TDB
             {
                 // Création de l'entité bouquet_perso 
                 int bouquetPersoNextId = getNextId("bouquetPerso");
-                string queryCreateBouquetPerso = $"INSERT INTO bouquetPerso VALUES ({bouquetPersoNextId});";
-                command = new MySqlCommand(queryCreateBouquetPerso, connection);
+                string queryCreateBouquetPerso = $"INSERT INTO bouquetPerso VALUES ({bouquetPersoNextId}, ";
+                if (this.compositionUnknownCheckBox.Checked)
+                {
+                    queryCreateBouquetPerso += "@description);";
+                    command = new MySqlCommand(queryCreateBouquetPerso, connection);
+                    command.Parameters.Add(createCustomParameter("@description", this.descriptionTextBox.Text, MySqlDbType.Text));
+                }
+                else
+                {
+                    queryCreateBouquetPerso += "'');";
+                    command = new MySqlCommand(queryCreateBouquetPerso, connection);
+                }
                 command.CommandText = queryCreateBouquetPerso;
                 command.ExecuteNonQuery();
 
-
-                // Association entre bouquet perso et accessoires / fleurs
-                foreach (var (item, quantity) in orderedItemsAndQuantities)
+                if(this.compositionKnownCheckBox.Checked)
                 {
-                    string[] itemNameAndTable = item.Split(" | ");
-                    string itemName = getItemNameFromImageName(itemNameAndTable[0]);
-                    string itemTable = itemNameAndTable[1];
-                    int itemId = getItemIdFromName(itemName, itemTable);
+                    // Association entre bouquet perso et accessoires / fleurs
+                    foreach (var (item, quantity) in orderedItemsAndQuantities)
+                    {
+                        string[] itemNameAndTable = item.Split(" | ");
+                        string itemName = getItemNameFromImageName(itemNameAndTable[0]);
+                        string itemTable = itemNameAndTable[1];
+                        int itemId = getItemIdFromName(itemName, itemTable);
 
-                    command.CommandText = $"INSERT INTO bouquetPersoContient{itemTable} VALUES ({bouquetPersoNextId}, " +
-                                                                                                $"{itemId}, " +
-                                                                                                $"{quantity});";
-                    command.ExecuteNonQuery();
-                    updateItemStock(this.shopComboBox.Text.Split(" | ")[0], itemTable: itemTable, itemId: itemId, quantity: quantity);
+                        command.CommandText = $"INSERT INTO bouquetPersoContient{itemTable} VALUES ({bouquetPersoNextId}, " +
+                                                                                                    $"{itemId}, " +
+                                                                                                    $"{quantity});";
+                        command.ExecuteNonQuery();
+                        updateItemStock(this.shopComboBox.Text.Split(" | ")[0], itemTable: itemTable, itemId: itemId, quantity: quantity);
+                    }
                 }
 
 
@@ -383,12 +431,13 @@ namespace BDD_Projet_Balian_Mathias_TDB
                                                                       "@shopName);";
             command.CommandText = queryCreateCommand;
             command.Parameters.Clear();
+            
             addParametersToCommand(command, createCustomParameter("@orderDate", this.datePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Date),
                                             createCustomParameter("@deliveryAdress", this.deliveryAdressTextBox.Text, MySqlDbType.VarChar),
                                             createCustomParameter("@deliveryDate", this.deliveryDateTimePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Date),
-                                            createCustomParameter("@orderState", (bouquetStandard) ? "CC" : "CPAV", MySqlDbType.Enum),
+                                            createCustomParameter("@orderState", (this.compositionUnknownCheckBox.Checked) ? "CPAV" : "CC", MySqlDbType.Enum),
                                             createCustomParameter("@orderMessage", this.customMessageTextBox.Text, MySqlDbType.Text),
-                                            createCustomParameter("@totalPrice", this.bouquetPriceAfterDiscount, MySqlDbType.Decimal),
+                                            createCustomParameter("@totalPrice", (this.compositionUnknownCheckBox.Checked) ? this.budgetUpDown.Value : this.bouquetPriceAfterDiscount, MySqlDbType.Decimal),
                                             createCustomParameter("@clientEmail", this.user.email, MySqlDbType.VarChar),
                                             createCustomParameter("@shopName", this.shopComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
             command.ExecuteNonQuery();
@@ -1028,5 +1077,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
         #endregion
+
     }
 }

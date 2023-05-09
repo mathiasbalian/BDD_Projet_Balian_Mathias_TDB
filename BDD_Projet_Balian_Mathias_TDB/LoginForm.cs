@@ -29,6 +29,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.Close();
         }
 
+
         private void LoginFormClosed(object sender, FormClosedEventArgs e)
         {
             // Si l'utilisateur ferme le forms en utilisant le bouton "X"
