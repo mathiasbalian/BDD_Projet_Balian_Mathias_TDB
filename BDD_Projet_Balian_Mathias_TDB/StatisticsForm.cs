@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,8 +33,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             getMostFamousBouquetStandard();
             getMostCAShop();
             getMostOrderedFlower();
-            this.checkedListBox1.Items.Add("salmt");
-            this.checkedListBox1.Items.Add("bonjour");
+            getMostOrderedAccessory();
         }
 
 
@@ -109,10 +109,16 @@ namespace BDD_Projet_Balian_Mathias_TDB
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                this.trueBestMonthClientLabel.Text += $"{reader.GetString(0)} {reader.GetString(1)} | ";
+                if (!reader.IsDBNull(0))
+                {
+                    this.trueBestMonthClientLabel.Text += $"{reader.GetString(0)} {reader.GetString(1)} | ";
+                }
             }
             reader.Close();
-            this.trueBestMonthClientLabel.Text = this.trueBestMonthClientLabel.Text.Remove(this.trueBestMonthClientLabel.Text.Length - 3, 2);
+            if (this.trueBestMonthClientLabel.Text.Length >= 3)
+            {
+                this.trueBestMonthClientLabel.Text = this.trueBestMonthClientLabel.Text.Remove(this.trueBestMonthClientLabel.Text.Length - 3, 2);
+            }
         }
 
 
@@ -128,10 +134,16 @@ namespace BDD_Projet_Balian_Mathias_TDB
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                this.trueBestYearClientLabel.Text += $"{reader.GetString(0)} {reader.GetString(1)} | ";
+                if (!reader.IsDBNull(0))
+                {
+                    this.trueBestYearClientLabel.Text += $"{reader.GetString(0)} {reader.GetString(1)} | ";
+                }
             }
             reader.Close();
-            this.trueBestYearClientLabel.Text = this.trueBestYearClientLabel.Text.Remove(this.trueBestYearClientLabel.Text.Length - 3, 2);
+            if (this.trueBestYearClientLabel.Text.Length >= 3)
+            {
+                this.trueBestYearClientLabel.Text = this.trueBestYearClientLabel.Text.Remove(this.trueBestYearClientLabel.Text.Length - 3, 2);
+            }
         }
 
 
@@ -210,6 +222,29 @@ namespace BDD_Projet_Balian_Mathias_TDB
             reader.Close();
             this.mostOrderedFlowerPictureBox.BackgroundImage =
                 Properties.Resources.ResourceManager.GetObject(OrderForm.getImageNameFromItemName(this.trueMostOrderedFlowerLabel.Text)) as Image;
+        }
+
+
+
+        private void getMostOrderedAccessory()
+        {
+            string queryGetMostOrderedFlower = "SELECT nomAccessoire FROM bouquetPersoContientAccessoire NATURAL JOIN accessoire " +
+               "GROUP BY nomAccessoire " +
+               "HAVING sum(quantiteAccessoire) >= all(SELECT sum(quantiteAccessoire) FROM bouquetPersoContientAccessoire NATURAL JOIN accessoire GROUP BY nomAccessoire);";
+            MySqlCommand command = new MySqlCommand(queryGetMostOrderedFlower, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if (!reader.IsDBNull(0))
+                {
+                    this.trueMostOrderedAccessoryLabel.Text = reader.GetString(0);
+                    this.trueMostOrderedAccessoryLabel.Visible = true;
+                    this.mostOrderedAccessoryPictureBox.Visible = true;
+                }
+            }
+            reader.Close();
+            this.mostOrderedAccessoryPictureBox.BackgroundImage =
+                Properties.Resources.ResourceManager.GetObject(OrderForm.getImageNameFromItemName(this.trueMostOrderedAccessoryLabel.Text)) as Image;
         }
 
         #endregion

@@ -109,7 +109,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// </summary>
         private void getOrders()
         {
-            string queryGetOrders = "SELECT idCommande, dateCommande, dateLivraison, etatCommande " +
+            string queryGetOrders = "SELECT idCommande, dateCommande, dateLivraison, etatCommande, nomMagasin " +
                 "FROM commande WHERE email = @userEmail;";
 
             MySqlCommand command = new MySqlCommand(queryGetOrders, connection);
@@ -118,10 +118,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
             DataTable table = new DataTable();
             adapter.Fill(table);
             this.ordersGridView.DataSource = table;
-            if (this.ordersGridView.Columns.Count == 4)
+            if (this.ordersGridView.Columns.Count == 5)
             {
                 DataGridViewButtonColumn dataGridViewButtonColumn = new DataGridViewButtonColumn();
-                dataGridViewButtonColumn.Text = "Voir détails commande";
+                dataGridViewButtonColumn.Text = "Détails commande";
                 dataGridViewButtonColumn.Name = "Détails";
                 dataGridViewButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dataGridViewButtonColumn.FlatStyle = FlatStyle.System;

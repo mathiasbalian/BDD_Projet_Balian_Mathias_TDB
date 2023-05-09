@@ -78,22 +78,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
                     this.bouquetPersoLayoutPanel.Location = originalBouquetPersoLayoutPanelCoords;
             }
 
-            if(this.fidelity == "Or")
-            {
-                this.fidelityLabel.Text = "15% de réduction grâce à la fidélité Or.";
-                this.fidelityLabel.Visible = true;
-            }
-            else if(this.fidelity == "Bronze")
-            {
-                this.fidelityLabel.Text = "5% de réduction grâce à la fidélité Bronze.";
-                this.fidelityLabel.Visible = true;
-            }
-
             // On obtient le prix de la commande
             string queryGetOrderPrice = $"SELECT prixTotal FROM commande WHERE idCommande = {this.orderId};";
             MySqlCommand commandGetOrderPrice = new MySqlCommand(queryGetOrderPrice, connection);
             MySqlDataReader mySqlDataReader = commandGetOrderPrice.ExecuteReader();
-            if(mySqlDataReader.Read() && !mySqlDataReader.IsDBNull(0))
+            if (mySqlDataReader.Read() && !mySqlDataReader.IsDBNull(0))
             {
                 this.totalPrice = mySqlDataReader.GetDecimal(0);
             }
@@ -101,7 +90,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             this.totalPriceLabel.Text = $"Pour un total de {Decimal.Round((decimal)this.totalPrice, 2)}€";
             this.totalPriceLabel.Left = (this.ClientSize.Width - this.totalPriceLabel.Width) / 2;
-            this.fidelityLabel.Left = (this.ClientSize.Width - this.fidelityLabel.Width) / 2;
 
 
             // Adresse de livraison et message floral

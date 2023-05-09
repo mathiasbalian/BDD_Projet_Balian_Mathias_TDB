@@ -37,7 +37,6 @@
             deliveryAdressLabel = new Label();
             messageLabel = new Label();
             bouquetPersoLayoutPanel = new FlowLayoutPanel();
-            fidelityLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)bouquetStandardPictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -138,23 +137,12 @@
             bouquetPersoLayoutPanel.TabIndex = 29;
             bouquetPersoLayoutPanel.Visible = false;
             // 
-            // fidelityLabel
-            // 
-            fidelityLabel.AutoSize = true;
-            fidelityLabel.Location = new Point(543, 530);
-            fidelityLabel.Name = "fidelityLabel";
-            fidelityLabel.Size = new Size(297, 20);
-            fidelityLabel.TabIndex = 30;
-            fidelityLabel.Text = "XX% de réduction grâce à la fidélité Bronze";
-            fidelityLabel.Visible = false;
-            // 
             // OrderDetails
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1382, 653);
-            Controls.Add(fidelityLabel);
             Controls.Add(bouquetPersoLayoutPanel);
             Controls.Add(messageLabel);
             Controls.Add(deliveryAdressLabel);
@@ -182,6 +170,5 @@
         private Label deliveryAdressLabel;
         private Label messageLabel;
         private FlowLayoutPanel bouquetPersoLayoutPanel;
-        private Label fidelityLabel;
     }
 }

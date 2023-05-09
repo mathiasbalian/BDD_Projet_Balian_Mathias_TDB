@@ -50,12 +50,12 @@
             mostOrderedFlowerPictureBox = new PictureBox();
             trueMostOrderedFlowerLabel = new Label();
             mostOrderedFlowerLabel = new Label();
-            pictureBox1 = new PictureBox();
-            label1 = new Label();
-            label2 = new Label();
+            mostOrderedAccessoryPictureBox = new PictureBox();
+            trueMostOrderedAccessoryLabel = new Label();
+            mostOrderedAccessoryLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)mostFamousBouquetStandardPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mostOrderedFlowerPictureBox).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)mostOrderedAccessoryPictureBox).BeginInit();
             SuspendLayout();
             // 
             // statisticsLabel
@@ -283,40 +283,40 @@
             mostOrderedFlowerLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
             mostOrderedFlowerLabel.Location = new Point(1047, 194);
             mostOrderedFlowerLabel.Name = "mostOrderedFlowerLabel";
-            mostOrderedFlowerLabel.Size = new Size(210, 23);
+            mostOrderedFlowerLabel.Size = new Size(220, 23);
             mostOrderedFlowerLabel.TabIndex = 46;
-            mostOrderedFlowerLabel.Text = "Fleur la plus commandée";
+            mostOrderedFlowerLabel.Text = "Fleur la plus commandée :";
             // 
-            // pictureBox1
+            // mostOrderedAccessoryPictureBox
             // 
-            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox1.Location = new Point(1411, 232);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(200, 200);
-            pictureBox1.TabIndex = 51;
-            pictureBox1.TabStop = false;
-            pictureBox1.Visible = false;
+            mostOrderedAccessoryPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            mostOrderedAccessoryPictureBox.Location = new Point(1411, 232);
+            mostOrderedAccessoryPictureBox.Name = "mostOrderedAccessoryPictureBox";
+            mostOrderedAccessoryPictureBox.Size = new Size(200, 200);
+            mostOrderedAccessoryPictureBox.TabIndex = 51;
+            mostOrderedAccessoryPictureBox.TabStop = false;
+            mostOrderedAccessoryPictureBox.Visible = false;
             // 
-            // label1
+            // trueMostOrderedAccessoryLabel
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(1626, 409);
-            label1.Name = "label1";
-            label1.Size = new Size(87, 23);
-            label1.TabIndex = 50;
-            label1.Text = "Nom fleur";
-            label1.Visible = false;
+            trueMostOrderedAccessoryLabel.AutoSize = true;
+            trueMostOrderedAccessoryLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            trueMostOrderedAccessoryLabel.Location = new Point(1626, 409);
+            trueMostOrderedAccessoryLabel.Name = "trueMostOrderedAccessoryLabel";
+            trueMostOrderedAccessoryLabel.Size = new Size(87, 23);
+            trueMostOrderedAccessoryLabel.TabIndex = 50;
+            trueMostOrderedAccessoryLabel.Text = "Nom fleur";
+            trueMostOrderedAccessoryLabel.Visible = false;
             // 
-            // label2
+            // mostOrderedAccessoryLabel
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
-            label2.Location = new Point(1411, 194);
-            label2.Name = "label2";
-            label2.Size = new Size(210, 23);
-            label2.TabIndex = 49;
-            label2.Text = "Fleur la plus commandée";
+            mostOrderedAccessoryLabel.AutoSize = true;
+            mostOrderedAccessoryLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
+            mostOrderedAccessoryLabel.Location = new Point(1411, 194);
+            mostOrderedAccessoryLabel.Name = "mostOrderedAccessoryLabel";
+            mostOrderedAccessoryLabel.Size = new Size(253, 23);
+            mostOrderedAccessoryLabel.TabIndex = 49;
+            mostOrderedAccessoryLabel.Text = "Accessoire le plus commandé :";
             // 
             // StatisticsForm
             // 
@@ -324,9 +324,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
-            Controls.Add(pictureBox1);
-            Controls.Add(label1);
-            Controls.Add(label2);
+            Controls.Add(mostOrderedAccessoryPictureBox);
+            Controls.Add(trueMostOrderedAccessoryLabel);
+            Controls.Add(mostOrderedAccessoryLabel);
             Controls.Add(mostOrderedFlowerPictureBox);
             Controls.Add(trueMostOrderedFlowerLabel);
             Controls.Add(mostOrderedFlowerLabel);
@@ -353,7 +353,7 @@
             FormClosing += StatisticsForm_FormClosing;
             ((System.ComponentModel.ISupportInitialize)mostFamousBouquetStandardPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)mostOrderedFlowerPictureBox).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)mostOrderedAccessoryPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -381,8 +381,8 @@
         private PictureBox mostOrderedFlowerPictureBox;
         private Label trueMostOrderedFlowerLabel;
         private Label mostOrderedFlowerLabel;
-        private PictureBox pictureBox1;
-        private Label label1;
-        private Label label2;
+        private PictureBox mostOrderedAccessoryPictureBox;
+        private Label trueMostOrderedAccessoryLabel;
+        private Label mostOrderedAccessoryLabel;
     }
 }

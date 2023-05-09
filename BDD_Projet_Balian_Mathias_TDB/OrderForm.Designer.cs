@@ -41,6 +41,7 @@
             myOrdersButton = new Button();
             userButton = new Button();
             orderDetailsPanel = new Panel();
+            totalPriceBeforeDiscountLabel = new Label();
             fidelityLabel = new Label();
             requiredDeliveryAdressPictureBox = new PictureBox();
             requiredCustomItemPictureBox = new PictureBox();
@@ -225,6 +226,7 @@
             // orderDetailsPanel
             // 
             orderDetailsPanel.BackColor = SystemColors.Window;
+            orderDetailsPanel.Controls.Add(totalPriceBeforeDiscountLabel);
             orderDetailsPanel.Controls.Add(fidelityLabel);
             orderDetailsPanel.Controls.Add(requiredDeliveryAdressPictureBox);
             orderDetailsPanel.Controls.Add(requiredCustomItemPictureBox);
@@ -256,6 +258,16 @@
             orderDetailsPanel.Size = new Size(1130, 773);
             orderDetailsPanel.TabIndex = 19;
             // 
+            // totalPriceBeforeDiscountLabel
+            // 
+            totalPriceBeforeDiscountLabel.AutoSize = true;
+            totalPriceBeforeDiscountLabel.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point);
+            totalPriceBeforeDiscountLabel.Location = new Point(540, 465);
+            totalPriceBeforeDiscountLabel.Name = "totalPriceBeforeDiscountLabel";
+            totalPriceBeforeDiscountLabel.Size = new Size(0, 25);
+            totalPriceBeforeDiscountLabel.TabIndex = 46;
+            totalPriceBeforeDiscountLabel.Visible = false;
+            // 
             // fidelityLabel
             // 
             fidelityLabel.AutoSize = true;
@@ -264,6 +276,7 @@
             fidelityLabel.Size = new Size(50, 20);
             fidelityLabel.TabIndex = 45;
             fidelityLabel.Text = "label2";
+            fidelityLabel.Visible = false;
             // 
             // requiredDeliveryAdressPictureBox
             // 
@@ -598,5 +611,6 @@
         private PictureBox requiredCustomItemPictureBox;
         private PictureBox requiredDeliveryAdressPictureBox;
         private Label fidelityLabel;
+        private Label totalPriceBeforeDiscountLabel;
     }
 }

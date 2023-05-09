@@ -85,8 +85,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         /// </summary>
         public static void updateOrdersState(DateTime date)
         {
-            string queryUpdateOrders = "UPDATE commande SET etatCommande = etatCommande + 1 WHERE etatCommande = 'CC' OR " +
-                "etatCommande = 'CPAV';";
+            string queryUpdateOrders = "UPDATE commande SET etatCommande = etatCommande + 1 WHERE etatCommande = 'CC';";
             MySqlCommand command = new MySqlCommand(queryUpdateOrders, connection);
             command.ExecuteNonQuery();
 

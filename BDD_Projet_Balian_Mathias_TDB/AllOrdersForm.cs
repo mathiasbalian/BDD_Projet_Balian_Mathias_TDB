@@ -176,13 +176,13 @@ namespace BDD_Projet_Balian_Mathias_TDB
             string queryGetOrders;
             if (allClients && allShops)
             {
-                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande " +
+                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande, nomMagasin " +
                 "FROM commande NATURAL JOIN client ORDER BY email;";
                 command.CommandText = queryGetOrders;
             }
             else if (allClients && !allShops)
             {
-                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande " +
+                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande, nomMagasin " +
                     "FROM commande NATURAL JOIN client NATURAL JOIN magasin WHERE nomMagasin = @shopName" +
                     " ORDER BY email;";
                 command.CommandText = queryGetOrders;
@@ -190,14 +190,14 @@ namespace BDD_Projet_Balian_Mathias_TDB
             }
             else if (!allClients && allShops)
             {
-                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande " +
+                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande, nomMagasin " +
                     "FROM commande NATURAL JOIN client WHERE email = @email;";
                 command.CommandText = queryGetOrders;
                 command.Parameters.Add(createCustomParameter("@email", this.allClientsComboBox.Text.Split(" | ")[1], MySqlDbType.VarChar));
             }
             else if (!allClients && !allShops)
             {
-                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande " +
+                queryGetOrders = "SELECT idCommande, email, dateCommande, dateLivraison, etatCommande, nomMagasin " +
                     "FROM commande NATURAL JOIN client NATURAL JOIN magasin WHERE email = @email and nomMagasin = @shopName;";
                 command.CommandText = queryGetOrders;
                 addParametersToCommand(command, createCustomParameter("@shopName", this.allShopsComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar),
@@ -209,10 +209,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
             adapter.Fill(table);
 
             this.clientOrdersGridView.DataSource = table;
-            if (this.clientOrdersGridView.Columns.Count == 5)
+            if (this.clientOrdersGridView.Columns.Count == 6)
             {
                 DataGridViewButtonColumn dataGridViewButtonColumn = new DataGridViewButtonColumn();
-                dataGridViewButtonColumn.Text = "Voir détails commande";
+                dataGridViewButtonColumn.Text = "Détails commande";
                 dataGridViewButtonColumn.Name = "Détails";
                 dataGridViewButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dataGridViewButtonColumn.FlatStyle = FlatStyle.System;

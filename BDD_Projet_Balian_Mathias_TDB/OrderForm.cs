@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Google.Protobuf.WellKnownTypes;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +19,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private bool isUserActionClose = false; // Pour vérifier si le form est fermé à partir 
         // du bouton "X"
         private bool dateTimerPaused = false;
-        private decimal currentBouquetPrice;
+        private decimal bouquetPriceAfterDiscount;
+        private float bouquetPriceBeforeDiscount;
         private bool fromAdmin;
 
 
@@ -34,12 +36,17 @@ namespace BDD_Projet_Balian_Mathias_TDB
             if (this.user.fidelite == "Or")
             {
                 this.fidelityLabel.Text = "15% de réduction avec la fidélité Or";
+                this.fidelityLabel.Visible = true;
+                this.totalPriceBeforeDiscountLabel.Visible = true;
             }
             else if (this.user.fidelite == "Bronze")
             {
                 this.fidelityLabel.Text = "5% de rédution avec la fidélité Bronze";
+                this.fidelityLabel.Visible = true;
+                this.totalPriceBeforeDiscountLabel.Visible = true;
             }
             this.fidelityLabel.Left = (this.orderDetailsPanel.Width - this.fidelityLabel.Width) / 2;
+            this.totalPriceBeforeDiscountLabel.Font = new Font(this.totalPriceBeforeDiscountLabel.Font, FontStyle.Strikeout);
         }
 
 
@@ -144,8 +151,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void bouquetStandardCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            this.currentBouquetPrice = 0;
-            this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            this.bouquetPriceAfterDiscount = 0;
+            this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
             this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
             if (this.bouquetStandardCheckBox.Checked)
             {
@@ -167,18 +174,28 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void bouquetPersoCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            this.currentBouquetPrice = 0;
-            this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            this.bouquetPriceAfterDiscount = 0;
+            this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
             this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
             if (this.bouquetPersoCheckBox.Checked)
             {
                 this.bouquetStandardCheckBox.Enabled = false;
-                this.bouquetPersoFlowLayoutPanel.Visible = true;
-                this.inStockAccessoryComboBox.Visible = true;
-                this.addAccessoryButton.Visible = true;
-                this.inStockFlowerComboBox.Visible = true;
-                this.addFlowerButton.Visible = true;
-                this.requiredCustomItemPictureBox.Visible = true;
+                if (MessageBox.Show("Connaissez-vous exactement la composition de votre bouquet ?" +
+                    " Si non, vous pouvez nous donner une brève description de ce que vous souhaitez ainsi " +
+                    "que votre budget, et nous le designerons nous-même ! Faites-nous confiance :)", "Avertissement",
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    this.bouquetPersoFlowLayoutPanel.Visible = true;
+                    this.inStockAccessoryComboBox.Visible = true;
+                    this.addAccessoryButton.Visible = true;
+                    this.inStockFlowerComboBox.Visible = true;
+                    this.addFlowerButton.Visible = true;
+                    this.requiredCustomItemPictureBox.Visible = true;
+                }
+                else
+                {
+
+                }
             }
             else
             {
@@ -199,8 +216,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
             fillInStockBouquetsStandardComboBox();
             fillInStockAccessoryComboBox();
             fillInStockFlowerComboBox();
-            this.currentBouquetPrice = 0;
-            this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            this.bouquetPriceAfterDiscount = 0;
+            this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
             this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
         }
 
@@ -210,9 +227,23 @@ namespace BDD_Projet_Balian_Mathias_TDB
             string imageName = getImageNameFromItemName(this.inStockBouquetsStandardComboBox.Text.Split(" | ")[0]);
             Image backgroundImage = (Image)Properties.Resources.ResourceManager.GetObject(imageName);
             this.bouquetPanel.BackgroundImage = backgroundImage;
-            this.currentBouquetPrice = Decimal.Round((decimal)getBouquetStandardPrice(), 2);
-            this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            float bouquetStandardPrice = getBouquetStandardPrice();
+            if (this.user.fidelite == "Or")
+            {
+                this.bouquetPriceBeforeDiscount = bouquetStandardPrice;
+                this.totalPriceBeforeDiscountLabel.Text = $"{this.bouquetPriceBeforeDiscount}€";
+                this.bouquetPriceAfterDiscount = Decimal.Round((decimal)bouquetStandardPrice * 0.85m, 2);
+            }
+            else if (this.user.fidelite == "Bronze")
+            {
+                this.bouquetPriceBeforeDiscount = bouquetStandardPrice;
+                this.totalPriceBeforeDiscountLabel.Text = $"{this.bouquetPriceBeforeDiscount}€";
+                this.bouquetPriceAfterDiscount = Decimal.Round((decimal)bouquetStandardPrice * 0.95m, 2);
+            }
+
+            this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
             this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
+            this.totalPriceBeforeDiscountLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceBeforeDiscountLabel.Width) / 2;
         }
 
 
@@ -357,7 +388,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                                             createCustomParameter("@deliveryDate", this.deliveryDateTimePicker.Value.ToString("yyyy-MM-dd"), MySqlDbType.Date),
                                             createCustomParameter("@orderState", (bouquetStandard) ? "CC" : "CPAV", MySqlDbType.Enum),
                                             createCustomParameter("@orderMessage", this.customMessageTextBox.Text, MySqlDbType.Text),
-                                            createCustomParameter("@totalPrice", this.currentBouquetPrice, MySqlDbType.Decimal),
+                                            createCustomParameter("@totalPrice", this.bouquetPriceAfterDiscount, MySqlDbType.Decimal),
                                             createCustomParameter("@clientEmail", this.user.email, MySqlDbType.VarChar),
                                             createCustomParameter("@shopName", this.shopComboBox.Text.Split(" | ")[0], MySqlDbType.VarChar));
             command.ExecuteNonQuery();
@@ -387,16 +418,21 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 itemButton.Click += itemButton_Click;
                 itemButton.Name = imageName + " | accessoire";
                 this.bouquetPersoFlowLayoutPanel.Controls.Add(itemButton);
+                float accessoryPrice = getAccessoryPrice(this.inStockAccessoryComboBox.Text.Split(" | ")[0]);
                 if (this.user.fidelite == "Or")
                 {
-                    this.currentBouquetPrice += Decimal.Round((decimal)getAccessoryPrice(this.inStockAccessoryComboBox.Text.Split(" | ")[0]) * 0.85m, 2);
+                    this.bouquetPriceBeforeDiscount += accessoryPrice;
+                    this.bouquetPriceAfterDiscount += Decimal.Round((decimal)accessoryPrice * 0.85m, 2);
                 }
                 else if (this.user.fidelite == "Bronze")
                 {
-                    this.currentBouquetPrice += Decimal.Round((decimal)getAccessoryPrice(this.inStockAccessoryComboBox.Text.Split(" | ")[0]) * 0.95m, 2);
+                    this.bouquetPriceBeforeDiscount += accessoryPrice;
+                    this.bouquetPriceAfterDiscount += Decimal.Round((decimal)accessoryPrice * 0.95m, 2);
                 }
-                this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+                this.totalPriceBeforeDiscountLabel.Text = $"{this.bouquetPriceBeforeDiscount}€";
+                this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
                 this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
+                this.totalPriceBeforeDiscountLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceBeforeDiscountLabel.Width) / 2;
             }
         }
 
@@ -416,16 +452,21 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 itemButton.Click += itemButton_Click;
                 itemButton.Name = imageName + " | fleur";
                 this.bouquetPersoFlowLayoutPanel.Controls.Add(itemButton);
+                float flowerPrice = getFlowerPrice(this.inStockFlowerComboBox.Text.Split(" | ")[0]);
                 if (this.user.fidelite == "Or")
                 {
-                    this.currentBouquetPrice += Decimal.Round((decimal)getFlowerPrice(this.inStockFlowerComboBox.Text.Split(" | ")[0]) * 0.85m, 2);
+                    this.bouquetPriceBeforeDiscount += flowerPrice;
+                    this.bouquetPriceAfterDiscount += Decimal.Round((decimal)flowerPrice * 0.85m, 2);
                 }
                 else if (this.user.fidelite == "Bronze")
                 {
-                    this.currentBouquetPrice += Decimal.Round((decimal)getFlowerPrice(this.inStockFlowerComboBox.Text.Split(" | ")[0]) * 0.95m, 2);
+                    this.bouquetPriceBeforeDiscount += flowerPrice;
+                    this.bouquetPriceAfterDiscount += Decimal.Round((decimal)flowerPrice * 0.95m, 2);
                 }
-                this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+                this.totalPriceBeforeDiscountLabel.Text = $"{this.bouquetPriceBeforeDiscount}€";
+                this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
                 this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
+                this.totalPriceBeforeDiscountLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceBeforeDiscountLabel.Width) / 2;
             }
         }
 
@@ -439,11 +480,15 @@ namespace BDD_Projet_Balian_Mathias_TDB
             {
                 if (buttonName[1] == "fleur")
                 {
-                    this.currentBouquetPrice -= Decimal.Round((decimal)getFlowerPrice(getItemNameFromImageName(buttonName[0])) * 0.85m, 2);
+                    float flowerPrice = getFlowerPrice(getItemNameFromImageName(buttonName[0]));
+                    this.bouquetPriceBeforeDiscount -= flowerPrice;
+                    this.bouquetPriceAfterDiscount -= Decimal.Round((decimal)flowerPrice * 0.85m, 2);
                 }
                 else
                 {
-                    this.currentBouquetPrice -= Decimal.Round((decimal)getAccessoryPrice(getItemNameFromImageName(buttonName[0])) * 0.85m, 2);
+                    float accessoryPrice = getAccessoryPrice(getItemNameFromImageName(buttonName[0]));
+                    this.bouquetPriceBeforeDiscount -= accessoryPrice;
+                    this.bouquetPriceAfterDiscount -= Decimal.Round((decimal)accessoryPrice * 0.85m, 2);
                 }
 
             }
@@ -451,15 +496,21 @@ namespace BDD_Projet_Balian_Mathias_TDB
             {
                 if (buttonName[1] == "fleur")
                 {
-                    this.currentBouquetPrice -= Decimal.Round((decimal)getFlowerPrice(getItemNameFromImageName(buttonName[0])) * 0.95m, 2);
+                    float flowerPrice = getFlowerPrice(getItemNameFromImageName(buttonName[0]));
+                    this.bouquetPriceBeforeDiscount -= flowerPrice;
+                    this.bouquetPriceAfterDiscount -= Decimal.Round((decimal)flowerPrice * 0.95m, 2);
                 }
                 else
                 {
-                    this.currentBouquetPrice -= Decimal.Round((decimal)getAccessoryPrice(getItemNameFromImageName(buttonName[0])) * 0.95m, 2);
+                    float accessoryPrice = getAccessoryPrice(getItemNameFromImageName(buttonName[0]));
+                    this.bouquetPriceBeforeDiscount -= accessoryPrice;
+                    this.bouquetPriceAfterDiscount -= Decimal.Round((decimal)accessoryPrice * 0.95m, 2);
                 }
             }
-            this.totalPriceLabel.Text = $"Total : {this.currentBouquetPrice}€";
+            this.totalPriceBeforeDiscountLabel.Text = $"{this.bouquetPriceBeforeDiscount}€";
+            this.totalPriceLabel.Text = $"Total : {this.bouquetPriceAfterDiscount}€";
             this.totalPriceLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceLabel.Width) / 2;
+            this.totalPriceBeforeDiscountLabel.Left = (this.orderDetailsPanel.Width - this.totalPriceBeforeDiscountLabel.Width) / 2;
         }
 
         private void datePicker_ValueChanged(object sender, EventArgs e)
