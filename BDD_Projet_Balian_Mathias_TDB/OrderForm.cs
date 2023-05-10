@@ -1070,7 +1070,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 " date_format(dateCommande, 'yyyy-MM') = date_format(@currentDate, 'yyyy-MM');";
             MySqlCommand command = new MySqlCommand(queryGetFidelity, connection);
             addParametersToCommand(command, createCustomParameter("@userEmail", this.user.email, MySqlDbType.VarChar),
-                                            createCustomParameter("@currentDate", this.datePicker.Value.ToString("yyyy-MM"), MySqlDbType.Date));
+                                            createCustomParameter("@currentDate", this.datePicker.Value.ToString("yyyy-MM"), MySqlDbType.VarChar));
             MySqlDataReader reader = command.ExecuteReader();
             int ordersAmount = 0;
             if (reader.Read())
