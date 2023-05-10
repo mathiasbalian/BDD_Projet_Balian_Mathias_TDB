@@ -101,7 +101,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
-                if((string)this.clientsGridView.Rows[e.RowIndex].Cells["email"].Value == "admin")
+                if ((string)this.clientsGridView.Rows[e.RowIndex].Cells["email"].Value == "admin")
                 {
                     MessageBox.Show("Suppression de ce client impossible car il s'agit d'un administrateur.");
                     return;
@@ -111,6 +111,16 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 getAllClients();
                 getSelectedClients(this.allClientsComboBox.Text == "Tous" || String.IsNullOrEmpty(this.allClientsComboBox.Text));
             }
+        }
+
+
+        private void createClient_Click(object sender, EventArgs e)
+        {
+            this.isUserActionClose = true;
+            this.Hide();
+            RegisterForm rf = new RegisterForm(this.datePicker.Value, true);
+            rf.Show();
+            this.Close();
         }
 
 
@@ -186,12 +196,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             string queryDeleteClient = "DELETE FROM client WHERE email = @clientEmail;";
             MySqlCommand command = new MySqlCommand(queryDeleteClient, connection);
-            addParametersToCommand(command, 
+            addParametersToCommand(command,
                                    createCustomParameter("@clientEmail", clientEmail, MySqlDbType.VarChar));
             command.ExecuteNonQuery();
         }
 
         #endregion
-
     }
 }

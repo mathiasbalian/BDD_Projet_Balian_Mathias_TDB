@@ -23,7 +23,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private void registerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             this.Hide();
-            RegisterForm rf = new RegisterForm();
+            RegisterForm rf = new RegisterForm(date: DateTime.Now);
             this.isUserActionClose = true;
             rf.Show();
             this.Close();

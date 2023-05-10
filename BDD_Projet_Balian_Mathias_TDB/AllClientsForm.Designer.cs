@@ -39,6 +39,7 @@
             selectClientLabel = new Label();
             allClientsComboBox = new ComboBox();
             clientsGridView = new DataGridView();
+            createClient = new Button();
             ((System.ComponentModel.ISupportInitialize)clientsGridView).BeginInit();
             SuspendLayout();
             // 
@@ -167,12 +168,27 @@
             clientsGridView.TabIndex = 32;
             clientsGridView.CellContentClick += clientsGridView_CellContentClick;
             // 
+            // createClient
+            // 
+            createClient.BackColor = Color.Linen;
+            createClient.Cursor = Cursors.Hand;
+            createClient.FlatStyle = FlatStyle.Flat;
+            createClient.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
+            createClient.Location = new Point(1254, 524);
+            createClient.Name = "createClient";
+            createClient.Size = new Size(202, 50);
+            createClient.TabIndex = 40;
+            createClient.Text = "Créer un nouveau client";
+            createClient.UseVisualStyleBackColor = false;
+            createClient.Click += createClient_Click;
+            // 
             // AllClientsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
+            Controls.Add(createClient);
             Controls.Add(clientsGridView);
             Controls.Add(selectClientLabel);
             Controls.Add(allClientsComboBox);
@@ -203,5 +219,6 @@
         private Label selectClientLabel;
         private ComboBox allClientsComboBox;
         private DataGridView clientsGridView;
+        private Button createClient;
     }
 }

@@ -662,7 +662,7 @@
             productsButton.FlatAppearance.BorderSize = 0;
             productsButton.FlatStyle = FlatStyle.Flat;
             productsButton.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            productsButton.Location = new Point(-2, -3);
+            productsButton.Location = new Point(1, -3);
             productsButton.Name = "productsButton";
             productsButton.Size = new Size(1725, 70);
             productsButton.TabIndex = 0;
@@ -771,7 +771,7 @@
             exportXmlButton.Cursor = Cursors.Hand;
             exportXmlButton.FlatStyle = FlatStyle.Flat;
             exportXmlButton.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular, GraphicsUnit.Point);
-            exportXmlButton.Location = new Point(206, 15);
+            exportXmlButton.Location = new Point(1366, 15);
             exportXmlButton.Name = "exportXmlButton";
             exportXmlButton.Size = new Size(129, 27);
             exportXmlButton.TabIndex = 38;

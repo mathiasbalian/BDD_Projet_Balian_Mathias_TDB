@@ -17,11 +17,15 @@ namespace BDD_Projet_Balian_Mathias_TDB
     public partial class RegisterForm : Form
     {
         private bool isUserActionClose = false;
+        private bool fromAdmin;
+        private DateTime date;
 
 
-        public RegisterForm()
+        public RegisterForm(DateTime date, bool fromAdmin = false)
         {
             InitializeComponent();
+            this.fromAdmin = fromAdmin;
+            this.date = date;
         }
 
         private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -67,22 +71,46 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 );
             command.ExecuteNonQuery();
             MessageBox.Show("Inscription validée !");
-            this.Hide();
-            LoginForm lf = new LoginForm();
-            this.isUserActionClose = true;
-            lf.Show();
-            this.Close();
+            if (!this.fromAdmin)
+            {
+                this.Hide();
+                LoginForm lf = new LoginForm();
+                this.isUserActionClose = true;
+                lf.Show();
+                this.Close();
+            }
+            else
+            {
+                this.isUserActionClose = true;
+                this.Hide();
+                AllClientsForm acf = new AllClientsForm(new User("admin", "admin", "admin", "admin", "9999", "admin", "9999", "", true), this.date);
+                acf.Show();
+                this.Close();
+            }
+
         }
 
 
 
         private void returnButton_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            LoginForm lf = new LoginForm();
-            this.isUserActionClose = true;
-            lf.Show();
-            this.Close();
+            if (!this.fromAdmin)
+            {
+                this.Hide();
+                LoginForm lf = new LoginForm();
+                this.isUserActionClose = true;
+                lf.Show();
+                this.Close();
+            }
+            else
+            {
+                this.isUserActionClose = true;
+                this.Hide();
+                AllClientsForm acf = new AllClientsForm(new User("admin", "admin", "admin", "admin", "9999", "admin", "9999", "", true), this.date);
+                acf.Show();
+                this.Close();
+            }
+            
         }
 
 
