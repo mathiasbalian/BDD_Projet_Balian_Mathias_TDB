@@ -33,19 +33,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.dateTimer.Start(); // Lancement du timer pour le défilement de la date
             fillShopComboBox();
             this.fromAdmin = fromAdmin;
-            if (this.user.fidelite == "Or")
-            {
-                this.fidelityLabel.Text = "15% de réduction avec la fidélité Or";
-                this.fidelityLabel.Visible = true;
-                this.totalPriceBeforeDiscountLabel.Visible = true;
-            }
-            else if (this.user.fidelite == "Bronze")
-            {
-                this.fidelityLabel.Text = "5% de rédution avec la fidélité Bronze";
-                this.fidelityLabel.Visible = true;
-                this.totalPriceBeforeDiscountLabel.Visible = true;
-            }
-            this.fidelityLabel.Left = (this.orderDetailsPanel.Width - this.fidelityLabel.Width) / 2;
+            updateFidelityLabel();
             this.totalPriceBeforeDiscountLabel.Font = new Font(this.totalPriceBeforeDiscountLabel.Font, FontStyle.Strikeout);
         }
 
@@ -65,7 +53,15 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void dateTimer_Tick(object sender, EventArgs e)
         {
+            int monthBefore = this.datePicker.Value.Month;
             this.datePicker.Value = datePicker.Value.AddDays(1); // On ajoute un jour à la date
+            if (this.datePicker.Value.Month != monthBefore)
+            {
+                updateClientsFidelityMonthly(this.user);
+                monthBefore = this.datePicker.Value.Month;
+                MessageBox.Show(this.user.fidelite);
+                updateFidelityLabel();
+            }
             updateOrdersState(this.datePicker.Value);
         }
 
@@ -1070,9 +1066,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void updateFidelity()
         {
-            string queryGetFidelity = "SELECT count(email) FROM commande WHERE email = @userEmail;";
+            string queryGetFidelity = "SELECT count(email) FROM commande WHERE email = @userEmail AND" +
+                " date_format(dateCommande, 'yyyy-MM') = date_format(@currentDate, 'yyyy-MM');";
             MySqlCommand command = new MySqlCommand(queryGetFidelity, connection);
-            addParametersToCommand(command, createCustomParameter("@userEmail", this.user.email, MySqlDbType.VarChar));
+            addParametersToCommand(command, createCustomParameter("@userEmail", this.user.email, MySqlDbType.VarChar),
+                                            createCustomParameter("@currentDate", this.datePicker.Value.ToString("yyyy-MM"), MySqlDbType.Date));
             MySqlDataReader reader = command.ExecuteReader();
             int ordersAmount = 0;
             if (reader.Read())
@@ -1101,6 +1099,27 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 command.ExecuteNonQuery();
             }
 
+        }
+
+
+        /// <summary>
+        /// Méthode permettant de mettre à jour le texte de fidélité
+        /// </summary>
+        private void updateFidelityLabel()
+        {
+            if (this.user.fidelite == "Or")
+            {
+                this.fidelityLabel.Text = "15% de réduction avec la fidélité Or";
+                this.fidelityLabel.Visible = true;
+                this.totalPriceBeforeDiscountLabel.Visible = true;
+            }
+            else if (this.user.fidelite == "Bronze")
+            {
+                this.fidelityLabel.Text = "5% de rédution avec la fidélité Bronze";
+                this.fidelityLabel.Visible = true;
+                this.totalPriceBeforeDiscountLabel.Visible = true;
+            }
+            this.fidelityLabel.Left = (this.orderDetailsPanel.Width - this.fidelityLabel.Width) / 2;
         }
 
         #endregion

@@ -8,7 +8,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
     internal static class Program
     {
         public static MySqlConnection connection = new MySqlConnection("SERVER=localhost;PORT=3306;DATABASE=fleurs;UID=root;PASSWORD=root;");
-        
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -95,6 +95,44 @@ namespace BDD_Projet_Balian_Mathias_TDB
             command.CommandText = queryUpdateOrders2;
             addParametersToCommand(command, createCustomParameter("@currentDate", date.ToString("yyyy-MM-dd"), MySqlDbType.Date),
                                             createCustomParameter("@calOrderState", "CAL", MySqlDbType.VarChar));
+            command.ExecuteNonQuery();
+        }
+
+
+        /// <summary>
+        /// Méthode permettant d'actualiser les fidélités de l'utilisateur actuel et de tous les autres clients de la base de données
+        /// </summary>
+        /// <param name="user">L'utilisateur actuel de l'application</param>
+        public static void updateClientsFidelityMonthly(User user)
+        {
+            // On met à jour la fidélité de l'objet User
+            string getCurrentUserFidelity = "SELECT fidelite FROM client WHERE email = @userEmail AND email != 'admin';";
+            MySqlCommand command = new MySqlCommand(getCurrentUserFidelity, connection);
+            command.Parameters.Add(createCustomParameter("@userEmail", user.email, MySqlDbType.VarChar));
+            MySqlDataReader reader = command.ExecuteReader();
+            if(reader.Read())
+            {
+                if(reader.GetString(0) == "Bronze")
+                {
+                    user.fidelite = "";
+                }
+                else if(reader.GetString(0) == "Or")
+                {
+                    user.fidelite = "Bronze";
+                }
+            }
+            reader.Close();
+
+            // On met à jour la fidélité de tous les clients de la base de donnée
+            // De Bronze à aucune
+            string updateAllClientsFidelity = "UPDATE client SET fidelite = '' WHERE fidelite = 'Bronze' AND email != 'admin';";
+            command.CommandText = updateAllClientsFidelity;
+            command.Parameters.Clear();
+            command.ExecuteNonQuery();
+
+            // De Or à Bronze
+            updateAllClientsFidelity = "UPDATE client SET fidelite = 'Bronze' WHERE fidelite = 'Or' AND email != 'admin';";
+            command.CommandText = updateAllClientsFidelity;
             command.ExecuteNonQuery();
         }
     }

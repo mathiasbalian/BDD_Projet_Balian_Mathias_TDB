@@ -58,7 +58,13 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void timer_Tick(object sender, EventArgs e)
         {
+            int monthBefore = this.datePicker.Value.Month;
             this.datePicker.Value = datePicker.Value.AddDays(1); // On ajoute un jour à la date
+            if (this.datePicker.Value.Month != monthBefore)
+            {
+                updateClientsFidelityMonthly(this.user);
+                monthBefore = this.datePicker.Value.Month;
+            }
             updateOrdersState(this.datePicker.Value);
         }
 
