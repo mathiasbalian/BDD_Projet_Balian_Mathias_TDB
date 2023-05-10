@@ -266,7 +266,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
             xmlWriterSettings.NewLineOnAttributes = true;
             xmlWriterSettings.Indent = true;
-            XmlWriter xmlDoc = XmlWriter.Create("clients_plus_de_deux_commandes_dans_mois.xml", xmlWriterSettings);
+            XmlWriter xmlDoc = XmlWriter.Create("clients_plusieurs_commandes_dans_mois.xml", xmlWriterSettings);
             xmlDoc.WriteStartElement("clients");
 
             while (reader.Read())
