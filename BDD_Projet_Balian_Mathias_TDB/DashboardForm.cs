@@ -103,6 +103,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
         {
             if (!this.userDropdown.Visible)
             {
+                this.myProfileButton.Text = $"Bonjour {this.user.firstName} !";
                 this.userDropdown.Visible = true;
                 this.userDropdown.BringToFront();
                 return;
@@ -129,12 +130,6 @@ namespace BDD_Projet_Balian_Mathias_TDB
             MyOrdersForm mof = new MyOrdersForm(this.user, this.datePicker.Value);
             mof.Show();
             this.Close();
-        }
-
-
-        private void myProfileButton_Click(object sender, EventArgs e)
-        {
-
         }
 
 

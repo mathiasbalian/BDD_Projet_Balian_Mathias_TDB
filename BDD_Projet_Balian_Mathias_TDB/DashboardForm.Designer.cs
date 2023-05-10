@@ -177,9 +177,8 @@
             // myProfileButton
             // 
             myProfileButton.BackColor = SystemColors.ButtonFace;
-            myProfileButton.Cursor = Cursors.Hand;
             myProfileButton.FlatAppearance.BorderSize = 0;
-            myProfileButton.FlatStyle = FlatStyle.Flat;
+            myProfileButton.FlatStyle = FlatStyle.System;
             myProfileButton.Location = new Point(0, 0);
             myProfileButton.Margin = new Padding(0);
             myProfileButton.Name = "myProfileButton";
@@ -187,7 +186,6 @@
             myProfileButton.TabIndex = 2;
             myProfileButton.Text = "Mon profil";
             myProfileButton.UseVisualStyleBackColor = false;
-            myProfileButton.Click += myProfileButton_Click;
             // 
             // myOrdersButton
             // 
@@ -662,7 +660,7 @@
             productsButton.FlatAppearance.BorderSize = 0;
             productsButton.FlatStyle = FlatStyle.Flat;
             productsButton.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            productsButton.Location = new Point(1, -3);
+            productsButton.Location = new Point(7, -3);
             productsButton.Name = "productsButton";
             productsButton.Size = new Size(1725, 70);
             productsButton.TabIndex = 0;
@@ -817,7 +815,6 @@
         private Panel userDropdown;
         private Button disconnectButton;
         private Button myOrdersButton;
-        private Button myProfileButton;
         private Panel productsPanel;
         private Button productsButton;
         private Label marieeLabel;
@@ -862,5 +859,6 @@
         private Button stocksAndShopsButton;
         private Button clientsButton;
         private Button exportXmlButton;
+        private Button myProfileButton;
     }
 }
