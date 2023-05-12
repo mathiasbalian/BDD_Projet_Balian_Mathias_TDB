@@ -253,6 +253,13 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+
+        #region Méthodes utiles
+
+        /// <summary>
+        /// Méthode permettant d'obtenir la fidélité du client ayant placé la commande
+        /// </summary>
+        /// <returns>Une string contenant la fidélité du client</returns>
         private string getClientFidelity()
         {
             string getClientFidelity = $"SELECT fidelite FROM commande NATURAL JOIN client WHERE idCommande = {this.orderId};";
@@ -269,6 +276,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'obtenir le budget et la description du bouquet indiqués par le client
+        /// </summary>
         private void getBudgetAndDescription()
         {
             string queryGetBudgetAndDescription = "SELECT prixTotal, descriptionBouquet FROM commande NATURAL JOIN arrangementFloral" +
@@ -286,6 +296,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant de remplir la combobox dédiée aux accessoires
+        /// </summary>
         private void fillInStockAccessoryComboBox()
         {
             this.inStockAccessoryComboBox.Items.Clear();
@@ -304,6 +317,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant de remplir la combobox dédiée aux fleurs
+        /// </summary>
         private void fillInStockFlowerComboBox()
         {
             this.inStockFlowerComboBox.Items.Clear();
@@ -322,6 +338,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'obtenir le magasin dans lequel la commande a été passée
+        /// </summary>
+        /// <returns>Une string contenant le nom du magasin</returns>
         private string getOrderShop()
         {
             string queryGetOrderShop = $"SELECT nomMagasin FROM commande WHERE idCommande = {this.orderId};";
@@ -338,6 +358,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'obtenir l'id du bouquet perso associé à cette commande
+        /// </summary>
+        /// <returns>Un entier représentant l'id du bouquet perso</returns>
         private int getBouquetPersoId()
         {
             string queryGetBouquetPersoId = "SELECT idBouquetPerso FROM commande NATURAL JOIN arrangementFloral " +
@@ -357,6 +381,10 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'obtenir les items et leur quantité choisie par l'admin
+        /// </summary>
+        /// <returns>Un dictionaire dont la clé est le nom de l'item et la valeur est la quantité commandée</returns>
         private Dictionary<string, int> getOrderedItemsAndQuantities()
         {
             Dictionary<string, int> orderedItemsAndQuantities = new Dictionary<string, int>();
@@ -375,6 +403,13 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'obtenir le stock d'un item
+        /// </summary>
+        /// <param name="itemName">Le nom de l'item</param>
+        /// <param name="tableName">La table de l'item (accessoire ou fleur)</param>
+        /// <param name="itemId">L'id de l'item</param>
+        /// <returns>La quantité en stock de cet item</returns>
         private int getItemStock(string itemName, string tableName, int itemId)
         {
             string queryGetItemStock = $"SELECT quantite from stock{tableName} where nomMagasin = @shopName and id{tableName} = {itemId};";
@@ -389,6 +424,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
             reader.Close();
             return itemStock;
         }
+
+        #endregion
 
     }
 }

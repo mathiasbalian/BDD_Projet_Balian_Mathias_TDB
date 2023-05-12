@@ -340,7 +340,11 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
-
+        /// <summary>
+        /// Méthode permettant d'afficher les commandes que l'admin doit finaliser
+        /// </summary>
+        /// <param name="allClients">True si tous les clients sont affichés, false sinon</param>
+        /// <param name="allShops">True si tous les magasins sont affichés, false sinon</param>
         public void getOrdersToComplete(bool allClients, bool allShops)
         {
             MySqlCommand command = new MySqlCommand("", connection);
