@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 // On importe la classe Program qui contient les méthodes et les attributs utiles
@@ -52,6 +53,30 @@ namespace BDD_Projet_Balian_Mathias_TDB
             if (emailAlreadyExists())
             {
                 MessageBox.Show("Email déjà existant. Merci d'en saisir un autre");
+                return;
+            }
+
+            // On vérifie le format de l'email
+            Regex regexEmail = new Regex(@"^([\w-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([\w-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$");
+            if (!regexEmail.Match(emailInput.Text).Success)
+            {
+                MessageBox.Show("Mauvais format d'email.");
+                return;
+            }
+
+            // On vérifie le format du téléphone
+            Regex regexPhone = new Regex(@"^((+)33|0)[1-9](\d{2}){4}$");
+            if (!regexPhone.Match(phoneInput.Text).Success)
+            {
+                MessageBox.Show("Mauvais format de numéro de téléphone");
+                return;
+            }
+
+            // On vérifie le format de la carte de crédit
+            Regex regexCreditCard = new Regex(@"^4[0-9]{12}(?:[0-9]{3})?$");
+            if (!regexCreditCard.Match(cardInput.Text).Success)
+            {
+                MessageBox.Show("Mauvais format de numéro de carte de crédit");
                 return;
             }
 
