@@ -58,7 +58,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             }
 
             // On vérifie le format de l'email
-            Regex regexEmail = new Regex(@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+            Regex regexEmail = new Regex(@"^([\w-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([\w-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$");
             if (!regexEmail.Match(emailInput.Text).Success)
             {
                 MessageBox.Show("Mauvais format d'email.");
@@ -66,7 +66,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             }
 
             // On vérifie le format du téléphone
-            Regex regexPhone = new Regex(@"^((\+)33|0)[1-9](\d{2}){4}$");
+            Regex regexPhone = new Regex(@"^((+)33|0)[1-9](\d{2}){4}$");
             if (!regexPhone.Match(phoneInput.Text).Success)
             {
                 MessageBox.Show("Mauvais format de numéro de téléphone");
