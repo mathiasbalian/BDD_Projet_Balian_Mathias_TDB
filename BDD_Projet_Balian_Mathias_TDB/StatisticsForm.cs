@@ -34,6 +34,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
             getMostCAShop();
             getMostOrderedFlower();
             getMostOrderedAccessory();
+            compareCA();
+            getSuperClients();
         }
 
 
@@ -102,6 +104,20 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        private void statisticsDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            getBestMonthClient();
+            getBestYearClient();
+        }
+
+
+        private void informationButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Il s'agit de la liste des clients ayant réalisé une commande dont le prix" +
+                " est plus de 2 fois supérieur à la moyenne des prix des commandes.");
+        }
+
+
         #region Méthodes utiles
 
 
@@ -112,7 +128,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 "WHERE date_format(commande.dateCommande, '%Y-%m') = @currentDate group by email " +
                 "HAVING count(email) >= all(SELECT count(email) FROM commande GROUP BY email);";
             MySqlCommand command = new MySqlCommand(queryGetBestMonthClient, connection);
-            addParametersToCommand(command, createCustomParameter("@currentDate", this.datePicker.Value.ToString("yyyy-MM"), MySqlDbType.VarChar));
+            addParametersToCommand(command, createCustomParameter("@currentDate", this.statisticsDatePicker.Value.ToString("yyyy-MM"), MySqlDbType.VarChar));
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -137,7 +153,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 "WHERE date_format(commande.dateCommande, '%Y') = @currentDate group by email " +
                 "HAVING count(email) >= all(SELECT count(email) FROM commande GROUP BY email);";
             MySqlCommand command = new MySqlCommand(queryGetBestMonthClient, connection);
-            addParametersToCommand(command, createCustomParameter("@currentDate", this.datePicker.Value.ToString("yyyy"), MySqlDbType.VarChar));
+            addParametersToCommand(command, createCustomParameter("@currentDate", this.statisticsDatePicker.Value.ToString("yyyy"), MySqlDbType.VarChar));
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -254,6 +270,42 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 Properties.Resources.ResourceManager.GetObject(OrderForm.getImageNameFromItemName(this.trueMostOrderedAccessoryLabel.Text)) as Image;
         }
 
+
+        private void compareCA()
+        {
+            string queryCompareCA = "SELECT DISTINCT c1.nomMagasin as FAIT_PLUS_DE_CA, c2.nomMagasin as FAIT_MOINS_DE_CA " +
+                "FROM commande c1, commande c2 WHERE (SELECT sum(prixTotal) FROM commande " +
+                "WHERE nomMagasin = c1.nomMagasin) > " +
+                "(SELECT sum(prixTotal) FROM commande WHERE nomMagasin = c2.nomMagasin) ORDER BY c1.nomMagasin;";
+            MySqlCommand command = new MySqlCommand(queryCompareCA, connection);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            this.caComparisonGridView.DataSource = table;
+            foreach (DataGridViewColumn column in this.caComparisonGridView.Columns)
+            {
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+        }
+
+
+        private void getSuperClients()
+        {
+            string queryGetSuperClients = "SELECT distinct c.email, c.nom, c.prenom FROM client c NATURAL JOIN commande cmd " +
+                "WHERE cmd.prixTotal > 2*(SELECT avg(cmd2.prixTotal) FROM commande cmd2);";
+            MySqlCommand command = new MySqlCommand(queryGetSuperClients, connection);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            this.superClientsGridView.DataSource = table;
+            foreach (DataGridViewColumn column in this.superClientsGridView.Columns)
+            {
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+        }
+
         #endregion
+
+
     }
 }
