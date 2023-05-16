@@ -186,17 +186,17 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void exotiqueButton_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("L'arrangement floral idéal pour les fans des fleurs exotiques. Haloa ! \n40€ TTC");
         }
 
         private void mamanButton_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Le bouquet parfait pour rappeler à votre maman que c'est la meilleure des mamans !\n80€ TTC");
         }
 
         private void marieeButton_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Un bouquet inoubliable pour un événement inoubliable ! Félicitations aux mariés \n120€ TTC");
         }
 
         private void administrationButton_Click(object sender, EventArgs e)

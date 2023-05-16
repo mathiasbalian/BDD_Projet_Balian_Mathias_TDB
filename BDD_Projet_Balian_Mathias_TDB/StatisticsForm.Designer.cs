@@ -53,9 +53,17 @@
             mostOrderedAccessoryPictureBox = new PictureBox();
             trueMostOrderedAccessoryLabel = new Label();
             mostOrderedAccessoryLabel = new Label();
+            statisticsDatePicker = new DateTimePicker();
+            caComparisonGridView = new DataGridView();
+            caComparisonLabel = new Label();
+            superClientsLabel = new Label();
+            superClientsGridView = new DataGridView();
+            informationButton = new Button();
             ((System.ComponentModel.ISupportInitialize)mostFamousBouquetStandardPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mostOrderedFlowerPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mostOrderedAccessoryPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)caComparisonGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)superClientsGridView).BeginInit();
             SuspendLayout();
             // 
             // statisticsLabel
@@ -149,7 +157,7 @@
             // 
             bestMonthClientLabel.AutoSize = true;
             bestMonthClientLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
-            bestMonthClientLabel.Location = new Point(32, 194);
+            bestMonthClientLabel.Location = new Point(32, 232);
             bestMonthClientLabel.Name = "bestMonthClientLabel";
             bestMonthClientLabel.Size = new Size(242, 23);
             bestMonthClientLabel.TabIndex = 35;
@@ -159,7 +167,7 @@
             // 
             trueBestMonthClientLabel.AutoSize = true;
             trueBestMonthClientLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            trueBestMonthClientLabel.Location = new Point(280, 194);
+            trueBestMonthClientLabel.Location = new Point(280, 232);
             trueBestMonthClientLabel.Name = "trueBestMonthClientLabel";
             trueBestMonthClientLabel.Size = new Size(54, 23);
             trueBestMonthClientLabel.TabIndex = 36;
@@ -169,7 +177,7 @@
             // 
             bestYearClientLabel.AutoSize = true;
             bestYearClientLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
-            bestYearClientLabel.Location = new Point(32, 248);
+            bestYearClientLabel.Location = new Point(32, 286);
             bestYearClientLabel.Name = "bestYearClientLabel";
             bestYearClientLabel.Size = new Size(260, 23);
             bestYearClientLabel.TabIndex = 37;
@@ -179,7 +187,7 @@
             // 
             trueBestYearClientLabel.AutoSize = true;
             trueBestYearClientLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            trueBestYearClientLabel.Location = new Point(298, 248);
+            trueBestYearClientLabel.Location = new Point(298, 286);
             trueBestYearClientLabel.Name = "trueBestYearClientLabel";
             trueBestYearClientLabel.Size = new Size(54, 23);
             trueBestYearClientLabel.TabIndex = 38;
@@ -189,7 +197,7 @@
             // 
             averageOrderPriceLabel.AutoSize = true;
             averageOrderPriceLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
-            averageOrderPriceLabel.Location = new Point(32, 302);
+            averageOrderPriceLabel.Location = new Point(32, 384);
             averageOrderPriceLabel.Name = "averageOrderPriceLabel";
             averageOrderPriceLabel.Size = new Size(243, 23);
             averageOrderPriceLabel.TabIndex = 39;
@@ -199,7 +207,7 @@
             // 
             trueAverageOrderPriceLabel.AutoSize = true;
             trueAverageOrderPriceLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            trueAverageOrderPriceLabel.Location = new Point(280, 302);
+            trueAverageOrderPriceLabel.Location = new Point(280, 384);
             trueAverageOrderPriceLabel.Name = "trueAverageOrderPriceLabel";
             trueAverageOrderPriceLabel.Size = new Size(38, 23);
             trueAverageOrderPriceLabel.TabIndex = 40;
@@ -240,7 +248,7 @@
             // 
             mostCAShopLabel.AutoSize = true;
             mostCAShopLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
-            mostCAShopLabel.Location = new Point(31, 356);
+            mostCAShopLabel.Location = new Point(31, 438);
             mostCAShopLabel.Name = "mostCAShopLabel";
             mostCAShopLabel.Size = new Size(302, 23);
             mostCAShopLabel.TabIndex = 44;
@@ -250,7 +258,7 @@
             // 
             trueMostCAShopLabel.AutoSize = true;
             trueMostCAShopLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            trueMostCAShopLabel.Location = new Point(339, 356);
+            trueMostCAShopLabel.Location = new Point(339, 438);
             trueMostCAShopLabel.Name = "trueMostCAShopLabel";
             trueMostCAShopLabel.Size = new Size(74, 23);
             trueMostCAShopLabel.TabIndex = 45;
@@ -318,12 +326,93 @@
             mostOrderedAccessoryLabel.TabIndex = 49;
             mostOrderedAccessoryLabel.Text = "Accessoire le plus commandé :";
             // 
+            // statisticsDatePicker
+            // 
+            statisticsDatePicker.CustomFormat = "yyyy-MM";
+            statisticsDatePicker.Format = DateTimePickerFormat.Custom;
+            statisticsDatePicker.Location = new Point(32, 190);
+            statisticsDatePicker.Name = "statisticsDatePicker";
+            statisticsDatePicker.Size = new Size(107, 27);
+            statisticsDatePicker.TabIndex = 52;
+            statisticsDatePicker.ValueChanged += statisticsDatePicker_ValueChanged;
+            // 
+            // caComparisonGridView
+            // 
+            caComparisonGridView.AllowUserToAddRows = false;
+            caComparisonGridView.AllowUserToDeleteRows = false;
+            caComparisonGridView.AllowUserToResizeColumns = false;
+            caComparisonGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            caComparisonGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            caComparisonGridView.BackgroundColor = SystemColors.ControlLight;
+            caComparisonGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            caComparisonGridView.Location = new Point(32, 552);
+            caComparisonGridView.Name = "caComparisonGridView";
+            caComparisonGridView.RowHeadersWidth = 51;
+            caComparisonGridView.RowTemplate.Height = 29;
+            caComparisonGridView.Size = new Size(445, 185);
+            caComparisonGridView.TabIndex = 53;
+            // 
+            // caComparisonLabel
+            // 
+            caComparisonLabel.AutoSize = true;
+            caComparisonLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
+            caComparisonLabel.Location = new Point(32, 517);
+            caComparisonLabel.Name = "caComparisonLabel";
+            caComparisonLabel.Size = new Size(337, 23);
+            caComparisonLabel.TabIndex = 54;
+            caComparisonLabel.Text = "Comparaison des CA entre les magasins :";
+            // 
+            // superClientsLabel
+            // 
+            superClientsLabel.AutoSize = true;
+            superClientsLabel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point);
+            superClientsLabel.Location = new Point(946, 517);
+            superClientsLabel.Name = "superClientsLabel";
+            superClientsLabel.Size = new Size(194, 23);
+            superClientsLabel.TabIndex = 56;
+            superClientsLabel.Text = "Liste des super clients :";
+            // 
+            // superClientsGridView
+            // 
+            superClientsGridView.AllowUserToAddRows = false;
+            superClientsGridView.AllowUserToDeleteRows = false;
+            superClientsGridView.AllowUserToResizeColumns = false;
+            superClientsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            superClientsGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            superClientsGridView.BackgroundColor = SystemColors.ControlLight;
+            superClientsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            superClientsGridView.Location = new Point(946, 552);
+            superClientsGridView.Name = "superClientsGridView";
+            superClientsGridView.RowHeadersWidth = 51;
+            superClientsGridView.RowTemplate.Height = 29;
+            superClientsGridView.Size = new Size(445, 185);
+            superClientsGridView.TabIndex = 55;
+            // 
+            // informationButton
+            // 
+            informationButton.BackgroundImage = Properties.Resources.information_icon;
+            informationButton.BackgroundImageLayout = ImageLayout.Stretch;
+            informationButton.FlatAppearance.BorderSize = 0;
+            informationButton.FlatStyle = FlatStyle.Flat;
+            informationButton.Location = new Point(1146, 517);
+            informationButton.Name = "informationButton";
+            informationButton.Size = new Size(25, 25);
+            informationButton.TabIndex = 57;
+            informationButton.UseVisualStyleBackColor = true;
+            informationButton.Click += informationButton_Click;
+            // 
             // StatisticsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1782, 853);
+            Controls.Add(informationButton);
+            Controls.Add(superClientsLabel);
+            Controls.Add(superClientsGridView);
+            Controls.Add(caComparisonLabel);
+            Controls.Add(caComparisonGridView);
+            Controls.Add(statisticsDatePicker);
             Controls.Add(mostOrderedAccessoryPictureBox);
             Controls.Add(trueMostOrderedAccessoryLabel);
             Controls.Add(mostOrderedAccessoryLabel);
@@ -354,6 +443,8 @@
             ((System.ComponentModel.ISupportInitialize)mostFamousBouquetStandardPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)mostOrderedFlowerPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)mostOrderedAccessoryPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)caComparisonGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)superClientsGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -384,5 +475,11 @@
         private PictureBox mostOrderedAccessoryPictureBox;
         private Label trueMostOrderedAccessoryLabel;
         private Label mostOrderedAccessoryLabel;
+        private DateTimePicker statisticsDatePicker;
+        private DataGridView caComparisonGridView;
+        private Label caComparisonLabel;
+        private Label superClientsLabel;
+        private DataGridView superClientsGridView;
+        private Button informationButton;
     }
 }
