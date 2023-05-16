@@ -196,7 +196,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         private void marieeButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Un bouquet inoubliable pour un événement inoubliable ! Félicitations aux mariés ! \n120€ TTC");
+            MessageBox.Show("Un bouquet inoubliable pour un événement inoubliable ! Félicitations aux mariés \n120€ TTC");
         }
 
         private void administrationButton_Click(object sender, EventArgs e)
