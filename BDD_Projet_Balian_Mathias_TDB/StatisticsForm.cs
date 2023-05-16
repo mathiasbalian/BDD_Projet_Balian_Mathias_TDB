@@ -120,7 +120,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
         #region Méthodes utiles
 
-
+        /// <summary>
+        /// Méthode permettant d'obtenir le meilleur client du mois en fonction de la date sélectionnée
+        /// </summary>
         private void getBestMonthClient()
         {
             this.trueBestMonthClientLabel.Text = "";
@@ -145,7 +147,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
-
+        /// <summary>
+        /// Méthode permettant d'obtenir le meilleur client de l'année selon la date choisie
+        /// </summary>
         private void getBestYearClient()
         {
             this.trueBestYearClientLabel.Text = "";
@@ -170,7 +174,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
-
+        /// <summary>
+        /// Méthode permettant d'obtenir le prix moyen des commandes
+        /// </summary>
         private void getAverageOrderPrice()
         {
             string queryGetAverageOrderPrice = "SELECT avg(prixTotal) FROM commande;";
@@ -184,7 +190,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
-
+        /// <summary>
+        /// Méthode permettant d'obtenir le magasin réalisant le plus de chiffre d'affaires
+        /// </summary>
         private void getMostCAShop()
         {
             string queryGetMostCAShop = "SELECT nomMagasin, ville FROM commande NATURAL JOIN magasin " +
@@ -203,7 +211,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
-
+        /// <summary>
+        /// Méthode permettant d'obtenir le bouquet standard le plus commandé
+        /// </summary>
         private void getMostFamousBouquetStandard()
         {
             string queryGetMostFamousBouquetStandard = "SELECT nomBouquet FROM commande NATURAL JOIN arrangementFloral " +
@@ -226,6 +236,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'obtenir la fleur les plus commandées
+        /// </summary>
         private void getMostOrderedFlower()
         {
             string queryGetMostOrderedFlower = "SELECT nomFleur FROM bouquetpersocontientfleur NATURAL JOIN fleur " +
@@ -248,7 +261,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
-
+        /// <summary>
+        /// Méthode permettant d'obtenir l'accessoire le plus commandé
+        /// </summary>
         private void getMostOrderedAccessory()
         {
             string queryGetMostOrderedFlower = "SELECT nomAccessoire FROM bouquetPersoContientAccessoire NATURAL JOIN accessoire " +
@@ -271,6 +286,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant de comparer les chiffres d'affaire entre les magasins
+        /// </summary>
         private void compareCA()
         {
             string queryCompareCA = "SELECT DISTINCT c1.nomMagasin as FAIT_PLUS_DE_CA, c2.nomMagasin as FAIT_MOINS_DE_CA " +
@@ -289,6 +307,9 @@ namespace BDD_Projet_Balian_Mathias_TDB
         }
 
 
+        /// <summary>
+        /// Méthode permettant d'obtenir les super clients
+        /// </summary>
         private void getSuperClients()
         {
             string queryGetSuperClients = "SELECT distinct c.email, c.nom, c.prenom FROM client c NATURAL JOIN commande cmd " +
