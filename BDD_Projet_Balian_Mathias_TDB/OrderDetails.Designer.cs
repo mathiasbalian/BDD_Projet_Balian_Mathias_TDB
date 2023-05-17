@@ -37,6 +37,7 @@
             deliveryAdressLabel = new Label();
             messageLabel = new Label();
             bouquetPersoLayoutPanel = new FlowLayoutPanel();
+            orderInProcessLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)bouquetStandardPictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -137,12 +138,24 @@
             bouquetPersoLayoutPanel.TabIndex = 29;
             bouquetPersoLayoutPanel.Visible = false;
             // 
+            // orderInProcessLabel
+            // 
+            orderInProcessLabel.AutoSize = true;
+            orderInProcessLabel.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            orderInProcessLabel.Location = new Point(400, 237);
+            orderInProcessLabel.Name = "orderInProcessLabel";
+            orderInProcessLabel.Size = new Size(582, 28);
+            orderInProcessLabel.TabIndex = 30;
+            orderInProcessLabel.Text = "Votre commande est en cours d'élaboration par nos équipes :)";
+            orderInProcessLabel.Visible = false;
+            // 
             // OrderDetails
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(1382, 653);
+            Controls.Add(orderInProcessLabel);
             Controls.Add(bouquetPersoLayoutPanel);
             Controls.Add(messageLabel);
             Controls.Add(deliveryAdressLabel);
@@ -170,5 +183,6 @@
         private Label deliveryAdressLabel;
         private Label messageLabel;
         private FlowLayoutPanel bouquetPersoLayoutPanel;
+        private Label orderInProcessLabel;
     }
 }
