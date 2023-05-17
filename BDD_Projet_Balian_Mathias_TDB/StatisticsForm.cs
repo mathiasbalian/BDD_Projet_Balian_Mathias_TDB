@@ -303,6 +303,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
             foreach (DataGridViewColumn column in this.caComparisonGridView.Columns)
             {
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                column.ReadOnly = true;
             }
         }
 

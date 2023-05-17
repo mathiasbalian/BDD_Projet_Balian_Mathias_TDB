@@ -101,7 +101,8 @@ namespace BDD_Projet_Balian_Mathias_TDB
 
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
-                OrderDetails od = new OrderDetails((int)this.ordersGridView.Rows[e.RowIndex].Cells["idCommande"].Value);
+                OrderDetails od = new OrderDetails((int)this.ordersGridView.Rows[e.RowIndex].Cells["idCommande"].Value,
+                    (string)this.ordersGridView.Rows[e.RowIndex].Cells["etatCommande"].Value == "CPAV");
                 od.Show();
             }
         }

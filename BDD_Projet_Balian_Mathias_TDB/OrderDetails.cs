@@ -18,12 +18,21 @@ namespace BDD_Projet_Balian_Mathias_TDB
         private int orderId;
         private decimal totalPrice;
         private string fidelity;
+        private bool isCpav;
 
-        public OrderDetails(int orderId)
+        public OrderDetails(int orderId, bool isCPAV)
         {
             InitializeComponent();
             this.orderId = orderId;
             this.totalPrice = 0;
+            this.isCpav = isCPAV;
+            if (this.isCpav)
+            {
+                this.orderInProcessLabel.Visible = true;
+                this.bouquetPersoLayoutPanel.Visible = false;
+                this.totalPriceLabel.Visible = false;
+                this.bouquetTypeLabel.Visible = false;
+            }
             string queryGetClientFidelity = $"SELECT fidelite FROM commande NATURAL JOIN client WHERE idCommande = {this.orderId};";
             MySqlCommand command = new MySqlCommand(queryGetClientFidelity, connection);
             MySqlDataReader reader = command.ExecuteReader();
@@ -45,51 +54,53 @@ namespace BDD_Projet_Balian_Mathias_TDB
             this.trueShopLabel.Visible = true;
             this.trueShopLabel.Text = getShopName();
             this.trueShopLabel.Left = (this.ClientSize.Width - this.trueShopLabel.Width) / 2;
-
-            // Type de bouquet
-            var isBouquetAndName = isBouquetStandard();
-            this.bouquetTypeLabel.Visible = true;
-            this.totalPriceLabel.Visible = true;
-
-            if (isBouquetAndName.isbouquetStandard) // Si c'est un bouquet standard
+            if (!this.isCpav)
             {
-                this.bouquetTypeLabel.Text = "Bouquet " + isBouquetAndName.bouquetStandardName;
-                this.bouquetTypeLabel.Left = (this.ClientSize.Width - this.bouquetTypeLabel.Width) / 2;
+                // Type de bouquet
+                var isBouquetAndName = isBouquetStandard();
+                this.bouquetTypeLabel.Visible = true;
+                this.totalPriceLabel.Visible = true;
 
-                this.bouquetStandardPictureBox.Visible = true;
-                this.bouquetStandardPictureBox.BackgroundImage = Properties.Resources.ResourceManager.
-                                                                 GetObject(OrderForm.getImageNameFromItemName(isBouquetAndName.bouquetStandardName)) as Image;
+                if (isBouquetAndName.isbouquetStandard) // Si c'est un bouquet standard
+                {
+                    this.bouquetTypeLabel.Text = "Bouquet " + isBouquetAndName.bouquetStandardName;
+                    this.bouquetTypeLabel.Left = (this.ClientSize.Width - this.bouquetTypeLabel.Width) / 2;
+
+                    this.bouquetStandardPictureBox.Visible = true;
+                    this.bouquetStandardPictureBox.BackgroundImage = Properties.Resources.ResourceManager.
+                                                                     GetObject(OrderForm.getImageNameFromItemName(isBouquetAndName.bouquetStandardName)) as Image;
+                }
+                else // Si c'est un bouquet personnalisé
+                {
+                    this.bouquetTypeLabel.Text = "Bouquet personnalisé contenant :";
+                    this.bouquetTypeLabel.Left = (this.ClientSize.Width - this.bouquetTypeLabel.Width) / 2;
+
+                    this.bouquetPersoLayoutPanel.Visible = true;
+                    fillBouquetPersoLayoutPanel("accessoire");
+                    fillBouquetPersoLayoutPanel("fleur");
+                    // Pour toujours centrer le flowlayoutpanel par rapport au nombre d'ingrédients
+                    Point originalBouquetPersoLayoutPanelCoords = this.bouquetPersoLayoutPanel.Location;
+                    if (this.bouquetPersoLayoutPanel.Controls.Count == 1)
+                        this.bouquetPersoLayoutPanel.Location = new Point(originalBouquetPersoLayoutPanelCoords.X + 200, originalBouquetPersoLayoutPanelCoords.Y);
+                    else if (this.bouquetPersoLayoutPanel.Controls.Count == 2)
+                        this.bouquetPersoLayoutPanel.Location = new Point(originalBouquetPersoLayoutPanelCoords.X + 100, originalBouquetPersoLayoutPanelCoords.Y);
+                    else
+                        this.bouquetPersoLayoutPanel.Location = originalBouquetPersoLayoutPanelCoords;
+                }
+
+                // On obtient le prix de la commande
+                string queryGetOrderPrice = $"SELECT prixTotal FROM commande WHERE idCommande = {this.orderId};";
+                MySqlCommand commandGetOrderPrice = new MySqlCommand(queryGetOrderPrice, connection);
+                MySqlDataReader mySqlDataReader = commandGetOrderPrice.ExecuteReader();
+                if (mySqlDataReader.Read() && !mySqlDataReader.IsDBNull(0))
+                {
+                    this.totalPrice = mySqlDataReader.GetDecimal(0);
+                }
+                mySqlDataReader.Close();
+
+                this.totalPriceLabel.Text = $"Pour un total de {Decimal.Round((decimal)this.totalPrice, 2)}€";
+                this.totalPriceLabel.Left = (this.ClientSize.Width - this.totalPriceLabel.Width) / 2;
             }
-            else // Si c'est un bouquet personnalisé
-            {
-                this.bouquetTypeLabel.Text = "Bouquet personnalisé contenant :";
-                this.bouquetTypeLabel.Left = (this.ClientSize.Width - this.bouquetTypeLabel.Width) / 2;
-
-                this.bouquetPersoLayoutPanel.Visible = true;
-                fillBouquetPersoLayoutPanel("accessoire");
-                fillBouquetPersoLayoutPanel("fleur");
-                // Pour toujours centrer le flowlayoutpanel par rapport au nombre d'ingrédients
-                Point originalBouquetPersoLayoutPanelCoords = this.bouquetPersoLayoutPanel.Location;
-                if (this.bouquetPersoLayoutPanel.Controls.Count == 1)
-                    this.bouquetPersoLayoutPanel.Location = new Point(originalBouquetPersoLayoutPanelCoords.X + 200, originalBouquetPersoLayoutPanelCoords.Y);
-                else if (this.bouquetPersoLayoutPanel.Controls.Count == 2)
-                    this.bouquetPersoLayoutPanel.Location = new Point(originalBouquetPersoLayoutPanelCoords.X + 100, originalBouquetPersoLayoutPanelCoords.Y);
-                else
-                    this.bouquetPersoLayoutPanel.Location = originalBouquetPersoLayoutPanelCoords;
-            }
-
-            // On obtient le prix de la commande
-            string queryGetOrderPrice = $"SELECT prixTotal FROM commande WHERE idCommande = {this.orderId};";
-            MySqlCommand commandGetOrderPrice = new MySqlCommand(queryGetOrderPrice, connection);
-            MySqlDataReader mySqlDataReader = commandGetOrderPrice.ExecuteReader();
-            if (mySqlDataReader.Read() && !mySqlDataReader.IsDBNull(0))
-            {
-                this.totalPrice = mySqlDataReader.GetDecimal(0);
-            }
-            mySqlDataReader.Close();
-
-            this.totalPriceLabel.Text = $"Pour un total de {Decimal.Round((decimal)this.totalPrice, 2)}€";
-            this.totalPriceLabel.Left = (this.ClientSize.Width - this.totalPriceLabel.Width) / 2;
 
 
             // Adresse de livraison et message floral

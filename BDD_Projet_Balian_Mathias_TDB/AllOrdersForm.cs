@@ -130,7 +130,7 @@ namespace BDD_Projet_Balian_Mathias_TDB
                 }
                 else
                 {
-                    OrderDetails od = new OrderDetails((int)this.clientOrdersGridView.Rows[e.RowIndex].Cells["idCommande"].Value);
+                    OrderDetails od = new OrderDetails((int)this.clientOrdersGridView.Rows[e.RowIndex].Cells["idCommande"].Value, false);
                     od.Show();
                 }
             }
