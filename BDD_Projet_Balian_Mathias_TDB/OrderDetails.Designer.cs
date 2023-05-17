@@ -132,9 +132,9 @@
             // bouquetPersoLayoutPanel
             // 
             bouquetPersoLayoutPanel.AutoScroll = true;
-            bouquetPersoLayoutPanel.Location = new Point(381, 278);
+            bouquetPersoLayoutPanel.Location = new Point(358, 278);
             bouquetPersoLayoutPanel.Name = "bouquetPersoLayoutPanel";
-            bouquetPersoLayoutPanel.Size = new Size(620, 221);
+            bouquetPersoLayoutPanel.Size = new Size(666, 221);
             bouquetPersoLayoutPanel.TabIndex = 29;
             bouquetPersoLayoutPanel.Visible = false;
             // 
